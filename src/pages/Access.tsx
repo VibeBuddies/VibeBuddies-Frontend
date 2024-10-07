@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Typography, Box } from "@mui/material"
-import Register from "./register"
-import Login from "./Login"
+import Register from "../components/auth/register"
+import Login from "../components/auth/Login"
 import vibeBuddiesLogo from "../../vibebuddies.png"
 
 const Access: React.FC = () => {
