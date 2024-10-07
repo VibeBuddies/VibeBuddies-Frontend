@@ -4,9 +4,9 @@ import Register from "./register"
 import Login from "./Login"
 import vibeBuddiesLogo from "../../vibebuddies.png"
 
-const Access = () => {
+const Access: React.FC = () => {
   // toggles between login and register inside of the login/register form box
-  const [showLogin, setShowLogin] = useState(true)
+  const [showLogin, setShowLogin] = useState<boolean>(true) // TypeScript inferred the type, but we explicitly set it to boolean.
 
   return (
     //box containing the image box and the form box
@@ -24,14 +24,14 @@ const Access = () => {
           display: "flex",
           justifyContent: "left",
           alignItems: "center",
-          marginRight: "200px", // adds needed space beteen the logo image and the form box
+          marginRight: "200px", // adds needed space between the logo image and the form box
           marginTop: "100px",
         }}
       >
         <img
           src={vibeBuddiesLogo}
           alt="VibeBuddies Logo"
-          style={{ width: "750px", height: "auto" }} // actual size of the viebBuddies logo
+          style={{ width: "750px", height: "auto" }} // actual size of the vibeBuddies logo
         />
       </Box>
 
@@ -44,7 +44,7 @@ const Access = () => {
         borderRadius={5}
         textAlign="center"
         sx={{
-          minHeight: "450px", // Fixed minimum height so that the form box size wont change while toggling between login and register
+          minHeight: "450px", // Fixed minimum height so that the form box size won't change while toggling between login and register
         }}
       >
         {/* This box contains the buttons in the form that will toggle between login and register, looks like: "Login | Register" */}
@@ -65,7 +65,7 @@ const Access = () => {
             Login
           </Typography>
 
-          {/* spacer seperating login and register */}
+          {/* spacer separating login and register */}
           <Typography variant="h4" sx={{ mx: 2 }}>
             |
           </Typography>
@@ -88,7 +88,15 @@ const Access = () => {
         </Box>
 
         {/* conditionally renders Register or Login component based on which button is clicked */}
-        {showLogin ? <Login /> : <Register />}
+        {showLogin ? (
+          <Login
+            onLoginSuccess={function (): void {
+              throw new Error("Function not implemented.")
+            }}
+          />
+        ) : (
+          <Register />
+        )}
       </Box>
     </Box>
   )

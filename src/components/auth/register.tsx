@@ -1,18 +1,28 @@
-import React, { useState } from "react"
+import React, { useState, ChangeEvent, FormEvent } from "react"
 import { TextField, Button, Container, Alert } from "@mui/material"
 
-/* creates a registration form complete with 3 fields to fill out (+ confirm password) and a button to submit the form */
-const Register = () => {
-  const [formData, setFormData] = useState({
+/* Define the shape of the form data */
+interface FormData {
+  username: string
+  email: string
+  password: string
+  confirmPassword: string
+}
+
+const Register: React.FC = () => {
+  // State for form data
+  const [formData, setFormData] = useState<FormData>({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   })
 
-  const [errors, setErrors] = useState("")
+  // State for errors
+  const [errors, setErrors] = useState<string>("")
 
-  const handleSubmit = (e) => {
+  // Handle form submit
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     // Basic password match validation
@@ -21,55 +31,61 @@ const Register = () => {
       return
     }
 
-    // clears the form fields
+    // Clear the form fields and errors
     setFormData({ username: "", email: "", password: "", confirmPassword: "" })
     setErrors("") // Clear any previous errors
+  }
+
+  // Handle input change
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
   }
 
   return (
     <Container maxWidth="sm">
       {errors && <Alert severity="error">{errors}</Alert>}
-      {/* when the registration button is clicked this will trigger the function to check the filled out fields*/}
+      {/* When the registration button is clicked, this will trigger the function to check the filled-out fields */}
       <form onSubmit={handleSubmit}>
         <TextField
           fullWidth
           label="Username"
+          name="username" // Add name attribute for input handling
           margin="normal"
           value={formData.username}
-          onChange={(e) =>
-            setFormData({ ...formData, username: e.target.value })
-          }
+          onChange={handleInputChange}
           required
         />
         <TextField
           fullWidth
           label="Email"
+          name="email" // Add name attribute for input handling
           type="email"
           margin="normal"
           value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          onChange={handleInputChange}
           required
         />
         <TextField
           fullWidth
           label="Password"
+          name="password" // Add name attribute for input handling
           type="password"
           margin="normal"
           value={formData.password}
-          onChange={(e) =>
-            setFormData({ ...formData, password: e.target.value })
-          }
+          onChange={handleInputChange}
           required
         />
         <TextField
           fullWidth
           label="Confirm Password"
+          name="confirmPassword" // Add name attribute for input handling
           type="password"
           margin="normal"
           value={formData.confirmPassword}
-          onChange={(e) =>
-            setFormData({ ...formData, confirmPassword: e.target.value })
-          }
+          onChange={handleInputChange}
           required
         />
         <Button
