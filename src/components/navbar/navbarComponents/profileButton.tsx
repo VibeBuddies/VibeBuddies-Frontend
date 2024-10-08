@@ -3,7 +3,7 @@ import { IconButton, Tooltip } from "@mui/material"
 import PersonIcon from "@mui/icons-material/Person"
 import { useNavigate } from "react-router-dom" // Import useNavigate
 
-/* profile button on the feed page which will navigate 
+/* profile button on the navbar which will navigate 
 the user to their profile */
 
 const ProfileButton: React.FC = () => {
@@ -15,13 +15,10 @@ const ProfileButton: React.FC = () => {
   }
 
   return (
-    <Tooltip title="Go to Profile" arrow placement="top">
+    <Tooltip title="Go to Profile" arrow placement="bottom">
       <IconButton
         onClick={handleProfileClick}
         sx={{
-          position: "fixed",
-          right: 20,
-          top: 20,
           color: "grey",
           width: "100px",
           height: "100px",

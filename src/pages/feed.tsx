@@ -1,10 +1,10 @@
 import React, { useState, ChangeEvent } from "react"
 import { Container, Box } from "@mui/material"
 import VibeCheckList from "../components/feed/vibeCheckList"
-import SearchBar from "../components/feed/searchBar"
-import CreateVibeCheckButton from "../components/feed/createVibeCheckButton"
-import CreateVibeCheckModal from "../components/feed/createVibeCheckModal"
-import ProfileButton from "../components/feed/profileButton"
+import SearchBar from "../components/navbar/navbarComponents/searchBar"
+import CreateVibeCheckButton from "../components/navbar/navbarComponents/createVibeCheckButton"
+import CreateVibeCheckModal from "../components/navbar/navbarComponents/createVibeCheckModal"
+import ProfileButton from "../components/navbar/navbarComponents/profileButton"
 
 /* Arranges the feed components into a feed page 
 which will be the central page the user arives to 
@@ -51,51 +51,26 @@ const initialVibeChecks: VibeCheck[] = [
 const Feed: React.FC = () => {
   const [vibeChecks, setVibeChecks] = useState<VibeCheck[]>(initialVibeChecks)
   const [searchTerm, setSearchTerm] = useState<string>("")
-  const [open, setOpen] = useState<boolean>(false) // State for controlling the modal
-
-  // Handle the search input change
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value.toLowerCase())
-  }
 
   // Filter vibeChecks based on the search term
   const filteredVibeChecks = vibeChecks.filter((vibeCheck) =>
     vibeCheck.album.toLowerCase().includes(searchTerm)
   )
 
-  // Handle opening and closing the modal
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
-
   return (
     <Container maxWidth="sm" sx={{ display: "flex", position: "relative" }}>
-      {/* Search Bar */}
       <Box sx={{ flexGrow: 1 }}>
-        <SearchBar
-          searchTerm={searchTerm}
-          onSearchChange={handleSearchChange}
-        />
-
         {/* Scrollable VibeCheckList */}
         <Box
           sx={{
             maxHeight: "80vh", // Adjust as needed
             overflowY: "auto",
-            pr: 8, // Padding to avoid content overlapping the button
+            pt: 8,
           }}
         >
           <VibeCheckList vibeChecks={filteredVibeChecks} />
         </Box>
       </Box>
-
-      {/* Create VibeCheck Button, fixed to the bottom right */}
-      <CreateVibeCheckButton handleOpen={handleOpen} />
-
-      {/* Create Profile Button to access profile, fixed to the top right */}
-      <ProfileButton />
-
-      {/* Create VibeCheck Modal */}
-      <CreateVibeCheckModal open={open} handleClose={handleClose} />
     </Container>
   )
 }

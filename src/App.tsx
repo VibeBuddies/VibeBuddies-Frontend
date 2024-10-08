@@ -1,24 +1,42 @@
 import React from "react"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import Access from "./pages/Access" // Ensure the correct path for Access
-import Feed from "./pages/feed" // Ensure the correct path for Feed
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom"
+import Access from "./pages/Access"
+import Feed from "./pages/feed"
 import Profile from "./pages/Profile"
-
-/* Router controls the flow between pages 
-users start off at Access page and if they 
-successfully log in a JWT wil allow them to 
-access the rest of the sight (future implementation)  */
+import Settings from "./pages/Settings"
+import Navbar from "./components/navbar/NavBar"
 
 const App: React.FC = () => {
+  const location = useLocation()
+
+  // Show the navbar on all pages except for the Access page
+  const showNavbar = location.pathname !== "/"
+
   return (
-    <Router>
+    <>
+      {/* Conditionally render the Navbar */}
+      {showNavbar && <Navbar />}
+
       <Routes>
-        <Route path="/" element={<Access />} /> {/* Home/Login/Register Page */}
-        <Route path="/feed" element={<Feed />} /> {/* Feed Page */}
-        <Route path="/profile" element={<Profile />} /> {/* Profile Page */}
+        <Route path="/" element={<Access />} />{" "}
+        {/* Access/Login/Register page */}
+        <Route path="/feed" element={<Feed />} /> {/* Feed page */}
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/profile" element={<Profile />} /> {/* Profile page */}
       </Routes>
-    </Router>
+    </>
   )
 }
 
-export default App
+const WrappedApp = () => (
+  <Router>
+    <App />
+  </Router>
+)
+
+export default WrappedApp
