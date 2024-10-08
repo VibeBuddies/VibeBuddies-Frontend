@@ -4,6 +4,7 @@ import VibeCheckList from "../components/feed/vibeCheckList"
 import SearchBar from "../components/feed/searchBar"
 import CreateVibeCheckButton from "../components/feed/createVibeCheckButton"
 import CreateVibeCheckModal from "../components/feed/createVibeCheckModal"
+import ProfileButton from "../components/feed/profileButton"
 
 /* Arranges the feed components into a feed page 
 which will be the central page the user arives to 
@@ -87,8 +88,11 @@ const Feed: React.FC = () => {
         </Box>
       </Box>
 
-      {/* Create VibeCheck Button, fixed to the right */}
+      {/* Create VibeCheck Button, fixed to the bottom right */}
       <CreateVibeCheckButton handleOpen={handleOpen} />
+
+      {/* Create Profile Button to access profile, fixed to the top right */}
+      <ProfileButton />
 
       {/* Create VibeCheck Modal */}
       <CreateVibeCheckModal open={open} handleClose={handleClose} />
