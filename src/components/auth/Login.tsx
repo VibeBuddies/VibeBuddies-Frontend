@@ -1,14 +1,27 @@
 import React, { useState, ChangeEvent, FormEvent } from "react"
 import { TextField, Button, Container, Typography, Alert } from "@mui/material"
 
+/* log in component of the Access page.
+if the formData is filled out correctly this will
+give access to the feed page. in the future only if
+a user is logged in succecfully through an API req
+then they will be given a token and granted access
+to the rest of the website */
+
+/* Define the shape of the form data */
+interface FormData {
+  email: string
+  password: string
+}
+
 // Define the type for props
 interface LoginProps {
-  onLoginSuccess: () => void // onLoginSuccess is a function with no arguments and no return value
+  onLoginSuccess: () => void
 }
 
 const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   // State for form data
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
   })
@@ -29,7 +42,10 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     // Clear errors
     setError("")
 
-    // Call the function to navigate to the feed
+    /*for now this will always give access to feed
+    so long as formData is filled out correctly.
+    for the future the api will be called and if it
+    is a valid user login then a jwt token will be given */
     onLoginSuccess()
 
     // Clear form after submission
@@ -50,7 +66,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
           <TextField
             fullWidth
             label="Email"
-            name="email" // Added name attribute
+            name="email"
             type="email"
             margin="normal"
             value={formData.email}
@@ -60,7 +76,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
           <TextField
             fullWidth
             label="Password"
-            name="password" // Added name attribute
+            name="password"
             type="password"
             margin="normal"
             value={formData.password}

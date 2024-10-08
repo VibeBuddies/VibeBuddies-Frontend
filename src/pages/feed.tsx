@@ -1,7 +1,13 @@
 import React, { useState, ChangeEvent } from "react"
-import { Container } from "@mui/material"
+import { Container, Box } from "@mui/material"
 import VibeCheckList from "../components/feed/vibeCheckList"
 import SearchBar from "../components/feed/searchBar"
+import CreateVibeCheckButton from "../components/feed/createVibeCheckButton"
+import CreateVibeCheckModal from "../components/feed/createVibeCheckModal"
+
+/* Arranges the feed components into a feed page 
+which will be the central page the user arives to 
+when they log in */
 
 // Define the shape of the vibeChecks array
 interface VibeCheck {
@@ -12,7 +18,7 @@ interface VibeCheck {
   image: string
 }
 
-// Initial vibeChecks data
+// mock data to populate the vibeCheckList until we can integrate api connectivity
 const initialVibeChecks: VibeCheck[] = [
   {
     id: 1,
@@ -44,6 +50,7 @@ const initialVibeChecks: VibeCheck[] = [
 const Feed: React.FC = () => {
   const [vibeChecks, setVibeChecks] = useState<VibeCheck[]>(initialVibeChecks)
   const [searchTerm, setSearchTerm] = useState<string>("")
+  const [open, setOpen] = useState<boolean>(false) // State for controlling the modal
 
   // Handle the search input change
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,10 +62,36 @@ const Feed: React.FC = () => {
     vibeCheck.album.toLowerCase().includes(searchTerm)
   )
 
+  // Handle opening and closing the modal
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+
   return (
-    <Container maxWidth="sm">
-      <SearchBar searchTerm={searchTerm} onSearchChange={handleSearchChange} />
-      <VibeCheckList vibeChecks={filteredVibeChecks} />
+    <Container maxWidth="sm" sx={{ display: "flex", position: "relative" }}>
+      {/* Search Bar */}
+      <Box sx={{ flexGrow: 1 }}>
+        <SearchBar
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+        />
+
+        {/* Scrollable VibeCheckList */}
+        <Box
+          sx={{
+            maxHeight: "80vh", // Adjust as needed
+            overflowY: "auto",
+            pr: 8, // Padding to avoid content overlapping the button
+          }}
+        >
+          <VibeCheckList vibeChecks={filteredVibeChecks} />
+        </Box>
+      </Box>
+
+      {/* Create VibeCheck Button, fixed to the right */}
+      <CreateVibeCheckButton handleOpen={handleOpen} />
+
+      {/* Create VibeCheck Modal */}
+      <CreateVibeCheckModal open={open} handleClose={handleClose} />
     </Container>
   )
 }

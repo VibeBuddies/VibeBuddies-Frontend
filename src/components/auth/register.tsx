@@ -1,6 +1,12 @@
 import React, { useState, ChangeEvent, FormEvent } from "react"
 import { TextField, Button, Container, Alert } from "@mui/material"
 
+/* registration component of the Access page
+if the formData is filled out correctly this will
+give access to the feed page in the future only if 
+a user is registered succefully will they then be able to log in
+and be given a jwt to then be granted into the rest of the app */
+
 /* Define the shape of the form data */
 interface FormData {
   username: string
@@ -9,7 +15,12 @@ interface FormData {
   confirmPassword: string
 }
 
-const Register: React.FC = () => {
+//prop for a succesful registration
+interface RegisterationProps {
+  onRegistrationSuccess: () => void
+}
+
+const Register: React.FC<RegisterationProps> = ({ onRegistrationSuccess }) => {
   // State for form data
   const [formData, setFormData] = useState<FormData>({
     username: "",
@@ -25,11 +36,25 @@ const Register: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // Basic password match validation
+    // basic password match validation and insurance that all fields have been filled
     if (formData.password !== formData.confirmPassword) {
       setErrors("Passwords do not match!")
       return
+    } else if (
+      formData.email === "" ||
+      formData.password === "" ||
+      formData.username === "" ||
+      formData.confirmPassword === ""
+    ) {
+      setErrors("All fields are required.")
+      return
     }
+
+    /*for now this will always give access to feed
+    so long as formData is filled out correctly.
+    for the future the api will be called and if it
+    is a valid user registration then a jwt token will be given */
+    onRegistrationSuccess()
 
     // Clear the form fields and errors
     setFormData({ username: "", email: "", password: "", confirmPassword: "" })
@@ -52,7 +77,7 @@ const Register: React.FC = () => {
         <TextField
           fullWidth
           label="Username"
-          name="username" // Add name attribute for input handling
+          name="username"
           margin="normal"
           value={formData.username}
           onChange={handleInputChange}
@@ -61,7 +86,7 @@ const Register: React.FC = () => {
         <TextField
           fullWidth
           label="Email"
-          name="email" // Add name attribute for input handling
+          name="email"
           type="email"
           margin="normal"
           value={formData.email}
@@ -71,7 +96,7 @@ const Register: React.FC = () => {
         <TextField
           fullWidth
           label="Password"
-          name="password" // Add name attribute for input handling
+          name="password"
           type="password"
           margin="normal"
           value={formData.password}
@@ -81,7 +106,7 @@ const Register: React.FC = () => {
         <TextField
           fullWidth
           label="Confirm Password"
-          name="confirmPassword" // Add name attribute for input handling
+          name="confirmPassword"
           type="password"
           margin="normal"
           value={formData.confirmPassword}

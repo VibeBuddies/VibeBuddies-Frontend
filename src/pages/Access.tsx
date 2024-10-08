@@ -2,11 +2,29 @@ import React, { useState } from "react"
 import { Typography, Box } from "@mui/material"
 import Register from "../components/auth/register"
 import Login from "../components/auth/Login"
-import vibeBuddiesLogo from "../../vibebuddies.png"
+import vibeBuddiesLogo from "../components/auth/vibebuddies.png"
+import { useNavigate } from "react-router-dom" // Import useNavigate from react-router-dom
+
+/* arranges the access componenets into an Access page 
+which is the first point of entry and requires logging in
+or registering in order to move on to the rest of the site*/
 
 const Access: React.FC = () => {
   // toggles between login and register inside of the login/register form box
-  const [showLogin, setShowLogin] = useState<boolean>(true) // TypeScript inferred the type, but we explicitly set it to boolean.
+  const [showLogin, setShowLogin] = useState<boolean>(true)
+
+  // initialize the useNavigate hook to navigate between pages
+  const navigate = useNavigate()
+
+  // if login is succecful users should be taken to the feed
+  const handleLoginSuccess = () => {
+    navigate("/feed") // Navigate to the Feed page after login
+  }
+
+  //if registration is succecful users should be taken to the feed
+  const handleRegistrationSuccess = () => {
+    navigate("/feed")
+  }
 
   return (
     //box containing the image box and the form box
@@ -87,15 +105,11 @@ const Access: React.FC = () => {
           </Typography>
         </Box>
 
-        {/* conditionally renders Register or Login component based on which button is clicked */}
+        {/* conditionally renders Register or Login components based on which button is clicked */}
         {showLogin ? (
-          <Login
-            onLoginSuccess={function (): void {
-              throw new Error("Function not implemented.")
-            }}
-          />
+          <Login onLoginSuccess={handleLoginSuccess} />
         ) : (
-          <Register />
+          <Register onRegistrationSuccess={handleRegistrationSuccess} />
         )}
       </Box>
     </Box>

@@ -1,6 +1,9 @@
 import React, { ChangeEvent } from "react"
 import { TextField, Box } from "@mui/material"
 
+/* Search bar component that sits above the vibeCheckList feed
+ it will be used to search for other users. */
+
 interface SearchBarProps {
   searchTerm: string
   onSearchChange: (e: ChangeEvent<HTMLInputElement>) => void

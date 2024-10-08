@@ -2,6 +2,8 @@ import React from "react"
 import { Box, Typography } from "@mui/material"
 import VibeCheckItem from "./vibeCheckItem"
 
+/* arranges the vibeChecks into a scrollable list on the feed*/
+
 interface VibeCheck {
   id: number
   album: string
