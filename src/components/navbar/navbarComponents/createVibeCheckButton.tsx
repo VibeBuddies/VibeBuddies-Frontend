@@ -16,9 +16,6 @@ const CreateVibeCheckButton: React.FC<CreateVibeCheckButtonProps> = ({
       <IconButton
         onClick={handleOpen}
         sx={{
-          position: "fixed",
-          right: 20,
-          bottom: 20,
           color: "grey",
           width: "100px",
           height: "100px",
