@@ -1,40 +1,28 @@
 /* modal from the createVibeCheck button that will display a form prompting the user to create
  a vibeCheck. Album name, album art, and artist name will all come from last.fm api */
-
- import * as React from "react";
-
+import * as React from "react";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import DialogTitle from "@mui/joy/DialogTitle";
 import DialogContent from "@mui/joy/DialogContent";
-import Autocomplete from "@mui/joy/Autocomplete";
-import { searchAlbum } from "../SearchAlbum";
+import { searchAlbum } from "../../createVibeCheck/SearchAlbum";
+import AlbumOrArtist from "../../createVibeCheck/AlbumOrArtist";
+import ReviewInput from "../../createVibeCheck/ReviewInput";
+import RatingInput from "../../createVibeCheck/RatingInput";
+import sendCreateVibeCheck from "../../../api/vibeCheckApi";
+import { AutocompleteOption, SelectedAlbum } from '../../../types';
 import type {} from "@mui/material/themeCssVarsAugmentation";
 import {
   Experimental_CssVarsProvider as MaterialCssVarsProvider,
   createTheme as extendMaterialTheme,
   THEME_ID,
 } from "@mui/material/styles";
-
 // Material UI components
 import CssBaseline from "@mui/material/CssBaseline";
-import {
-  Box,
-  Stack,
-  Rating,
-} from "@mui/material";
-
+import { Stack } from "@mui/material";
 // Joy UI components
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Textarea,
-} from "@mui/joy";
-
-import {
-  CssVarsProvider as JoyCssVarsProvider,
-} from "@mui/joy/styles";
+import { Button } from "@mui/joy";
+import {  CssVarsProvider as JoyCssVarsProvider} from "@mui/joy/styles";
 
 const materialTheme = extendMaterialTheme();
 
@@ -47,33 +35,20 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
   open,
   handleClose,
 }) => {
-  const [inputValue, setInputValue] = React.useState<string>(""); // State for input value
-  const [ratingValue, setRatingValue] = React.useState<number | null>(2);
+  const [ratingValue, setRatingValue] = React.useState<number | null>(null);
   const [options, setOptions] = React.useState<AutocompleteOption[]>([]); // State for options array
   const [selectedAlbum, setSelectedAlbum] =
     React.useState<SelectedAlbum | null>(null); // State for selected album
-  const [value, setValue] = React.useState<string>("");
+  const [reviewValue, setReviewValue] = React.useState<string>("");
 
-  interface AutocompleteOption {
-    label: string;
-    album: SelectedAlbum;
-  }
-
-  interface SelectedAlbum {
-    name: string;
-    artist: string;
-    cover_url: string;
-  }
-
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(event.target.value);
+  const handleReviewChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setReviewValue(event.target.value);
   };
 
   const handleInputChange = async (
     event: React.ChangeEvent<{}>,
     value: string
   ) => {
-    setInputValue(value); // Update input value state
 
     if (value.length >= 3) {
       const results = await searchAlbum(value); // Call searchAlbum with the input value
@@ -98,6 +73,18 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
     }
   };
 
+// State to track validation
+const [isFormValid, setIsFormValid] = React.useState<boolean>(false);
+
+// Check form validity whenever the user updates a required field
+React.useEffect(() => {
+  const isAlbumOrArtistValid = selectedAlbum !== null;
+  const isReviewValid = reviewValue.trim().length > 0;
+  const isRatingValid = ratingValue !== null;
+
+  // Form is valid if all the required fields are filled
+  setIsFormValid(isAlbumOrArtistValid && isReviewValid && isRatingValid);
+}, [selectedAlbum, reviewValue, ratingValue]);
 
   return (
     <MaterialCssVarsProvider theme={{ [THEME_ID]: materialTheme }}>
@@ -123,77 +110,23 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
                 <form
                   onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                     event.preventDefault();
+                    sendCreateVibeCheck(isFormValid, selectedAlbum, reviewValue, ratingValue);
+                    setSelectedAlbum(null);   // Clear selected album
+                    setReviewValue("");             // Clear review text
+                    setRatingValue(null); 
                     handleClose();
                   }}
                 >
                   <Stack spacing={2}>
-                    <FormControl>
-                      <FormLabel>Album or Artist name</FormLabel>
-                      <Autocomplete
-                        options={options}
-                        onInputChange={handleInputChange} // Handle input changes
-                        onChange={handleAlbumSelect} // Handle option selection
-                        // renderInput={(params) => (
-                        //   <Input {...params} label="name" />
-                        // )}
-                      />
-                    </FormControl>
-
-                    {selectedAlbum && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          marginTop: 2,
-                        }}
-                      >
-                        <img
-                          src={selectedAlbum.cover_url}
-                          alt={`${selectedAlbum.name} cover art`}
-                          style={{ width: "200px", height: "200px" }}
-                        />
-                      </Box>
-                    )}
-
-                    <FormControl>
-                      <FormLabel>Review</FormLabel>
-                      <Box
-                        sx={{
-                          display: "inline-block",
-                          resize: "vertical", // Allow resizing
-                          minHeight: "40px", // Minimum height
-                        }}
-                      >
-                        <Textarea
-                          value={value}
-                          onChange={handleChange}
-                          placeholder="Type your review here"
-                          minRows={3} // Minimum number of rows
-                          sx={{
-                            width: "100%", // Make the textarea take full width of the container
-                            resize: "vertical", // Allow vertical resizing
-                            borderRadius: "4px", // Optional: for styling
-                          }}
-                        />
-                      </Box>
-                    </FormControl>
-
-                    <FormControl>
-                      <FormLabel>Rating</FormLabel>
-                      <Box sx={{ "& > legend": { mt: 2 } }}>
-                        <Rating
-                          name="simple-controlled"
-                          value={ratingValue}
-                          onChange={(event, newRatingValue) => {
-                            setRatingValue(newRatingValue);
-                          }}
-                          sx={{
-                            fontSize: "24px", // Set the desired size manually
-                          }}
-                        />
-                      </Box>
-                    </FormControl>
-                    <Button type="submit">Submit</Button>
+                    <AlbumOrArtist
+                      options={options}
+                      selectedAlbum={selectedAlbum}
+                      handleInputChange={handleInputChange}
+                      handleAlbumSelect={handleAlbumSelect}
+                    />
+                    <ReviewInput value={reviewValue} handleChange={handleReviewChange} />
+                    <RatingInput ratingValue={ratingValue} setRatingValue={setRatingValue} />
+                    <Button type="submit" disabled={!isFormValid}>Submit</Button>
                   </Stack>
                 </form>
               </DialogContent>
