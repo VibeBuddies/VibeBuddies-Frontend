@@ -3,21 +3,19 @@ import { IconButton, Tooltip } from "@mui/material"
 import SettingsIcon from "@mui/icons-material/Settings"
 import { useNavigate } from "react-router-dom"
 
-/* settings button on the navbar which will navigate 
-the user to their profile */
+/* settings button on the navbar which will
+open up a settings modal */
+interface SettingsButtonProps {
+  handleOpenSettings: () => void
+}
 
-const SettingsButton: React.FC = () => {
-  const navigate = useNavigate()
-
-  // Navigate to the profile page on button click
-  const handleSettingsClick = () => {
-    navigate("/settings")
-  }
-
+const SettingsButton: React.FC<SettingsButtonProps> = ({
+  handleOpenSettings,
+}) => {
   return (
     <Tooltip title="Go to Settings" arrow placement="bottom">
       <IconButton
-        onClick={handleSettingsClick}
+        onClick={handleOpenSettings}
         sx={{
           color: "grey",
           width: "100px",

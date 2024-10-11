@@ -5,19 +5,19 @@ import { Dialog, DialogTitle, DialogActions, Button } from "@mui/material"
  a vibeCheck. Album name, album art, and artist name will all come from last.fm api */
 
 interface CreateVibeCheckModalProps {
-  open: boolean
-  handleClose: () => void
+  openVibeCheck: boolean
+  handleCloseVibeCheck: () => void
 }
 
 const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
-  open,
-  handleClose,
+  openVibeCheck,
+  handleCloseVibeCheck,
 }) => {
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={openVibeCheck} onClose={handleCloseVibeCheck}>
       <DialogTitle>Create a New VibeCheck</DialogTitle>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">
+        <Button onClick={handleCloseVibeCheck} color="secondary">
           Close
         </Button>
       </DialogActions>

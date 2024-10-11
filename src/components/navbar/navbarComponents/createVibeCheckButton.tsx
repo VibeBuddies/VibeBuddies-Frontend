@@ -5,16 +5,16 @@ import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined"
 /*button on the feed page that will prompt the user to create a new vibecheck */
 
 interface CreateVibeCheckButtonProps {
-  handleOpen: () => void
+  handleOpenVibeCheck: () => void
 }
 
 const CreateVibeCheckButton: React.FC<CreateVibeCheckButtonProps> = ({
-  handleOpen,
+  handleOpenVibeCheck,
 }) => {
   return (
     <Tooltip title="Create VibeCheck" arrow placement="top">
       <IconButton
-        onClick={handleOpen}
+        onClick={handleOpenVibeCheck}
         sx={{
           color: "grey",
           width: "100px",
