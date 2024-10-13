@@ -8,8 +8,8 @@ import {
 import Access from "./pages/Access"
 import Feed from "./pages/feed"
 import Profile from "./pages/Profile"
-import Settings from "./pages/Settings"
 import Navbar from "./components/navbar/NavBar"
+import { AuthProvider } from "./components/Context/AuthContext"
 
 const App: React.FC = () => {
   const location = useLocation()
@@ -23,11 +23,21 @@ const App: React.FC = () => {
       {showNavbar && <Navbar />}
 
       <Routes>
-        <Route path="/" element={<Access />} />{" "}
         {/* Access/Login/Register page */}
-        <Route path="/feed" element={<Feed />} /> {/* Feed page */}
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/profile" element={<Profile />} /> {/* Profile page */}
+        <Route path="/" element={<Access />} />
+
+        {/* Authenticated Routes */}
+        <Route
+          path="/"
+          element={
+            <AuthProvider>
+              <>
+                <Route path="/feed" element={<Feed />} />
+                <Route path="/profile" element={<Profile />} />
+              </>
+            </AuthProvider>
+          }
+        />
       </Routes>
     </>
   )

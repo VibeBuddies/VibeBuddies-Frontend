@@ -15,12 +15,7 @@ interface FormData {
   confirmPassword: string
 }
 
-//prop for a succesful registration
-interface RegisterationProps {
-  onRegistrationSuccess: () => void
-}
-
-const Register: React.FC<RegisterationProps> = ({ onRegistrationSuccess }) => {
+const Register: React.FC = () => {
   // State for form data
   const [formData, setFormData] = useState<FormData>({
     username: "",
@@ -49,12 +44,6 @@ const Register: React.FC<RegisterationProps> = ({ onRegistrationSuccess }) => {
       setErrors("All fields are required.")
       return
     }
-
-    /*for now this will always give access to feed
-    so long as formData is filled out correctly.
-    for the future the api will be called and if it
-    is a valid user registration then a jwt token will be given */
-    onRegistrationSuccess()
 
     // Clear the form fields and errors
     setFormData({ username: "", email: "", password: "", confirmPassword: "" })

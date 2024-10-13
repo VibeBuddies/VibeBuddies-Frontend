@@ -1,12 +1,8 @@
-import React, { useState, ChangeEvent, FormEvent } from "react"
+import React, { useState, ChangeEvent, FormEvent, useContext } from "react"
 import { TextField, Button, Container, Typography, Alert } from "@mui/material"
-
-/* log in component of the Access page.
-if the formData is filled out correctly this will
-give access to the feed page. in the future only if
-a user is logged in succecfully through an API req
-then they will be given a token and granted access
-to the rest of the website */
+import { login as loginApi } from "../../api/loginApi" // Import the login API function
+import { AuthContext } from "../Context/AuthContext"
+import { useNavigate } from "react-router-dom"
 
 /* Define the shape of the form data */
 interface FormData {
@@ -14,42 +10,47 @@ interface FormData {
   password: string
 }
 
-// Define the type for props
-interface LoginProps {
-  onLoginSuccess: () => void
-}
-
-const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
-  // State for form data
+const Login: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
   })
-
-  // State for errors
-  const [error, setError] = useState<string>("")
+  const [error, setError] = useState<string>("") // State for error messages
+  const authContext = useContext(AuthContext) // Get the AuthContext
+  const navigate = useNavigate()
 
   // Handle form submit
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // Simple validation
     if (formData.email === "" || formData.password === "") {
       setError("Both email and password are required")
       return
     }
 
-    // Clear errors
-    setError("")
+    if (authContext) {
+      try {
+        // Make API request to login and get the JWT token
+        const response = await loginApi(formData.email, formData.password)
+        const { token } = response // Assuming the API response contains the token
 
-    /*for now this will always give access to feed
-    so long as formData is filled out correctly.
-    for the future the api will be called and if it
-    is a valid user login then a jwt token will be given */
-    onLoginSuccess()
+        // Store the token in context
+        authContext.login(token)
 
-    // Clear form after submission
-    setFormData({ email: "", password: "" })
+        // Clear the form and error state
+        setFormData({ email: "", password: "" })
+        setError("")
+
+        // Redirect to the feed page
+        navigate("/feed")
+      } catch (error) {
+        setError("Invalid login credentials, please try again.")
+      }
+    } else {
+      setError(
+        "Auth context is unavailable. but you are reaching the correct message! When the api is hosted this should be resolved..."
+      )
+    }
   }
 
   // Handle input change
@@ -60,46 +61,44 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 
   return (
     <Container maxWidth="sm">
-      <>
-        {error && <Alert severity="error">{error}</Alert>}
-        <form onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            label="Email"
-            name="email"
-            type="email"
-            margin="normal"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Password"
-            name="password"
-            type="password"
-            margin="normal"
-            value={formData.password}
-            onChange={handleInputChange}
-            required
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            type="submit"
-            sx={{
-              mt: 2,
-              backgroundColor: "rgba(0, 149, 246, 1)",
-              "&:hover": {
-                backgroundColor: "#1565C0",
-              },
-            }}
-          >
-            Login
-          </Button>
-        </form>
-      </>
+      {error && <Alert severity="error">{error}</Alert>}
+      <form onSubmit={handleSubmit}>
+        <TextField
+          fullWidth
+          label="Email"
+          name="email"
+          type="email"
+          margin="normal"
+          value={formData.email}
+          onChange={handleInputChange}
+          required
+        />
+        <TextField
+          fullWidth
+          label="Password"
+          name="password"
+          type="password"
+          margin="normal"
+          value={formData.password}
+          onChange={handleInputChange}
+          required
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          type="submit"
+          sx={{
+            mt: 2,
+            backgroundColor: "rgba(0, 149, 246, 1)",
+            "&:hover": {
+              backgroundColor: "#1565C0",
+            },
+          }}
+        >
+          Login
+        </Button>
+      </form>
     </Container>
   )
 }
