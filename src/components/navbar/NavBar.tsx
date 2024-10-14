@@ -7,6 +7,8 @@ import ProfileButton from "./navbarComponents/profileButton"
 import SettingsButton from "./navbarComponents/settingsButton"
 import SettingsButtonModal from "./navbarComponents/settingsButtonModal"
 import FeedButton from "./navbarComponents/feedButton"
+import NotificationsButton from "./navbarComponents/notificationButton"
+import NotificationsModal from "./navbarComponents/notificationsModal"
 //api functions imported need to implement
 import {
   logoffUser,
@@ -27,6 +29,8 @@ const Navbar: React.FC = () => {
   //for the modals
   const [openVibeCheckModal, setOpenVibeCheckModal] = useState<boolean>(false) // State for controlling the vibecheck modal
   const [openSettingsModal, setOpenSettingsModal] = useState<boolean>(false) // State for controlling the settings modal
+  const [openNotificationsModal, setOpenNotificationsModal] =
+    useState<boolean>(false) // State for controlling the notifications modal
 
   // Handle the search input change
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +42,8 @@ const Navbar: React.FC = () => {
   const handleCloseVibeCheck = () => setOpenVibeCheckModal(false)
   const handleOpenSettings = () => setOpenSettingsModal(true)
   const handleCloseSettings = () => setOpenSettingsModal(false)
+  const handleOpenNotifications = () => setOpenNotificationsModal(true)
+  const handleCloseNotifications = () => setOpenNotificationsModal(false)
 
   // function for a user to log off from the modal
   const handleLogOff = () => {
@@ -78,6 +84,14 @@ const Navbar: React.FC = () => {
         <CreateVibeCheckModal
           openVibeCheck={openVibeCheckModal}
           handleCloseVibeCheck={handleCloseVibeCheck}
+        />
+        {/* wrong icon somehow? */}
+        <NotificationsButton
+          handleOpenNotifications={handleOpenNotifications}
+        />
+        <NotificationsModal
+          openNotifications={openNotificationsModal}
+          handleCloseNotifications={handleCloseNotifications}
         />
         <SettingsButton handleOpenSettings={handleOpenSettings} />
         <SettingsButtonModal

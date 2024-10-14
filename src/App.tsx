@@ -17,27 +17,49 @@ const App: React.FC = () => {
   // Show the navbar on all pages except for the Access page
   const showNavbar = location.pathname !== "/"
 
+  /* BELOW IS THE VERSION THAT INCORPORATES AUTH 
+    WE WILL NEED CONNECTION TO THE API TO USE 
+    THIS BUT IN THE MEANTIME THIS WILL NOT LET US WORK
+    ON PAGES OR ANYTHING PAST LOG IN */
+
+  // return (
+  //   <>
+  //     {/* Conditionally render the Navbar */}
+  //     {/* {showNavbar && <Navbar />} */}
+
+  //     <Routes>
+  //       {/* Access/Login/Register page */}
+  //       <Route path="/" element={<Access />} />
+
+  //       {/* Authenticated Routes */}
+  //       <Route
+  //         path="/"
+  //         element={
+  //           <AuthProvider>
+  //             <>
+  //               {/* Conditionally render the Navbar */}
+  //               {showNavbar && <Navbar />}
+  //               <Route path="/feed" element={<Feed />} />
+  //               <Route path="/profile" element={<Profile />} />
+  //             </>
+  //           </AuthProvider>
+  //         }
+  //       />
+  //     </Routes>
+  //   </>
+  // )
+
+  /* THIS VERSION IGNORES AUTH AND FREELY ALLOWS
+  WORK ON PAGES*/
+
   return (
     <>
-      {/* Conditionally render the Navbar */}
       {showNavbar && <Navbar />}
 
       <Routes>
-        {/* Access/Login/Register page */}
-        <Route path="/" element={<Access />} />
-
-        {/* Authenticated Routes */}
-        <Route
-          path="/"
-          element={
-            <AuthProvider>
-              <>
-                <Route path="/feed" element={<Feed />} />
-                <Route path="/profile" element={<Profile />} />
-              </>
-            </AuthProvider>
-          }
-        />
+        <Route path="/" element={<Access />} /> {/* Home/Login/Register Page */}
+        <Route path="/feed" element={<Feed />} /> {/* Feed Page */}
+        <Route path="/profile" element={<Profile />} /> {/* Profile Page */}
       </Routes>
     </>
   )
