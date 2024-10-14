@@ -25,8 +25,8 @@ import {
 const materialTheme = extendMaterialTheme()
 
 interface CreateVibeCheckModalProps {
-  open: boolean
-  handleClose: () => void
+  openVibeCheck: boolean
+  handleCloseVibeCheck: () => void
 }
 
 const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
@@ -86,14 +86,66 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
   }, [selectedAlbum, reviewValue, ratingValue])
 
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Create a New VibeCheck</DialogTitle>
-      <DialogActions>
-        <Button onClick={handleClose} color="secondary">
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <MaterialCssVarsProvider theme={{ [THEME_ID]: materialTheme }}>
+      <JoyCssVarsProvider>
+        <CssBaseline enableColorScheme />
+        <Modal open={openVibeCheck} onClose={handleCloseVibeCheck}>
+          <ModalDialog
+            sx={{
+              maxHeight: "90vh", // Set maximum height to 90% of the viewport height
+              overflowY: "auto", // Enable vertical scrolling if content overflows
+              width: "40vw", // Set width to 40% of the viewport width
+              maxWidth: "none",
+            }}
+          >
+            <DialogTitle>Create new VibeCheck</DialogTitle>
+            <DialogContent
+              sx={{
+                maxHeight: "75vh", // Set maximum height for content to ensure scrollability
+                overflowY: "auto", // Enable scrolling within the content if needed
+              }}
+            >
+              Start by searching for an album.
+              <form
+                onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+                  event.preventDefault()
+                  sendCreateVibeCheck(
+                    isFormValid,
+                    selectedAlbum,
+                    reviewValue,
+                    ratingValue
+                  )
+                  setSelectedAlbum(null) // Clear selected album
+                  setReviewValue("") // Clear review text
+                  setRatingValue(null)
+                  handleCloseVibeCheck()
+                }}
+              >
+                <Stack spacing={2}>
+                  <AlbumOrArtist
+                    options={options}
+                    selectedAlbum={selectedAlbum}
+                    handleInputChange={handleInputChange}
+                    handleAlbumSelect={handleAlbumSelect}
+                  />
+                  <ReviewInput
+                    value={reviewValue}
+                    handleChange={handleReviewChange}
+                  />
+                  <RatingInput
+                    ratingValue={ratingValue}
+                    setRatingValue={setRatingValue}
+                  />
+                  <Button type="submit" disabled={!isFormValid}>
+                    Submit
+                  </Button>
+                </Stack>
+              </form>
+            </DialogContent>
+          </ModalDialog>
+        </Modal>
+      </JoyCssVarsProvider>
+    </MaterialCssVarsProvider>
   )
 }
 

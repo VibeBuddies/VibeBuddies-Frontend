@@ -1,15 +1,23 @@
-import React from "react"
+import React, { useContext } from "react"
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   useLocation,
+  Navigate,
 } from "react-router-dom"
 import Access from "./pages/Access"
 import Feed from "./pages/feed"
 import Profile from "./pages/Profile"
 import Navbar from "./components/navbar/NavBar"
-import { AuthProvider } from "./components/Context/AuthContext"
+import { AuthProvider, AuthContext } from "./components/Context/AuthContext"
+
+// ProtectedRoute component to protect routes based on authentication
+const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  const { isAuthenticated } = useContext(AuthContext)!
+
+  return isAuthenticated ? children : <Navigate to="/" />
+}
 
 const App: React.FC = () => {
   const location = useLocation()
@@ -18,56 +26,77 @@ const App: React.FC = () => {
   const showNavbar = location.pathname !== "/"
 
   /* BELOW IS THE VERSION THAT INCORPORATES AUTH 
-    WE WILL NEED CONNECTION TO THE API TO USE 
-    THIS BUT IN THE MEANTIME THIS WILL NOT LET US WORK
-    ON PAGES OR ANYTHING PAST LOG IN */
+    YOU WILL NEED TO COMMENT OUT THIS RETURN 
+    STATEMENT TO IGNORE AUTH AND FREELY VIEW 
+    PAGES PAST ACCESS WITHOUT LOGGIN IN, 
+    YOU WILL ALSO NEED TO 
+    COMMENT OUT THE VERSION OF 'WRAPPEDAPP' WHICH
+    HAS THE </AUTHPROVIDER> TAGS */
 
-  // return (
-  //   <>
-  //     {/* Conditionally render the Navbar */}
-  //     {/* {showNavbar && <Navbar />} */}
+  return (
+    <>
+      {/* Conditionally render the Navbar */}
+      {showNavbar && <Navbar />}
 
-  //     <Routes>
-  //       {/* Access/Login/Register page */}
-  //       <Route path="/" element={<Access />} />
-
-  //       {/* Authenticated Routes */}
-  //       <Route
-  //         path="/"
-  //         element={
-  //           <AuthProvider>
-  //             <>
-  //               {/* Conditionally render the Navbar */}
-  //               {showNavbar && <Navbar />}
-  //               <Route path="/feed" element={<Feed />} />
-  //               <Route path="/profile" element={<Profile />} />
-  //             </>
-  //           </AuthProvider>
-  //         }
-  //       />
-  //     </Routes>
-  //   </>
-  // )
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Access />} /> {/* Home/Login/Register Page */}
+        {/* Authenticated Routes */}
+        <Route
+          path="/feed"
+          element={
+            <ProtectedRoute>
+              <Feed />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </>
+  )
 
   /* THIS VERSION IGNORES AUTH AND FREELY ALLOWS
   WORK ON PAGES*/
 
-  return (
-    <>
-      {showNavbar && <Navbar />}
+  // return (
+  //   <>
+  //     {showNavbar && <Navbar />}
 
-      <Routes>
-        <Route path="/" element={<Access />} /> {/* Home/Login/Register Page */}
-        <Route path="/feed" element={<Feed />} /> {/* Feed Page */}
-        <Route path="/profile" element={<Profile />} /> {/* Profile Page */}
-      </Routes>
-    </>
-  )
+  //     <Routes>
+  //       <Route path="/" element={<Access />} />
+  //       <Route path="/feed" element={<Feed />} /> {/* Feed Page */}
+  //       <Route path="/profile" element={<Profile />} /> {/* Profile Page */}
+  //     </Routes>
+  //   </>
+  // )
 }
+
+/* THIS VERSION OF WRAPPED APP IGNORES AUTH AND FREELY ALLOWS
+  WORK ON PAGES*/
+
+// const WrappedApp = () => (
+//   <Router>
+//     <App />
+//   </Router>
+// )
+
+// export default WrappedApp
+
+/* THIS VERSION INCORPORATES AUTH AND REQUIRES LOG IN
+TO VIEW PAGES PAST THE ACCESS PAGE*/
 
 const WrappedApp = () => (
   <Router>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </Router>
 )
 

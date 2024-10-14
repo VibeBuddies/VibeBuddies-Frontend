@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from "react"
 import { TextField, Button, Container, Alert } from "@mui/material"
+import { register as registerApi } from "../../api/registerApi"
 
 /* registration component of the Access page
 if the formData is filled out correctly this will
@@ -28,7 +29,7 @@ const Register: React.FC = () => {
   const [errors, setErrors] = useState<string>("")
 
   // Handle form submit
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     // basic password match validation and insurance that all fields have been filled
@@ -43,6 +44,17 @@ const Register: React.FC = () => {
     ) {
       setErrors("All fields are required.")
       return
+    }
+
+    try {
+      const response = await registerApi(
+        formData.username,
+        formData.password,
+        formData.email
+      )
+      return response.data
+    } catch (err) {
+      console.log("failed to register the user: ", err)
     }
 
     // Clear the form fields and errors
