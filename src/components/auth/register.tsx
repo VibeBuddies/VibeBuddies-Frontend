@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from "react"
 import { TextField, Button, Container, Alert } from "@mui/material"
+import { register as registerApi } from "../../api/registerApi"
 
 /* registration component of the Access page
 if the formData is filled out correctly this will
@@ -15,12 +16,7 @@ interface FormData {
   confirmPassword: string
 }
 
-//prop for a succesful registration
-interface RegisterationProps {
-  onRegistrationSuccess: () => void
-}
-
-const Register: React.FC<RegisterationProps> = ({ onRegistrationSuccess }) => {
+const Register: React.FC = () => {
   // State for form data
   const [formData, setFormData] = useState<FormData>({
     username: "",
@@ -33,7 +29,7 @@ const Register: React.FC<RegisterationProps> = ({ onRegistrationSuccess }) => {
   const [errors, setErrors] = useState<string>("")
 
   // Handle form submit
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     // basic password match validation and insurance that all fields have been filled
@@ -50,11 +46,16 @@ const Register: React.FC<RegisterationProps> = ({ onRegistrationSuccess }) => {
       return
     }
 
-    /*for now this will always give access to feed
-    so long as formData is filled out correctly.
-    for the future the api will be called and if it
-    is a valid user registration then a jwt token will be given */
-    onRegistrationSuccess()
+    try {
+      const response = await registerApi(
+        formData.username,
+        formData.password,
+        formData.email
+      )
+      return response.data
+    } catch (err) {
+      console.log("failed to register the user: ", err)
+    }
 
     // Clear the form fields and errors
     setFormData({ username: "", email: "", password: "", confirmPassword: "" })

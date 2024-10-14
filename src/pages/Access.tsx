@@ -106,11 +106,7 @@ const Access: React.FC = () => {
         </Box>
 
         {/* conditionally renders Register or Login components based on which button is clicked */}
-        {showLogin ? (
-          <Login onLoginSuccess={handleLoginSuccess} />
-        ) : (
-          <Register onRegistrationSuccess={handleRegistrationSuccess} />
-        )}
+        {showLogin ? <Login /> : <Register />}
       </Box>
     </Box>
   )

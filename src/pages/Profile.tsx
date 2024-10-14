@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 
 /* arranges the Profile componenets into an profile page 
 which is accessible through a button on the feed page*/
