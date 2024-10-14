@@ -12,17 +12,15 @@ import RatingInput from "../../createVibeCheck/RatingInput";
 import sendCreateVibeCheck from "../../../api/vibeCheckApi";
 import { AutocompleteOption, SelectedAlbum } from '../../../types';
 import type {} from "@mui/material/themeCssVarsAugmentation";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Stack } from "@mui/material";
+import { Button } from "@mui/joy";
+import {  CssVarsProvider as JoyCssVarsProvider} from "@mui/joy/styles";
 import {
   Experimental_CssVarsProvider as MaterialCssVarsProvider,
   createTheme as extendMaterialTheme,
   THEME_ID,
 } from "@mui/material/styles";
-// Material UI components
-import CssBaseline from "@mui/material/CssBaseline";
-import { Stack } from "@mui/material";
-// Joy UI components
-import { Button } from "@mui/joy";
-import {  CssVarsProvider as JoyCssVarsProvider} from "@mui/joy/styles";
 
 const materialTheme = extendMaterialTheme();
 
