@@ -14,7 +14,7 @@ const sendCreateVibeCheck = async (isFormValid:boolean, selectedAlbum: SelectedA
       const token = "";
       try {
         // Send POST request
-        const response = await axios.post("http://localhost:3001/vibe-checks", data,
+        const response = await axios.post("http://35.172.116.68:3000/vibe-checks", data,
            {  
             headers: {
             Authorization: `Bearer ${token}`,  // Adding the token to the headers
