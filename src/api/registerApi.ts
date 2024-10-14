@@ -3,13 +3,7 @@ import axios from "axios"
 /*preliminary work to get API
 connectivity with axios */
 
-const API_URL = ""
-
-// Login request
-export const login = async (email: string, password: string) => {
-  const response = await axios.post(`${API_URL}/login`, { email, password })
-  return response.data
-}
+const API_URL = "http://35.172.116.68:3000"
 
 // Registration request
 export const register = async (
@@ -18,9 +12,9 @@ export const register = async (
   username: string
 ) => {
   const response = await axios.post(`${API_URL}/register`, {
-    email,
-    password,
     username,
+    password,
+    email,
   })
   return response.data
 }
