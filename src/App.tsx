@@ -25,13 +25,9 @@ const App: React.FC = () => {
   // Show the navbar on all pages except for the Access page
   const showNavbar = location.pathname !== "/"
 
-  /* BELOW IS THE VERSION THAT INCORPORATES AUTH 
-    YOU WILL NEED TO COMMENT OUT THIS RETURN 
-    STATEMENT TO IGNORE AUTH AND FREELY VIEW 
-    PAGES PAST ACCESS WITHOUT LOGGIN IN, 
-    YOU WILL ALSO NEED TO 
-    COMMENT OUT THE VERSION OF 'WRAPPEDAPP' WHICH
-    HAS THE </AUTHPROVIDER> TAGS */
+  /* COMMENT OUT THE PROTECTED ROUTE TAGS IF
+   YOU WANT TO SEE THOSE PAGES WITHOUT LOGGING IN
+   AND BEING AUTHENTICATED*/
 
   return (
     <>
@@ -61,36 +57,7 @@ const App: React.FC = () => {
       </Routes>
     </>
   )
-
-  /* THIS VERSION IGNORES AUTH AND FREELY ALLOWS
-  WORK ON PAGES*/
-
-  // return (
-  //   <>
-  //     {showNavbar && <Navbar />}
-
-  //     <Routes>
-  //       <Route path="/" element={<Access />} />
-  //       <Route path="/feed" element={<Feed />} /> {/* Feed Page */}
-  //       <Route path="/profile" element={<Profile />} /> {/* Profile Page */}
-  //     </Routes>
-  //   </>
-  // )
 }
-
-/* THIS VERSION OF WRAPPED APP IGNORES AUTH AND FREELY ALLOWS
-  WORK ON PAGES*/
-
-// const WrappedApp = () => (
-//   <Router>
-//     <App />
-//   </Router>
-// )
-
-// export default WrappedApp
-
-/* THIS VERSION INCORPORATES AUTH AND REQUIRES LOG IN
-TO VIEW PAGES PAST THE ACCESS PAGE*/
 
 const WrappedApp = () => (
   <Router>
