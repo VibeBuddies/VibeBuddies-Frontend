@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import {
   Avatar,
   Typography,
@@ -9,6 +10,8 @@ import {
   Grid,
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import updatePersonalProfile from '../../api/updateProfile';
+import { useNavigate } from 'react-router-dom';
 
 interface UserProfileProps {
   username: string;
@@ -33,6 +36,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   country = '',
   bio = '',
 }) => {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [editedProfile, setEditedProfile] = useState({
     favoriteSong,
@@ -56,8 +60,18 @@ const UserProfile: React.FC<UserProfileProps> = ({
   };
 
   // function to handle the saving of information
-  const handleSave = () => {
-    setIsEditing(false);
+  const handleSave = async () => {
+    setIsEditing(true);
+
+    try {
+      await updatePersonalProfile(editedProfile);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Failed to save profile:', error);
+    } finally {
+      setIsEditing(false);
+      navigate('/profile');
+    }
   };
 
   // function to handle the canceling of editting profile
