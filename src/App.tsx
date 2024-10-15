@@ -1,29 +1,29 @@
-import React, { useContext } from "react"
+import React, { useContext } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   useLocation,
   Navigate,
-} from "react-router-dom"
-import Access from "./pages/Access"
-import Feed from "./pages/feed"
-import Profile from "./pages/Profile"
-import Navbar from "./components/navbar/NavBar"
-import { AuthProvider, AuthContext } from "./components/Context/AuthContext"
+} from 'react-router-dom';
+import Access from './pages/Access';
+import Feed from './pages/feed';
+import Profile from './pages/Profile';
+import Navbar from './components/navbar/NavBar';
+import { AuthProvider, AuthContext } from './components/Context/AuthContext';
 
 // ProtectedRoute component to protect routes based on authentication
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { isAuthenticated } = useContext(AuthContext)!
+  const { isAuthenticated } = useContext(AuthContext)!;
 
-  return isAuthenticated ? children : <Navigate to="/" />
-}
+  return isAuthenticated ? children : <Navigate to="/" />;
+};
 
 const App: React.FC = () => {
-  const location = useLocation()
+  const location = useLocation();
 
   // Show the navbar on all pages except for the Access page
-  const showNavbar = location.pathname !== "/"
+  const showNavbar = location.pathname !== '/';
 
   /* COMMENT OUT THE PROTECTED ROUTE TAGS IF
    YOU WANT TO SEE THOSE PAGES WITHOUT LOGGING IN
@@ -56,8 +56,8 @@ const App: React.FC = () => {
         />
       </Routes>
     </>
-  )
-}
+  );
+};
 
 const WrappedApp = () => (
   <Router>
@@ -65,6 +65,6 @@ const WrappedApp = () => (
       <App />
     </AuthProvider>
   </Router>
-)
+);
 
-export default WrappedApp
+export default WrappedApp;
