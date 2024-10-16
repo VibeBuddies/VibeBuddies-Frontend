@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import { Box, Typography, Rating } from "@mui/material"
 import VibeCheckModal from "./vibeCheckModal"
 import defaultAvi from "./default-avi.jpg"
+import LikeOrDislikeButtons from "./LikeOrDislikeButtons/LikeOrDislikeButtons"
+import { relative } from "path"
 
 interface VibeCheckItemProps {
   vibe_check_id: string
@@ -106,6 +108,15 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
             precision={0.5}
             readOnly
           />
+          <Box 
+            sx={{
+              bottom: 0,          // Align to the bottom
+              right: 0, // Distance from the right
+              }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <LikeOrDislikeButtons vibe_check_id={vibe_check_id} />
+          </Box>
         </Box>
       </Box>
 
