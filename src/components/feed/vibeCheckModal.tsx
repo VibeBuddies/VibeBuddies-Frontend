@@ -14,6 +14,7 @@ interface VibeCheckModalProps {
   likes: number
   dislikes: number
   timestamp: number
+  username: string
 }
 
 const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
