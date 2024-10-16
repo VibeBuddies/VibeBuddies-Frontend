@@ -20,7 +20,7 @@ const organizeData = async () => {
     const vibeCheckList = allVibeChecksResponses.flatMap(
       (response) => response.data.returnedVibeChecks
     )
-
+    console.log(vibeCheckList)
     return vibeCheckList
   } catch (error) {
     console.error("Error fetching vibe checks: ", error)
