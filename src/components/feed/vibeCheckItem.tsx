@@ -1,96 +1,107 @@
 import React, { useState } from "react"
-import { Box, Typography, Rating, IconButton, Tooltip } from "@mui/material"
-import CommentIcon from "@mui/icons-material/Comment"
-import CommentModal from "./commentModal" // Import the CommentModal component
-
-/* this creates a vibeCheck item in the vibeCheckList 
-which sits on the feed a vibeCheck item will have an: 
-id, 
-an album name, 
-a review, 
-a star rating, 
-and an image which is the album art. (for now this is a string to a text link url subject to change)
-
-comment:
-each vibeCheck also has a comment button which opens
-a modal that dispalys a comment chain and will prompt the 
-user to add their own comment 
-
-like/dislike: TODO
-*/
+import { Box, Typography, Rating } from "@mui/material"
+import VibeCheckModal from "./vibeCheckModal"
 
 interface VibeCheckItemProps {
-  id: number
-  album: string
+  vibe_check_id: string
+  album_id: {
+    artist: string
+    cover_url: string
+    name: string
+  }
   review: string
-  stars: number
-  image: string
+  rating: number
+  likes: number
+  dislikes: number
+  timestamp: number
 }
 
 const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
-  album,
+  vibe_check_id,
+  album_id,
   review,
-  stars,
-  image,
+  rating,
+  likes,
+  dislikes,
+  timestamp,
 }) => {
-  const [open, setOpen] = useState<boolean>(false) // State to control modal open/close
+  const [openModal, setOpenModal] = useState<boolean>(false)
 
-  // Handle opening the modal
-  const handleOpen = () => {
-    setOpen(true)
+  const handleOpenModal = () => {
+    setOpenModal(true)
   }
 
-  // Handle closing the modal
-  const handleClose = () => {
-    setOpen(false)
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
+
+  // splices the review to a specific character limit and adds [...] to end
+  const truncateReview = (text: string, limit: number) => {
+    if (text.length > limit) {
+      return text.slice(0, limit) + "[...]"
+    }
+    return text
   }
 
   return (
-    <Box
-      p={2}
-      mb={2}
-      border={1}
-      borderRadius={5}
-      borderColor="grey.300"
-      display="flex"
-      alignItems="center"
-    >
-      {/* Album Cover Image */}
-      <Box mr={2}>
-        <img
-          src={image}
-          alt={album}
-          style={{ width: "300px", height: "300px", borderRadius: "5px" }}
-        />
+    <>
+      {/* Clickable VibeCheck that opens modal */}
+      <Box
+        p={2}
+        mb={2}
+        border={1}
+        borderRadius={5}
+        borderColor="grey.300"
+        display="flex"
+        alignItems="center"
+        onClick={handleOpenModal}
+        sx={{
+          cursor: "pointer",
+          backgroundColor: "white",
+          transition: "background-color 0.3s ease-in-out",
+          "&:hover": {
+            backgroundColor: "#f0f0f0",
+          },
+        }}
+      >
+        {/* Album Cover Image */}
+        <Box mr={2}>
+          <img
+            src={album_id.cover_url}
+            alt={album_id.name}
+            style={{ width: "300px", height: "300px", borderRadius: "5px" }}
+          />
+        </Box>
+
+        {/* Album Information */}
+        <Box flex={1}>
+          <Typography variant="h6">{album_id.name}</Typography>
+          <Typography>{`Artist: ${album_id.artist}`}</Typography>
+          {/* Display truncated review */}
+          <Typography>
+            {truncateReview(review, 100)} {/* Truncate to 100 characters */}
+          </Typography>
+          <Rating
+            name={`rating-${vibe_check_id}`}
+            value={rating}
+            precision={0.5}
+            readOnly
+          />
+        </Box>
       </Box>
 
-      {/* Album Information */}
-      <Box flex={1}>
-        <Typography variant="h6">{album}</Typography>
-        <Typography>{review}</Typography>
-        {/* 5-Star Rating */}
-        <Rating
-          name={`rating-${album}`}
-          value={stars}
-          precision={0.5}
-          readOnly
-        />
-      </Box>
-
-      {/* comment Icon Button */}
-      <Tooltip title="Comments" arrow placement="top">
-        <IconButton
-          onClick={handleOpen}
-          sx={{
-            color: "grey", // Set the color of the icon to grey
-          }}
-        >
-          <CommentIcon />
-        </IconButton>
-      </Tooltip>
-      {/* Render the modal component */}
-      <CommentModal open={open} handleClose={handleClose} album={album} />
-    </Box>
+      {/* Use the modal component */}
+      <VibeCheckModal
+        open={openModal}
+        handleClose={handleCloseModal}
+        album_id={album_id}
+        review={review}
+        rating={rating}
+        likes={likes}
+        dislikes={dislikes}
+        timestamp={timestamp}
+      />
+    </>
   )
 }
 
