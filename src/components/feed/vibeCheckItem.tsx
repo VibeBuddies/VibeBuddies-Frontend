@@ -14,6 +14,7 @@ interface VibeCheckItemProps {
   likes: number
   dislikes: number
   timestamp: number
+  username: string
 }
 
 const VibeCheckItem: React.FC<VibeCheckItemProps> = ({

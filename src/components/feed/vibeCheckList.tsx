@@ -16,6 +16,7 @@ interface VibeCheck {
   likes: number
   dislikes: number
   timestamp: number
+  username: string
 }
 
 interface VibeCheckListProps {
@@ -36,6 +37,7 @@ const VibeCheckList: React.FC<VibeCheckListProps> = ({ vibeChecks }) => {
             likes={vibeCheck.likes}
             dislikes={vibeCheck.dislikes}
             timestamp={vibeCheck.timestamp}
+            username={vibeCheck.username}
           />
         ))
       ) : (
