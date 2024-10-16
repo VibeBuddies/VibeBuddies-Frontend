@@ -26,6 +26,7 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
   likes,
   dislikes,
   timestamp,
+  username,
 }) => {
   return (
     <Modal
