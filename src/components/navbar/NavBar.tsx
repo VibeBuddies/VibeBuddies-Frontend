@@ -16,6 +16,9 @@ import {
   changeUserPassword,
 } from "../../api/settingsApi"
 
+//success snackbar for createVibeCheckModal
+import Snackbar from '@mui/joy/Snackbar';
+
 /* creates a navbar that sits on top of every visitable
 page on the app after logging in. Includes a button to 
 navigate to the feed and profile. Includes a button which
@@ -31,6 +34,7 @@ const Navbar: React.FC = () => {
   const [openSettingsModal, setOpenSettingsModal] = useState<boolean>(false) // State for controlling the settings modal
   const [openNotificationsModal, setOpenNotificationsModal] =
     useState<boolean>(false) // State for controlling the notifications modal
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);// success created vibecheck snackbar
 
   // Handle the search input change
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +48,8 @@ const Navbar: React.FC = () => {
   const handleCloseSettings = () => setOpenSettingsModal(false)
   const handleOpenNotifications = () => setOpenNotificationsModal(true)
   const handleCloseNotifications = () => setOpenNotificationsModal(false)
+  
+  
 
   // function for a user to log off from the modal
   const handleLogOff = () => {
@@ -84,6 +90,7 @@ const Navbar: React.FC = () => {
         <CreateVibeCheckModal
           openVibeCheck={openVibeCheckModal}
           handleCloseVibeCheck={handleCloseVibeCheck}
+          setSnackbarOpen={setSnackbarOpen}
         />
         {/* wrong icon somehow? */}
         <NotificationsButton
@@ -103,6 +110,18 @@ const Navbar: React.FC = () => {
         />
         <ProfileButton />
       </Box>
+      <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={() => setSnackbarOpen(false)} // Optional, close it manually if needed
+                color="success"
+                size="md"
+                variant="solid"
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Set position to top center
+                sx={{ zIndex: 1300 }} // Ensure it's above the modal
+            >
+                Success! VibeCheck submitted.
+      </Snackbar>
     </Box>
   )
 }

@@ -11,7 +11,7 @@ const sendCreateVibeCheck = async (isFormValid:boolean, selectedAlbum: SelectedA
         rating: rating,
       };
       
-      const token = "";
+      const token = localStorage.getItem("token");
       try {
         // Send POST request
         const response = await axios.post("http://35.172.116.68:3000/vibe-checks", data,
