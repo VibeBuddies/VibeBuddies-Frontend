@@ -12,7 +12,6 @@ import Profile from './pages/Profile';
 import Navbar from './components/navbar/NavBar';
 import { AuthProvider, AuthContext } from './components/Context/AuthContext';
 
-
 // ProtectedRoute component to protect routes based on authentication
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated } = useContext(AuthContext)!;
