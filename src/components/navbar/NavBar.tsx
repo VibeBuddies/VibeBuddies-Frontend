@@ -47,17 +47,17 @@ const Navbar: React.FC = () => {
 
   // function for a user to log off from the modal
   const handleLogOff = () => {
-    console.log("User Logged Off") // Replace this with real logoff functionality
+    console.log("User Logged Off")
   }
 
   // function for a user to delete their account
   const handleDeleteAccount = () => {
-    console.log("User Requested to Delete Account") // Replace this with actual delete account functionality
+    console.log("User Requested to Delete Account")
   }
 
   // function for a user to change their password
   const handleChangePassword = () => {
-    console.log("User Requested to Change Password") // Replace this with change password functionality
+    console.log("User Requested to Change Password")
   }
 
   return (
