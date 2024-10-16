@@ -14,6 +14,7 @@ interface VibeCheckItemProps {
   likes: number
   dislikes: number
   timestamp: number
+  username: string
 }
 
 const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
@@ -24,6 +25,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
   likes,
   dislikes,
   timestamp,
+  username,
 }) => {
   const [openModal, setOpenModal] = useState<boolean>(false)
 
@@ -100,6 +102,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
         likes={likes}
         dislikes={dislikes}
         timestamp={timestamp}
+        username={username}
       />
     </>
   )
