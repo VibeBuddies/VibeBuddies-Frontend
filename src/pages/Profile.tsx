@@ -11,6 +11,7 @@ which is accessible through a button on the feed page*/
 // interface for the user data
 interface UserProfileData {
   username: string;
+  profileImage?: string;
   favoriteSong?: string;
   favoriteArtist?: string;
   favoriteAlbum?: string;
@@ -30,7 +31,7 @@ const Profile: React.FC = () => {
   // getting the route params
   const params = useParams();
   const usernameSearch = params.username || '';
-  
+
   // block fetches the user information and stores it in the state
   useEffect(() => {
     const fetchPersonalInformation = async () => {

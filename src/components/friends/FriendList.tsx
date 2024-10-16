@@ -66,43 +66,56 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
   return (
     <>
       <Grid container spacing={2}>
-        {friends.map((friend, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card>
-              <CardMedia>
-                <Avatar
-                  src={
-                    friend.profileImage
-                      ? friend.profileImage
-                      : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
-                  }
-                  alt={friend.username}
-                  sx={{ width: 100, height: 100, margin: 'auto', marginTop: 2 }}
-                />
-              </CardMedia>
-              <CardContent>
-                <Typography
-                  variant="h6"
-                  onClick={() => handleUsernameClick(friend.username)}
-                  sx={{
-                    cursor: 'pointer',
-                    textAlign: 'center',
-                    textDecoration: 'underline',
-                  }}
-                >
-                  {friend.username}
-                </Typography>
-                <IconButton
-                  aria-label="delete"
-                  onClick={() => handleDeleteFriend(friend.username)}
-                  sx={{ display: 'block', margin: 'auto', marginTop: 2 }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </CardContent>
-            </Card>
+        {friends.length > 0 ? (
+          friends.map((friend, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card>
+                <CardMedia>
+                  <Avatar
+                    src={
+                      friend.profileImage
+                        ? friend.profileImage
+                        : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
+                    }
+                    alt={friend.username}
+                    sx={{
+                      width: 100,
+                      height: 100,
+                      margin: 'auto',
+                      marginTop: 2,
+                    }}
+                  />
+                </CardMedia>
+                <CardContent>
+                  <Typography
+                    variant="h6"
+                    onClick={() => handleUsernameClick(friend.username)}
+                    sx={{
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                      textDecoration: 'underline',
+                    }}
+                  >
+                    {friend.username}
+                  </Typography>
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => handleDeleteFriend(friend.username)}
+                    sx={{ display: 'block', margin: 'auto', marginTop: 2 }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        ) : (
+          <Grid item xs={12}>
+            <Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
+              No friends.
+            </Typography>
           </Grid>
-        ))}
+        )}
       </Grid>
     </>
   );

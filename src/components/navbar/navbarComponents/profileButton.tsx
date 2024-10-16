@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 /* profile button on the navbar which will navigate 
 the user to their profile */
 
-const username = 'Nicholas';
+const username = 'Milford.Keeling';
 
 const ProfileButton: React.FC = () => {
   const navigate = useNavigate();
