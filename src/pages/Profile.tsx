@@ -3,11 +3,10 @@ import UserProfile from '../components/profile-header/ProfileHeader';
 import getPersonalInformation from '../api/getPersonalnfo';
 import { Tabs, Tab, Box } from '@mui/material';
 import FriendList from '../components/friends/FriendList';
+import { useParams } from 'react-router-dom';
 
 /* arranges the Profile componenets into an profile page 
 which is accessible through a button on the feed page*/
-
-const username = 'Nicholas';
 
 // interface for the user data
 interface UserProfileData {
@@ -28,11 +27,15 @@ const Profile: React.FC = () => {
   // state to keep track of which tab is open
   const [activeTab, setActiveTab] = useState<string>('vibechecks');
 
+  // getting the route params
+  const params = useParams();
+  const usernameSearch = params.username || '';
+  
   // block fetches the user information and stores it in the state
   useEffect(() => {
     const fetchPersonalInformation = async () => {
       try {
-        const data = await getPersonalInformation(username);
+        const data = await getPersonalInformation(usernameSearch);
         if (data?.data?.data?.user) {
           const {
             username,
@@ -63,7 +66,7 @@ const Profile: React.FC = () => {
     };
 
     fetchPersonalInformation();
-  }, []);
+  }, [usernameSearch]);
 
   // function to handle the clicking of a different tab
   const handleTabChange = (event: React.SyntheticEvent, value: string) => {
@@ -96,7 +99,7 @@ const Profile: React.FC = () => {
         {/* {activeTab === 'vibechecks' && <VibeChecks />} */}
         {activeTab === 'vibechecks' && <p>vibeChecks</p>}
         {activeTab === 'friends' && (
-          <FriendList usernameProp={username}></FriendList>
+          <FriendList usernameProp={usernameSearch}></FriendList>
         )}
       </Box>
     </>
