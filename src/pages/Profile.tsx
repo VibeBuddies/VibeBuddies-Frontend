@@ -23,7 +23,6 @@ const Profile: React.FC = () => {
     const fetchPersonalInformation = async () => {
       try {
         const data = await getPersonalInformation();
-        // Assuming your API data structure is: { data: { user: { ...userInfo } } }
         if (data?.data?.data?.user) {
           const {
             username,
@@ -61,15 +60,9 @@ const Profile: React.FC = () => {
     <>
       {userInfo && (
         <UserProfile
-          username={userInfo.username}
-          profileImage="fortesting"
-          favoriteSong={userInfo.favoriteSong}
-          favoriteArtist={userInfo.favoriteArtist}
-          favoriteAlbum={userInfo.favoriteAlbum}
-          city={userInfo.city}
-          state={userInfo.state}
-          country={userInfo.country}
-          bio={userInfo.bio}
+          userInfo={userInfo}
+          setUserInfo={setUserInfo}
+          profileImage="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s"
         ></UserProfile>
       )}
     </>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Avatar,
@@ -11,42 +11,34 @@ import {
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import updatePersonalProfile from '../../api/updateProfile';
-import { useNavigate } from 'react-router-dom';
 
 interface UserProfileProps {
-  username: string;
+  userInfo: {
+    username: string;
+    favoriteSong?: string;
+    favoriteArtist?: string;
+    favoriteAlbum?: string;
+    city?: string;
+    state?: string;
+    country?: string;
+    bio?: string;
+  };
+  setUserInfo: any;
   profileImage: string;
-  favoriteSong?: string;
-  favoriteArtist?: string;
-  favoriteAlbum?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  bio?: string;
 }
 
 const UserProfile: React.FC<UserProfileProps> = ({
-  username,
-  profileImage,
-  favoriteSong = '',
-  favoriteArtist = '',
-  favoriteAlbum = '',
-  city = '',
-  state = '',
-  country = '',
-  bio = '',
+  userInfo,
+  setUserInfo,
+  profileImage = '',
 }) => {
-  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
-  const [editedProfile, setEditedProfile] = useState({
-    favoriteSong,
-    favoriteArtist,
-    favoriteAlbum,
-    city,
-    state,
-    country,
-    bio,
-  });
+  const [localUserInfo, setLocalUserInfo] = useState(userInfo);
+
+  // block to check when userInfo changes
+  useEffect(() => {
+    setLocalUserInfo(userInfo);
+  }, [userInfo]);
 
   // function to change the the clicking of the editting button
   const handleEditToggle = () => {
@@ -56,7 +48,8 @@ const UserProfile: React.FC<UserProfileProps> = ({
   // function to handle the changing of profile fields
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setEditedProfile({ ...editedProfile, [name]: value });
+    console.log(name, value);
+    setLocalUserInfo({ ...localUserInfo, [name]: value });
   };
 
   // function to handle the saving of information
@@ -64,38 +57,31 @@ const UserProfile: React.FC<UserProfileProps> = ({
     setIsEditing(true);
 
     try {
-      await updatePersonalProfile(editedProfile);
-      setIsEditing(false);
+      await updatePersonalProfile(localUserInfo);
+      setUserInfo(localUserInfo);
     } catch (error) {
       console.error('Failed to save profile:', error);
     } finally {
       setIsEditing(false);
-      navigate('/profile');
     }
   };
 
   // function to handle the canceling of editting profile
   const handleCancel = () => {
-    setEditedProfile({
-      favoriteSong,
-      favoriteArtist,
-      favoriteAlbum,
-      city,
-      state,
-      country,
-      bio,
+    setLocalUserInfo({
+      ...userInfo,
     });
     setIsEditing(false);
   };
   return (
     <Box sx={{ textAlign: 'center', mt: 4 }}>
-      {/* profile image and username */}
+      {/* profile image and userInfo.username */}
       <Avatar
-        alt={username}
-        src={'forNowAString'}
+        alt={userInfo.username}
+        src={profileImage}
         sx={{ width: 100, height: 100, margin: 'auto' }}
       ></Avatar>
-      <Typography variant="h4">{username}</Typography>
+      <Typography variant="h4">{userInfo.username}</Typography>
       {/* settings button */}
       {!isEditing && (
         <IconButton onClick={handleEditToggle} aria-label="settings">
@@ -105,21 +91,30 @@ const UserProfile: React.FC<UserProfileProps> = ({
       {/* profile details conditionally shown */}
       {!isEditing ? (
         <Box sx={{ mt: 2 }}>
-          {favoriteSong && (
-            <Typography>Favorite Song: {favoriteSong}</Typography>
+          {localUserInfo.favoriteSong && (
+            <Typography>Favorite Song: {localUserInfo.favoriteSong}</Typography>
           )}
-          {favoriteArtist && (
-            <Typography>Favorite Artist: {favoriteArtist}</Typography>
-          )}
-          {favoriteAlbum && (
-            <Typography>Favorite Album: {favoriteAlbum}</Typography>
-          )}
-          {city && state && country && (
+          {localUserInfo.favoriteArtist && (
             <Typography>
-              Location: {city}, {state}, {country}
+              Favorite Artist: {localUserInfo.favoriteArtist}
             </Typography>
           )}
-          {bio && <Typography>Biography: {bio}</Typography>}
+          {localUserInfo.favoriteAlbum && (
+            <Typography>
+              Favorite Album: {localUserInfo.favoriteAlbum}
+            </Typography>
+          )}
+          {localUserInfo.city &&
+            localUserInfo.state &&
+            localUserInfo.country && (
+              <Typography>
+                Location: {localUserInfo.city}, {localUserInfo.state},{' '}
+                {localUserInfo.country}
+              </Typography>
+            )}
+          {localUserInfo.bio && (
+            <Typography>Biography: {localUserInfo.bio}</Typography>
+          )}
         </Box>
       ) : (
         <Box sx={{ mt: 2 }}>
@@ -129,7 +124,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               <TextField
                 label="Favorite Song"
                 name="favoriteSong"
-                value={editedProfile.favoriteSong}
+                value={localUserInfo.favoriteSong}
                 onChange={handleInputChange}
               />
             </Grid>
@@ -137,7 +132,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               <TextField
                 label="Favorite Artist"
                 name="favoriteArtist"
-                value={editedProfile.favoriteArtist}
+                value={localUserInfo.favoriteArtist}
                 onChange={handleInputChange}
               />
             </Grid>
@@ -145,7 +140,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               <TextField
                 label="Favorite Album"
                 name="favoriteAlbum"
-                value={editedProfile.favoriteAlbum}
+                value={localUserInfo.favoriteAlbum}
                 onChange={handleInputChange}
               />
             </Grid>
@@ -153,7 +148,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               <TextField
                 label="City"
                 name="city"
-                value={editedProfile.city}
+                value={localUserInfo.city}
                 onChange={handleInputChange}
               />
             </Grid>
@@ -161,7 +156,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               <TextField
                 label="State"
                 name="state"
-                value={editedProfile.state}
+                value={localUserInfo.state}
                 onChange={handleInputChange}
               />
             </Grid>
@@ -169,7 +164,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               <TextField
                 label="Country"
                 name="country"
-                value={editedProfile.country}
+                value={localUserInfo.country}
                 onChange={handleInputChange}
               />
             </Grid>
@@ -177,7 +172,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               <TextField
                 label="Bio"
                 name="bio"
-                value={editedProfile.bio}
+                value={localUserInfo.bio}
                 onChange={handleInputChange}
                 multiline
                 rows={3}
