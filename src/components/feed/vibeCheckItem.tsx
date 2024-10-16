@@ -83,9 +83,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
                 style={{ width: "30px", height: "30px", borderRadius: "25px" }}
               />
             </Box>
-            <Typography variant="subtitle1" gutterBottom>
-              {username}
-            </Typography>
+            <Typography variant="subtitle1">{username}</Typography>
           </Box>
           <img
             src={album_id.cover_url}
