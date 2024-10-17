@@ -16,6 +16,7 @@ interface VibeCheckModalProps {
   dislikes: number
   timestamp: number
   username: string
+  likeOrDislikeButtonsElement: JSX.Element
 }
 
 const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
@@ -28,6 +29,7 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
   dislikes,
   timestamp,
   username,
+  likeOrDislikeButtonsElement,
 }) => {
   return (
     <Modal
@@ -101,6 +103,9 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
               readOnly
               sx={{ mt: 2 }}
             />
+            <Box>
+            {likeOrDislikeButtonsElement}
+            </Box>
           </Box>
         </Box>
       </Box>
