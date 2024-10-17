@@ -16,8 +16,8 @@ const sendDislike = async (vibe_check_id: string) => {
       });
         //console.log(token)
         console.log("Response:", response.data); // Log the response for debugging
-        const currentDislikes = response.data.updatedVibeCheck.dislikes;
-        return currentDislikes;
+        // const currentDislikes = response.data.updatedVibeCheck.dislikes;
+        return response.data;
       } catch (error) {
         console.error("Error submitting the form:", error); // Log any error that occurs
       }

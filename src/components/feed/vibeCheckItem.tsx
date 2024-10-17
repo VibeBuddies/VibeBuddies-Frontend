@@ -2,8 +2,10 @@ import React, { useState } from "react"
 import { Box, Typography, Rating } from "@mui/material"
 import VibeCheckModal from "./vibeCheckModal"
 import defaultAvi from "./default-avi.jpg"
-import LikeOrDislikeButtons from "./LikeOrDislikeButtons/LikeOrDislikeButtons"
 import { relative } from "path"
+import LikeOrDislikeButtons from "./LikeOrDislikeButtons/LikeOrDislikeButtons"
+import sendLike from "../../api/sendLikeApi"
+import sendDislike from "../../api/sendDislikeApi"
 
 interface VibeCheckItemProps {
   vibe_check_id: string
@@ -30,6 +32,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
   timestamp,
   username,
 }) => {
+  //modal props
   const [openModal, setOpenModal] = useState<boolean>(false)
 
   const handleOpenModal = () => {
@@ -47,6 +50,51 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
     }
     return text
   }
+
+  //likesordislikes button props 
+  const [likePressed, setLikePressed] = useState<boolean>(false);
+  const [dislikePressed, setDislikePressed] = useState<boolean>(false);
+  const [localLikes, setLocalLikes] = useState<number>(likes);
+  const [localDislikes, setLocalDislikes] = useState<number>(dislikes);
+
+  // const handleLikePress = async () => {
+  //   setLikePressed(prevState => !prevState);
+  //   setDislikePressed(false); // Reset dislike
+  //   // Call API or handle logic for liking
+  //   const updatedLikes = await sendLike(vibe_check_id)
+  //   setLocaLikes(updatedLikes);
+  // };
+
+  const handleLikePress = async () => {
+    try {
+      const updatedLikes: any = await sendLike(vibe_check_id);
+      // console.log(`these are updatedLike: ${updatedLikes.data.updatedVibeCheck.likes}`)
+      setLocalLikes(updatedLikes.data.updatedVibeCheck.likes); // Update local likes
+      setLikePressed(prevState => !prevState);        // Mark like as pressed
+      setDislikePressed(false);    // Reset dislike
+    } catch (error) {
+      console.error("Error liking the item:", error);
+    }
+  };
+
+  const handleDislikePress = async () => {
+    try {
+      const updatedDislikes: any = await sendDislike(vibe_check_id);
+      // console.log(`these are updatedLike: ${updatedLikes.data.updatedVibeCheck.likes}`)
+      setLocalDislikes(updatedDislikes.data.updatedVibeCheck.dislikes); // Update local likes
+      setDislikePressed(prevState => !prevState);        // Mark like as pressed
+      setLikePressed(false);    // Reset dislike
+    } catch (error) {
+      console.error("Error liking the item:", error);
+    }
+  };
+
+  // const handleDislikePress = () => {
+  //   setDislikePressed(prevState => !prevState);
+  //   setLikePressed(false); // Reset like
+  //   // Call API or handle logic for disliking
+  //   sendDislike(vibe_check_id);
+  // };
 
   return (
     <>
@@ -95,28 +143,37 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
         </Box>
 
         {/* Album Information */}
-        <Box flex={1}>
-          <Typography variant="h6">{album_id.name}</Typography>
-          <Typography>{`Artist: ${album_id.artist}`}</Typography>
-          {/* Display truncated review */}
-          <Typography>
-            {truncateReview(review, 100)} {/* Truncate to 100 characters */}
-          </Typography>
-          <Rating
-            name={`rating-${vibe_check_id}`}
-            value={rating}
-            precision={0.5}
-            readOnly
-          />
-          <Box 
-            sx={{
-              bottom: 0,          // Align to the bottom
-              right: 0, // Distance from the right
-              }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <LikeOrDislikeButtons vibe_check_id={vibe_check_id} />
-          </Box>
+        <Box display={"flex"} flexDirection={"column"} flex={1}>
+          <Box flex={1}>
+            <Typography variant="h6">{album_id.name}</Typography>
+            <Typography>{`Artist: ${album_id.artist}`}</Typography>
+            {/* Display truncated review */}
+            <Typography>
+              {truncateReview(review, 100)} {/* Truncate to 100 characters */}
+            </Typography>
+            <Rating
+              name={`rating-${vibe_check_id}`}
+              value={rating}
+              precision={0.5}
+              readOnly
+            />
+            </Box>
+            <Box 
+              sx={{
+                alignSelf: "right",
+                }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <LikeOrDislikeButtons 
+              vibe_check_id={vibe_check_id}
+              likePressed={likePressed}
+              dislikePressed={dislikePressed}
+              onLikePress={handleLikePress}
+              onDislikePress={handleDislikePress}
+              likes={localLikes}
+              dislikes={localDislikes}
+              />
+            </Box>
         </Box>
       </Box>
 
