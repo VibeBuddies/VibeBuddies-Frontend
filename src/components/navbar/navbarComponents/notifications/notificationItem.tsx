@@ -1,11 +1,15 @@
 import React from "react"
-import { Box, Typography, Button } from "@mui/material"
+import { Box, Typography, IconButton, Card, CardContent } from "@mui/material"
+import updateFriendRequest from "../../../../api/updateFriendRequestApi"
+import defaultAvi from "./default-avi.jpg"
+import PersonAddIcon from "@mui/icons-material/PersonAdd"
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove"
 
 interface NotificationItemProps {
   username: string
   userId: string
-  onAccept: (userId: string) => void // Handler for accepting the request
-  onReject: (userId: string) => void // Handler for rejecting the request
+  onAccept: (username: string) => void
+  onReject: (username: string) => void
 }
 
 const NotificationItem: React.FC<NotificationItemProps> = ({
@@ -14,36 +18,63 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   onAccept,
   onReject,
 }) => {
+  const handleAccept = async () => {
+    try {
+      await updateFriendRequest(username, "accepted")
+      onAccept(username)
+    } catch (error) {
+      console.error(`Error accepting friend request for ${username}:`, error)
+    }
+  }
+
+  const handleReject = async () => {
+    try {
+      await updateFriendRequest(username, "denied")
+      onReject(username)
+    } catch (error) {
+      console.error(`Error rejecting friend request for ${username}:`, error)
+    }
+  }
+
   return (
-    <Box
-      p={2}
-      mb={2}
-      border={1}
-      borderRadius={5}
-      borderColor="grey.300"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      <Typography variant="subtitle1">{username}</Typography>
-      <Box>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => onAccept(userId)} // Trigger the onAccept callback
-          sx={{ mr: 2 }} // Add margin between the buttons
-        >
-          Accept
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => onReject(userId)} // Trigger the onReject callback
-        >
-          Reject
-        </Button>
-      </Box>
-    </Box>
+    <Card sx={{ mb: 2 }}>
+      <CardContent>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box display="flex" alignItems="center">
+            <Box mr={2}>
+              <img
+                src={defaultAvi}
+                alt={"err"}
+                style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+              />
+            </Box>
+            <Typography variant="body1">{username}</Typography>
+          </Box>
+          <Box display="flex">
+            <IconButton
+              sx={{
+                color: "grey",
+                width: "40px",
+                height: "40px",
+              }}
+              onClick={handleAccept}
+            >
+              <PersonAddIcon sx={{ fontSize: 30 }} />
+            </IconButton>
+            <IconButton
+              onClick={handleReject}
+              sx={{
+                ml: 1,
+                width: "40px",
+                height: "40px",
+              }}
+            >
+              <PersonRemoveIcon sx={{ fontSize: 30 }} />
+            </IconButton>
+          </Box>
+        </Box>
+      </CardContent>
+    </Card>
   )
 }
 

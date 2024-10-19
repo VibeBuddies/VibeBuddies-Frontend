@@ -1,8 +1,8 @@
 import React from "react"
-import { Box, Typography, Button } from "@mui/material"
-import NotificationItem from "./notificationItem" // Import NotificationItem
+import NotificationItem from "./notificationItem"
+import { Box, Typography } from "@mui/material"
+import NoNotifications from "./No-Notifcations.png"
 
-// Define the shape of the notification data
 interface Notification {
   username: string
   userId: string
@@ -10,12 +10,12 @@ interface Notification {
 
 interface NotificationListProps {
   notifications: Notification[]
-  onAccept: (userId: string) => void // Accept button handler passed as a prop
-  onReject: (userId: string) => void // Accept button handler passed as a prop
+  onAccept: (username: string) => void
+  onReject: (username: string) => void
 }
 
 const NotificationList: React.FC<NotificationListProps> = ({
-  notifications,
+  notifications = [],
   onAccept,
   onReject,
 }) => {
@@ -36,11 +36,15 @@ const NotificationList: React.FC<NotificationListProps> = ({
           display="flex"
           justifyContent="center"
           alignItems="center"
-          height="100vh" // Full viewport height to vertically center
+          height="100%"
+          marginRight="5px"
+          minHeight="20px"
         >
-          <Typography variant="h6" align="center">
-            No Pending Friend Requests
-          </Typography>
+          <img
+            src={NoNotifications}
+            alt={"err"}
+            style={{ width: "350px", height: "350px", borderRadius: "50%" }}
+          />
         </Box>
       )}
     </>

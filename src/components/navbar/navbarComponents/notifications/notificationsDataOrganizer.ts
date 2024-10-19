@@ -8,6 +8,7 @@ const organizData = async () => {
     console.log("Friend requests response: ", friendRequests)
 
     // Safely access data and map through friendList if it exists
+
     const simplifiedFriendRequests = friendRequests?.data?.friendList?.map(
       (friend: any) => ({
         username: friend.username,

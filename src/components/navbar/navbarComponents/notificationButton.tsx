@@ -1,6 +1,6 @@
 import React from "react"
 import { IconButton, Tooltip, Badge } from "@mui/material"
-import NotificationsIcon from "@mui/icons-material/Notifications"
+import PeopleIcon from "@mui/icons-material/People"
 
 /*button on the feed page that will show the user their notifications*/
 
@@ -14,7 +14,7 @@ const NotificationsButton: React.FC<NotificationsButtonProps> = ({
   notificationCount,
 }) => {
   return (
-    <Tooltip title="Notifications" arrow placement="top">
+    <Tooltip title="Friend Requests" arrow placement="top">
       <IconButton
         onClick={handleOpenNotifications}
         sx={{
@@ -26,7 +26,7 @@ const NotificationsButton: React.FC<NotificationsButtonProps> = ({
         {/* <Badge badgeContent={notificationCount} color="error">
           <NotificationsIcon sx={{ fontSize: 60 }} />
         </Badge> */}
-        <NotificationsIcon sx={{ fontSize: 60 }} />
+        <PeopleIcon sx={{ fontSize: 60 }} />
       </IconButton>
     </Tooltip>
   )
