@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { UserContext } from '../../Context/UserContext';
 
 /* profile button on the navbar which will navigate 
 the user to their profile */
 
-const username = 'Milford.Keeling';
-
 const ProfileButton: React.FC = () => {
+  const { username } = useContext(UserContext)!;
   const navigate = useNavigate();
+  // const username = 'luistest';
 
   // Navigate to the profile page on button click
   const handleProfileClick = () => {
