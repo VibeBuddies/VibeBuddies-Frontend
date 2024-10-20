@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 interface UserContextType {
   username: string;
   isEditing: boolean;
-  setUsername: (username: string) => void;
-  setIsEditing: (editingBoolean: boolean) => void;
+  setProperty: (name: string, value: any) => void;
+  friendList?: Set<string>;
 }
 
 interface userProps {
@@ -25,14 +25,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     isEditing: false,
   });
 
-  function setUsername(username: string): void {
-    setUser({ ...user, username: username });
-  }
-
-  function setIsEditing(editingBoolean: boolean): void {
+  // function to update a property based on the name and value
+  function setProperty(name: string, value: any): void {
     setUser({
       ...user,
-      isEditing: editingBoolean,
+      [name]: value,
     });
   }
 
@@ -41,8 +38,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         username: user.username,
         isEditing: user.isEditing,
-        setUsername,
-        setIsEditing,
+        friendList: user.friendList,
+        setProperty,
       }}
     >
       {children}

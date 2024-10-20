@@ -38,11 +38,11 @@ const UserProfile: React.FC<UserProfileProps> = ({
   const {
     username: loggedInUser,
     isEditing,
-    setIsEditing,
+    setProperty,
   } = useContext(UserContext)!;
 
   // state to keep track if user is editting their information
-  // const [isEditing, setIsEditing] = useState(false);
+  // const [isEditing, setProperty] = useState(false);
   // state to keep track of the user information lcoally
   const [localUserInfo, setLocalUserInfo] = useState(userInfo);
 
@@ -53,7 +53,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   // function to toggle the editting option
   const handleEdit = () => {
-    setIsEditing(true);
+    setProperty('isEditing', true);
   };
 
   // function to handle the changing of profile fields
@@ -65,7 +65,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   // function to handle the saving of information
   const handleSave = async () => {
-    setIsEditing(true);
+    setProperty('isEditing', true);
 
     // block makes a call to the axios function that calls the api to update user information
     try {
@@ -74,7 +74,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
     } catch (error) {
       console.error('Failed to save profile:', error);
     } finally {
-      setIsEditing(false);
+      setProperty('isEditing', false);
     }
   };
 
@@ -83,7 +83,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
     setLocalUserInfo({
       ...userInfo,
     });
-    setIsEditing(false);
+    setProperty('isEditing', false);
   };
   return (
     <Box sx={{ textAlign: 'center', mt: 4 }}>
