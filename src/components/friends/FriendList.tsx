@@ -1,17 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { UserContext } from '../Context/UserContext';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import getFriends from '../../api/getFriends';
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  IconButton,
-  Avatar,
-  Grid,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Typography, Grid } from '@mui/material';
+import FriendsCard from './FriendsCard';
+
 // interface for the friends usernames that are returned
 interface FriendsDataReturned {
   username?: string;
@@ -32,16 +23,14 @@ interface FriendListProps {
 
 // functional component with username passed through
 const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
-  const { username: loggedInUser } = useContext(UserContext)!;
-
   // state to hold the friends
   const [friends, setFriends] = useState<FriendsDataReturned[]>([]);
-  const navigate = useNavigate();
 
   // block to get the friends of the user that was passed through
   useEffect(() => {
     const fetchFriends = async () => {
       try {
+        // calling the api
         const data = await getFriends(usernameProp);
         if (data?.data?.data.friendList) {
           setFriends(data.data.data.friendList);
@@ -56,62 +45,16 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
     fetchFriends();
   }, [usernameProp]);
 
-  // function to handle navigating to user's profile
-  const handleUsernameClick = (username: string | undefined) => {
-    if (username) {
-      navigate(`/profile/${username}`);
-    }
-  };
-
-  // block to handle the deleting function
-  const handleDeleteFriend = (username: string | undefined) => {};
-
   return (
     <>
+      {/* grid for all friends */}
       <Grid container spacing={2}>
+        {/* conditionally render friend list if friends are present */}
         {friends.length > 0 ? (
           friends.map((friend, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card>
-                <CardMedia>
-                  <Avatar
-                    src={
-                      friend.profileImage
-                        ? friend.profileImage
-                        : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
-                    }
-                    alt={friend.username}
-                    sx={{
-                      width: 100,
-                      height: 100,
-                      margin: 'auto',
-                      marginTop: 2,
-                    }}
-                  />
-                </CardMedia>
-                <CardContent>
-                  <Typography
-                    variant="h6"
-                    onClick={() => handleUsernameClick(friend.username)}
-                    sx={{
-                      cursor: 'pointer',
-                      textAlign: 'center',
-                      textDecoration: 'underline',
-                    }}
-                  >
-                    {friend.username}
-                  </Typography>
-                  {loggedInUser !== friend.username && (
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => handleDeleteFriend(friend.username)}
-                      sx={{ display: 'block', margin: 'auto', marginTop: 2 }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  )}
-                </CardContent>
-              </Card>
+            <Grid item xs={12} sm={6} md={2} key={index}>
+              {/* friendcard compoennt with friend info */}
+              <FriendsCard friend={friend}></FriendsCard>
             </Grid>
           ))
         ) : (
