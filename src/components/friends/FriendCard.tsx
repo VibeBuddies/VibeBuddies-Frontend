@@ -25,7 +25,7 @@ interface FriendProps {
   };
 }
 
-const FriendsCard: React.FC<FriendProps> = ({ friend }) => {
+const FriendCard: React.FC<FriendProps> = ({ friend }) => {
   // grabbing our logged in username from the usercontext
   const { username: loggedInUser, setProperty } = useContext(UserContext)!;
 
@@ -92,4 +92,4 @@ const FriendsCard: React.FC<FriendProps> = ({ friend }) => {
   );
 };
 
-export default FriendsCard;
+export default FriendCard;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import getFriends from '../../api/getFriends';
 import { Typography, Grid } from '@mui/material';
-import FriendsCard from './FriendsCard';
+import FriendCard from './FriendCard';
 
 // interface for the friends usernames that are returned
 interface FriendsDataReturned {
@@ -53,7 +53,7 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
           friends.map((friend, index) => (
             <Grid item xs={12} sm={6} md={2} key={index}>
               {/* friendcard compoennt with friend info */}
-              <FriendsCard friend={friend}></FriendsCard>
+              <FriendCard friend={friend}></FriendCard>
             </Grid>
           ))
         ) : (
