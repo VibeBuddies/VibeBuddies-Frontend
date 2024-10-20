@@ -45,12 +45,14 @@ const FriendsCard: React.FC<FriendProps> = ({ friend }) => {
   return (
     <Card>
       <CardMedia>
+        {/* profile image */}
         <Avatar
           src={
             friend.profileImage
               ? friend.profileImage
               : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
           }
+          //   usernaem
           alt={friend.username}
           sx={{
             width: 100,
@@ -60,6 +62,7 @@ const FriendsCard: React.FC<FriendProps> = ({ friend }) => {
           }}
         />
       </CardMedia>
+      {/* clickable username */}
       <CardContent>
         <Typography
           variant="h6"
@@ -72,6 +75,8 @@ const FriendsCard: React.FC<FriendProps> = ({ friend }) => {
         >
           {friend.username}
         </Typography>
+
+        {/* block to conditionally render the delete button */}
         {loggedInUser !== friend.username && (
           <IconButton
             aria-label="delete"

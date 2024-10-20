@@ -41,7 +41,6 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
         );
       }
     };
-
     fetchFriends();
   }, [usernameProp]);
 
