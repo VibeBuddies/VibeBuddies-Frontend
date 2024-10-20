@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { UserContext } from '../Context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import getFriends from '../../api/getFriends';
 import {
@@ -31,6 +32,8 @@ interface FriendListProps {
 
 // functional component with username passed through
 const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
+  const { username: loggedInUser } = useContext(UserContext)!;
+
   // state to hold the friends
   const [friends, setFriends] = useState<FriendsDataReturned[]>([]);
   const navigate = useNavigate();
@@ -98,13 +101,15 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
                   >
                     {friend.username}
                   </Typography>
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => handleDeleteFriend(friend.username)}
-                    sx={{ display: 'block', margin: 'auto', marginTop: 2 }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
+                  {loggedInUser !== friend.username && (
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => handleDeleteFriend(friend.username)}
+                      sx={{ display: 'block', margin: 'auto', marginTop: 2 }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  )}
                 </CardContent>
               </Card>
             </Grid>
