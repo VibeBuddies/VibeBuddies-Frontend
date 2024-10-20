@@ -28,6 +28,37 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
 
   const open = Boolean(anchorEl)
 
+  /* THIS BLOCK WILL REFRESH ON AN INTERVAL WORKS
+  BUT MAY BE DANGEROUS IN TERMS OF AWS COSTS POSSIBLY
+  MUST RESERVE TILL PRESENTATION */
+
+  // // Function to fetch and update notifications
+  // const fetchNotifications = async () => {
+  //   const fetchedData = await organizData()
+
+  //   // Check if the new data is different from the current data
+  //   const isDataDifferent =
+  //     JSON.stringify(fetchedData) !== JSON.stringify(notifications)
+
+  //   // Only update the state if the new data is different
+  //   if (isDataDifferent) {
+  //     setNotifications(fetchedData)
+  //   }
+  // }
+
+  // // fetch notifications on component mount and periodically
+  // useEffect(() => {
+  //   fetchNotifications()
+
+  //   // Set up a polling interval to fetch new data every 10 seconds (for example)
+  //   const intervalId = setInterval(() => {
+  //     fetchNotifications()
+  //   }, 2000) // Polling interval: 10 seconds
+
+  //   // Clear the interval when the component unmounts
+  //   return () => clearInterval(intervalId)
+  // }, [notifications]) // Re-run the effect only if notifications change
+
   // fetch notifications
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -120,14 +151,7 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
         sx={{ zIndex: 1300 }}
         color={snackbarSeverity}
       >
-        <Alert
-          // onClose={handleCloseSnackbar}
-          // severity={snackbarSeverity}
-          // sx={{ width: "100%" }}
-          variant="filled"
-        >
-          {snackbarMessage}
-        </Alert>
+        <Alert variant="filled">{snackbarMessage}</Alert>
       </Snackbar>
     </>
   )

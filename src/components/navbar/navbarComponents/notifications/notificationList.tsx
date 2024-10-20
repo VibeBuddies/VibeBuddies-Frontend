@@ -34,17 +34,19 @@ const NotificationList: React.FC<NotificationListProps> = ({
       ) : (
         <Box
           display="flex"
+          flexDirection="column"
           justifyContent="center"
           alignItems="center"
           height="100%"
           marginRight="5px"
-          minHeight="20px"
+          minHeight="250px"
         >
           <img
             src={NoNotifications}
             alt={"err"}
-            style={{ width: "350px", height: "350px", borderRadius: "50%" }}
+            style={{ width: "150px", height: "150px" }}
           />
+          <Typography mt={2}>No Notifications Found.</Typography>
         </Box>
       )}
     </>
