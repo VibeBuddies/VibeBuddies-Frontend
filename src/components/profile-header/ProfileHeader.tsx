@@ -35,10 +35,14 @@ const UserProfile: React.FC<UserProfileProps> = ({
   profileImage = '',
 }) => {
   // getting the logged in username from the context
-  const { username: loggedInUser } = useContext(UserContext)!;
+  const {
+    username: loggedInUser,
+    isEditing,
+    setIsEditing,
+  } = useContext(UserContext)!;
 
   // state to keep track if user is editting their information
-  const [isEditing, setIsEditing] = useState(false);
+  // const [isEditing, setIsEditing] = useState(false);
   // state to keep track of the user information lcoally
   const [localUserInfo, setLocalUserInfo] = useState(userInfo);
 
@@ -48,8 +52,8 @@ const UserProfile: React.FC<UserProfileProps> = ({
   }, [userInfo]);
 
   // function to toggle the editting option
-  const handleEditToggle = () => {
-    setIsEditing(!isEditing);
+  const handleEdit = () => {
+    setIsEditing(true);
   };
 
   // function to handle the changing of profile fields
@@ -93,7 +97,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
       <Typography variant="h4">{userInfo.username}</Typography>
       {/* settings button, only present when not in editting form */}
       {loggedInUser === userInfo.username && !isEditing && (
-        <IconButton onClick={handleEditToggle} aria-label="settings">
+        <IconButton onClick={handleEdit} aria-label="settings">
           <SettingsIcon />
         </IconButton>
       )}

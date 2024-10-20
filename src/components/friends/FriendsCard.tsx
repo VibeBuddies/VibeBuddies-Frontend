@@ -27,7 +27,7 @@ interface FriendProps {
 
 const FriendsCard: React.FC<FriendProps> = ({ friend }) => {
   // grabbing our logged in username from the usercontext
-  const { username: loggedInUser } = useContext(UserContext)!;
+  const { username: loggedInUser, setIsEditing } = useContext(UserContext)!;
 
   //   intializing our navigate object
   const navigate = useNavigate();
@@ -36,6 +36,7 @@ const FriendsCard: React.FC<FriendProps> = ({ friend }) => {
   const handleUsernameClick = (username: string | undefined) => {
     if (username) {
       navigate(`/profile/${username}`);
+      setIsEditing(false);
     }
   };
 
