@@ -1,18 +1,20 @@
 import React from "react"
-import { IconButton, Tooltip } from "@mui/material"
-import NotificationsIcon from "@mui/icons-material/Notifications"
+import { IconButton, Tooltip, Badge } from "@mui/material"
+import PeopleIcon from "@mui/icons-material/People"
 
 /*button on the feed page that will show the user their notifications*/
 
-interface notificationsButtonProps {
-  handleOpenNotifications: () => void
+interface NotificationsButtonProps {
+  handleOpenNotifications: (event: React.MouseEvent<HTMLElement>) => void
+  notificationCount: number
 }
 
-const NotificationsButton: React.FC<notificationsButtonProps> = ({
+const NotificationsButton: React.FC<NotificationsButtonProps> = ({
   handleOpenNotifications,
+  notificationCount,
 }) => {
   return (
-    <Tooltip title="Notifications" arrow placement="top">
+    <Tooltip title="Friend Requests" arrow placement="top">
       <IconButton
         onClick={handleOpenNotifications}
         sx={{
@@ -21,7 +23,10 @@ const NotificationsButton: React.FC<notificationsButtonProps> = ({
           height: "100px",
         }}
       >
-        <NotificationsIcon sx={{ fontSize: 60 }} />
+        {/* <Badge badgeContent={notificationCount} color="error">
+          <NotificationsIcon sx={{ fontSize: 60 }} />
+        </Badge> */}
+        <PeopleIcon sx={{ fontSize: 60 }} />
       </IconButton>
     </Tooltip>
   )
