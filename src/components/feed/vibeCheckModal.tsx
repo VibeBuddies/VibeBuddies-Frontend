@@ -1,5 +1,6 @@
 import React from "react"
 import { Box, Typography, Rating, Modal } from "@mui/material"
+import defaultAvi from "./default-avi.jpg"
 
 interface VibeCheckModalProps {
   open: boolean
@@ -14,6 +15,7 @@ interface VibeCheckModalProps {
   likes: number
   dislikes: number
   timestamp: number
+  username: string
 }
 
 const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
@@ -25,6 +27,7 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
   likes,
   dislikes,
   timestamp,
+  username,
 }) => {
   return (
     <Modal
@@ -53,6 +56,18 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
           transform: "translate(-50%, -50%)",
         }}
       >
+        <Box display="flex" alignItems="flex-start" mr={2}>
+          <Box mr={1}>
+            <img
+              src={defaultAvi}
+              alt={"err"}
+              style={{ width: "45px", height: "45px", borderRadius: "25px" }}
+            />
+          </Box>
+          <Typography variant="h5" marginTop={0.5}>
+            {username}
+          </Typography>
+        </Box>
         <Typography variant="h4" mb={2}>
           {album_id.name}
         </Typography>

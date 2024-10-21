@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Box, Typography, Rating } from "@mui/material"
 import VibeCheckModal from "./vibeCheckModal"
+import defaultAvi from "./default-avi.jpg"
 
 interface VibeCheckItemProps {
   vibe_check_id: string
@@ -14,6 +15,7 @@ interface VibeCheckItemProps {
   likes: number
   dislikes: number
   timestamp: number
+  username: string
 }
 
 const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
@@ -24,6 +26,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
   likes,
   dislikes,
   timestamp,
+  username,
 }) => {
   const [openModal, setOpenModal] = useState<boolean>(false)
 
@@ -64,8 +67,24 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
           },
         }}
       >
-        {/* Album Cover Image */}
-        <Box mr={2}>
+        {/* Album Cover and Username stacked */}
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="flex-start"
+          mr={2}
+        >
+          {/* profile pic and username side by side */}
+          <Box display="flex" alignItems="flex-start" mr={2}>
+            <Box mr={1}>
+              <img
+                src={defaultAvi}
+                alt={"err"}
+                style={{ width: "30px", height: "30px", borderRadius: "25px" }}
+              />
+            </Box>
+            <Typography variant="subtitle1">{username}</Typography>
+          </Box>
           <img
             src={album_id.cover_url}
             alt={album_id.name}
@@ -100,6 +119,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
         likes={likes}
         dislikes={dislikes}
         timestamp={timestamp}
+        username={username}
       />
     </>
   )
