@@ -31,7 +31,7 @@ const Login: React.FC = () => {
     try {
       const response = await loginApi(formData.username, formData.password)
       const token = response.data.token
-      login(token) // Save the token using the context login function
+      login(token, formData.username) // Save the token using the context login function
       navigate("/feed") // Redirect to the feed page after login
     } catch (err) {
       setError("Unable to log in. Please try again.")

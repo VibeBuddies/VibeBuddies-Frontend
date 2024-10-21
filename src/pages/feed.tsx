@@ -16,6 +16,8 @@ interface VibeCheck {
   dislikes: number
   timestamp: number
   username: string
+  liked_by: string[]
+  disliked_by: string[]
 }
 
 const Feed: React.FC = () => {

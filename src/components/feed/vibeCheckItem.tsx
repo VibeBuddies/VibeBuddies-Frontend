@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Box, Typography, Rating } from "@mui/material"
 import VibeCheckModal from "./vibeCheckModal"
 import defaultAvi from "./default-avi.jpg"
@@ -6,6 +6,8 @@ import { relative } from "path"
 import LikeOrDislikeButtons from "./LikeOrDislikeButtons/LikeOrDislikeButtons"
 import sendLike from "../../api/sendLikeApi"
 import sendDislike from "../../api/sendDislikeApi"
+import { AuthContext } from "../Context/AuthContext"
+
 
 interface VibeCheckItemProps {
   vibe_check_id: string
@@ -20,6 +22,8 @@ interface VibeCheckItemProps {
   dislikes: number
   timestamp: number
   username: string
+  liked_by: string[]
+  disliked_by: string[]
 }
 
 const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
@@ -31,6 +35,8 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
   dislikes,
   timestamp,
   username,
+  liked_by,
+  disliked_by,
 }) => {
   //modal props
   const [openModal, setOpenModal] = useState<boolean>(false)
@@ -52,14 +58,29 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
   }
 
   //likesordislikes button props 
+  const { token, username: contextUsername } = useContext(AuthContext)!
   const [likePressed, setLikePressed] = useState<boolean>(false);
   const [dislikePressed, setDislikePressed] = useState<boolean>(false);
   const [localLikes, setLocalLikes] = useState<number>(likes);
   const [localDislikes, setLocalDislikes] = useState<number>(dislikes);
 
+  //checks if current auth user is in the string arrays liked_by and disliked_by
+  useEffect(() => {
+    if (liked_by.includes(contextUsername!)) {
+      setLikePressed(true);
+      setDislikePressed(false);
+    } else if (disliked_by.includes(contextUsername!)) {
+      setDislikePressed(true);
+      setLikePressed(false);
+    } else {
+      setLikePressed(false);
+      setDislikePressed(false);
+    }
+  }, [liked_by, disliked_by, contextUsername]);
+
   const handleLikePress = async () => {
     try {
-      const updatedLikes: any = await sendLike(vibe_check_id);
+      const updatedLikes: any = await sendLike(token, vibe_check_id);
       // console.log(`these are updatedLike: ${updatedLikes.data.updatedVibeCheck.likes}`)
       setLocalLikes(updatedLikes.data.updatedVibeCheck.likes); // Update local likes
       setLikePressed(prevState => !prevState);        // Mark like as pressed
@@ -71,7 +92,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
 
   const handleDislikePress = async () => {
     try {
-      const updatedDislikes: any = await sendDislike(vibe_check_id);
+      const updatedDislikes: any = await sendDislike(token, vibe_check_id);
       // console.log(`these are updatedLike: ${updatedLikes.data.updatedVibeCheck.likes}`)
       setLocalDislikes(updatedDislikes.data.updatedVibeCheck.dislikes); // Update local likes
       setDislikePressed(prevState => !prevState);        // Mark like as pressed

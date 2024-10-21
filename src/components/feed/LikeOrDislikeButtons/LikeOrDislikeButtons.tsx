@@ -6,8 +6,7 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import sendLike from "../../../api/sendLikeApi";
-import sendDislike from '../../../api/sendDislikeApi';
+
 
 interface LikeOrDislikeButtonsProps {
   vibe_check_id: string;
@@ -28,7 +27,7 @@ export default function LikeOrDislikeButtons({
   likes,
   dislikes,
 }: LikeOrDislikeButtonsProps) {
-  const [alignment, setAlignment] = useState<string | null>(null);
+  // const [alignment, setAlignment] = useState<string | null>(null);
   // const [likePressed, setLikePressed] = useState<boolean>(false);
   // const [dislikePressed, setDislikePressed] = useState<boolean>(false);
   // const [likesCount, setLikesCount] = useState<number>(initialLikes);
@@ -44,18 +43,18 @@ export default function LikeOrDislikeButtons({
   //   setLikePressed(false);
   //   sendDislike(vibe_check_id);
   // }
-  const handleAlignment = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string | null,
-  ) => {
-    setAlignment(newAlignment);
-  };
+  // const handleAlignment = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string | null,
+  // ) => {
+  //   setAlignment(newAlignment);
+  // };
 
   return (
     <ToggleButtonGroup
-      value={alignment}
+      // value={alignment}
       exclusive
-      onChange={handleAlignment}
+      // onChange={handleAlignment}
       aria-label="like or dislike"
     >
       <ToggleButton value="like" aria-label="like button"
