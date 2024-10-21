@@ -32,42 +32,40 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
   BUT MAY BE DANGEROUS IN TERMS OF AWS COSTS POSSIBLY
   MUST RESERVE TILL PRESENTATION */
 
-  // // Function to fetch and update notifications
-  // const fetchNotifications = async () => {
-  //   const fetchedData = await organizData()
+  // function to fetch and update notifications
+  const fetchNotifications = async () => {
+    const fetchedData = await organizData()
 
-  //   // Check if the new data is different from the current data
-  //   const isDataDifferent =
-  //     JSON.stringify(fetchedData) !== JSON.stringify(notifications)
+    // compare incoming and current data
+    const isDataDifferent =
+      JSON.stringify(fetchedData) !== JSON.stringify(notifications)
 
-  //   // Only update the state if the new data is different
-  //   if (isDataDifferent) {
-  //     setNotifications(fetchedData)
-  //   }
-  // }
-
-  // // fetch notifications on component mount and periodically
-  // useEffect(() => {
-  //   fetchNotifications()
-
-  //   // Set up a polling interval to fetch new data every 10 seconds (for example)
-  //   const intervalId = setInterval(() => {
-  //     fetchNotifications()
-  //   }, 2000) // Polling interval: 10 seconds
-
-  //   // Clear the interval when the component unmounts
-  //   return () => clearInterval(intervalId)
-  // }, [notifications]) // Re-run the effect only if notifications change
-
-  // fetch notifications
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      const fetchedData = await organizData()
+    // update if incoming data is different
+    if (isDataDifferent) {
       setNotifications(fetchedData)
     }
+  }
 
+  // periodically fetch data
+  useEffect(() => {
     fetchNotifications()
-  }, [])
+
+    const intervalId = setInterval(() => {
+      fetchNotifications()
+    }, 3600000)
+
+    return () => clearInterval(intervalId)
+  }, [notifications])
+
+  // fetch notifications
+  // useEffect(() => {
+  //   const fetchNotifications = async () => {
+  //     const fetchedData = await organizData()
+  //     setNotifications(fetchedData)
+  //   }
+
+  //   fetchNotifications()
+  // }, [])
 
   const handleAccept = (username: string) => {
     setSnackbarMessage(`You are now friends with ${username}!`)
