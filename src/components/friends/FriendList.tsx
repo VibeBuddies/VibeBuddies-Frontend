@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import getFriends from '../../api/getFriends';
 import { Typography, Grid } from '@mui/material';
 import FriendCard from './FriendCard';
+import { UserContext } from '../Context/UserContext';
 
 // interface for the friends usernames that are returned
 interface FriendsDataReturned {
@@ -25,6 +26,7 @@ interface FriendListProps {
 const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
   // state to hold the friends
   const [friends, setFriends] = useState<FriendsDataReturned[]>([]);
+  const { friendList } = useContext(UserContext)!;
 
   // block to get the friends of the user that was passed through
   useEffect(() => {
