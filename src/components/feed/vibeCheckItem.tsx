@@ -1,7 +1,13 @@
-import React, { useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Box, Typography, Rating } from "@mui/material"
 import VibeCheckModal from "./vibeCheckModal"
 import defaultAvi from "./default-avi.jpg"
+import { relative } from "path"
+import LikeOrDislikeButtons from "./LikeOrDislikeButtons/LikeOrDislikeButtons"
+import sendLike from "../../api/sendLikeApi"
+import sendDislike from "../../api/sendDislikeApi"
+import { AuthContext } from "../Context/AuthContext"
+
 
 interface VibeCheckItemProps {
   vibe_check_id: string
@@ -16,6 +22,8 @@ interface VibeCheckItemProps {
   dislikes: number
   timestamp: number
   username: string
+  liked_by: string[]
+  disliked_by: string[]
 }
 
 const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
@@ -27,7 +35,10 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
   dislikes,
   timestamp,
   username,
+  liked_by,
+  disliked_by,
 }) => {
+  //modal props
   const [openModal, setOpenModal] = useState<boolean>(false)
 
   const handleOpenModal = () => {
@@ -45,6 +56,64 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
     }
     return text
   }
+
+  //likesordislikes button props 
+  const { token } = useContext(AuthContext)!
+  //add username from user context
+  const contextUsername = "luisito";
+  const [likePressed, setLikePressed] = useState<boolean>(false);
+  const [dislikePressed, setDislikePressed] = useState<boolean>(false);
+  const [localLikes, setLocalLikes] = useState<number>(likes);
+  const [localDislikes, setLocalDislikes] = useState<number>(dislikes);
+
+  //checks if current auth user is in the string arrays liked_by and disliked_by
+  useEffect(() => {
+    if (liked_by.includes(contextUsername)) {
+      setLikePressed(true);
+      setDislikePressed(false);
+    } else if (disliked_by.includes(contextUsername)) {
+      setDislikePressed(true);
+      setLikePressed(false);
+    } else {
+      setLikePressed(false);
+      setDislikePressed(false);
+    }
+  }, [liked_by, disliked_by, contextUsername]);
+
+  const handleLikePress = async () => {
+    try {
+      const updatedLikes: any = await sendLike(token, vibe_check_id);
+      // console.log(`these are updatedLike: ${updatedLikes.data.updatedVibeCheck.likes}`)
+      setLocalLikes(updatedLikes.data.updatedVibeCheck.likes); // Update local likes
+      setLikePressed(prevState => !prevState);        // Mark like as pressed
+      setDislikePressed(false);    // Reset dislike
+    } catch (error) {
+      console.error("Error liking the item:", error);
+    }
+  };
+
+  const handleDislikePress = async () => {
+    try {
+      const updatedDislikes: any = await sendDislike(token, vibe_check_id);
+      // console.log(`these are updatedLike: ${updatedLikes.data.updatedVibeCheck.likes}`)
+      setLocalDislikes(updatedDislikes.data.updatedVibeCheck.dislikes); // Update local likes
+      setDislikePressed(prevState => !prevState);        // Mark like as pressed
+      setLikePressed(false);    // Reset dislike
+    } catch (error) {
+      console.error("Error disliking the item:", error);
+    }
+  };
+
+  //rendered beforehand as to easily pass down JSX.Element to modal as prop
+  const renderedLikeOrDislikeButtonsElement = <LikeOrDislikeButtons 
+                                                vibe_check_id={vibe_check_id}
+                                                likePressed={likePressed}
+                                                dislikePressed={dislikePressed}
+                                                onLikePress={handleLikePress}
+                                                onDislikePress={handleDislikePress}
+                                                likes={localLikes}
+                                                dislikes={localDislikes}
+                                                />
 
   return (
     <>
@@ -93,19 +162,38 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
         </Box>
 
         {/* Album Information */}
-        <Box flex={1}>
-          <Typography variant="h6">{album_id.name}</Typography>
-          <Typography>{`Artist: ${album_id.artist}`}</Typography>
-          {/* Display truncated review */}
-          <Typography>
-            {truncateReview(review, 100)} {/* Truncate to 100 characters */}
-          </Typography>
-          <Rating
-            name={`rating-${vibe_check_id}`}
-            value={rating}
-            precision={0.5}
-            readOnly
-          />
+        <Box display={"flex"} flexDirection={"column"} flex={1}>
+          <Box flex={1}>
+            <Typography variant="h6">{album_id.name}</Typography>
+            <Typography>{`Artist: ${album_id.artist}`}</Typography>
+            {/* Display truncated review */}
+            <Typography>
+              {truncateReview(review, 100)} {/* Truncate to 100 characters */}
+            </Typography>
+            <Rating
+              name={`rating-${vibe_check_id}`}
+              value={rating}
+              precision={0.5}
+              readOnly
+            />
+            </Box>
+            <Box 
+              sx={{
+                alignSelf: "right",
+                }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* <LikeOrDislikeButtons 
+              vibe_check_id={vibe_check_id}
+              likePressed={likePressed}
+              dislikePressed={dislikePressed}
+              onLikePress={handleLikePress}
+              onDislikePress={handleDislikePress}
+              likes={localLikes}
+              dislikes={localDislikes}
+              /> */}
+              {renderedLikeOrDislikeButtonsElement}
+            </Box>
         </Box>
       </Box>
 
@@ -120,6 +208,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
         dislikes={dislikes}
         timestamp={timestamp}
         username={username}
+        likeOrDislikeButtonsElement={renderedLikeOrDislikeButtonsElement}
       />
     </>
   )
