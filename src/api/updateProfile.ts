@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_URL } from '../utils/APIURL';
 
 const updatePersonalProfile = async (profileData: any) => {
   // function to get the user's personal informaiton from the backend
@@ -7,7 +8,7 @@ const updatePersonalProfile = async (profileData: any) => {
   try {
     // Send GET request
     const response = await axios.patch(
-      'http://35.172.116.68:3000/users',
+      `${API_URL}/users`,
       profileData,
       {
         headers: {

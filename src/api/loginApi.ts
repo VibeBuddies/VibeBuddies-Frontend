@@ -1,8 +1,9 @@
 import axios from "axios"
+import { API_URL } from "../utils/APIURL"
 
 /* preliminary work to get the api
 connectivity */
-const API_URL = "http://35.172.116.68:3000"
+
 
 // Login request
 export const login = async (username: string, password: string) => {

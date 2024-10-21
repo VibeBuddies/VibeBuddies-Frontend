@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_URL } from "../utils/APIURL"
 
 const getFriends = async (username: string) => {
   /**
@@ -9,7 +10,7 @@ const getFriends = async (username: string) => {
   try {
     // Send GET request
     const response = await axios.get(
-      `http://35.172.116.68:3000/friends/${username}`,
+      `${API_URL}/friends/${username}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
