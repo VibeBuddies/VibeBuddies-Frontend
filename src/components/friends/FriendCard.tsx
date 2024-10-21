@@ -97,7 +97,7 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
                 ? handleDeleteFriend(friend.username)
                 : handleAddFriend(friend.username)
             }
-            sx={{ display: 'block', margin: 'auto', marginTop: 2 }}
+            sx={{ margin: 'auto', marginTop: 2 }}
           >
             {isFriend ? 'Remove Friend' : 'Add Friend'}
           </Button>
