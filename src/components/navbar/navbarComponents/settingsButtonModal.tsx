@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useContext } from "react"
+import { useNavigate } from "react-router-dom"
 import {
   Dialog,
   DialogTitle,
@@ -7,6 +8,7 @@ import {
   Button,
   Box,
 } from "@mui/material"
+import { AuthContext } from "../../Context/AuthContext"
 
 /* settings button modal that will display user settings:
  * Users can log off.
@@ -17,7 +19,6 @@ import {
 interface SettingsButtonModalProps {
   openSettings: boolean
   handleCloseSettings: () => void
-  handleLogOff: () => void
   handleDeleteAccount: () => void
   handleChangePassword: () => void
 }
@@ -25,17 +26,40 @@ interface SettingsButtonModalProps {
 const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
   openSettings,
   handleCloseSettings,
-  handleLogOff,
   handleDeleteAccount,
   handleChangePassword,
 }) => {
+  const { logOff } = useContext(AuthContext)! // not-null assertion needed!
+  const navigate = useNavigate()
+
+  const handleLogOff = () => {
+    logOff()
+    navigate("/")
+  }
+
   return (
-    <Dialog open={openSettings} onClose={handleCloseSettings}>
+    <Dialog
+      open={openSettings}
+      onClose={handleCloseSettings}
+      BackdropProps={{
+        sx: {
+          backdropFilter: "blur(10px)",
+          backgroundColor: "rgba(0, 0, 0, 0.1)",
+        },
+      }}
+      PaperProps={{
+        sx: {
+          backgroundColor: "white",
+          borderRadius: 2,
+          padding: "2rem",
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
+          maxWidth: "400px",
+        },
+      }}
+    >
       <DialogTitle>User Settings</DialogTitle>
       <DialogContent>
         <Box display="flex" flexDirection="column">
-          {/* Log Off Button */}
-
           {/* Change Password Button */}
           <Button
             onClick={handleChangePassword}

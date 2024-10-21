@@ -5,11 +5,20 @@ import VibeCheckItem from "./vibeCheckItem"
 /* arranges the vibeChecks into a scrollable list on the feed*/
 
 interface VibeCheck {
-  id: number
-  album: string
+  vibe_check_id: string
+  album_id: {
+    artist: string
+    cover_url: string
+    name: string
+  }
   review: string
-  stars: number
-  image: string
+  rating: number
+  likes: number
+  dislikes: number
+  timestamp: number
+  username: string
+  liked_by: string[]
+  disliked_by: string[]
 }
 
 interface VibeCheckListProps {
@@ -22,18 +31,30 @@ const VibeCheckList: React.FC<VibeCheckListProps> = ({ vibeChecks }) => {
       {vibeChecks.length > 0 ? (
         vibeChecks.map((vibeCheck) => (
           <VibeCheckItem
-            key={vibeCheck.id}
-            id={vibeCheck.id}
-            album={vibeCheck.album}
+            key={vibeCheck.vibe_check_id}
+            vibe_check_id={vibeCheck.vibe_check_id}
+            album_id={vibeCheck.album_id}
             review={vibeCheck.review}
-            stars={vibeCheck.stars}
-            image={vibeCheck.image}
+            rating={vibeCheck.rating}
+            likes={vibeCheck.likes}
+            dislikes={vibeCheck.dislikes}
+            timestamp={vibeCheck.timestamp}
+            username={vibeCheck.username}
+            liked_by={vibeCheck.liked_by}
+            disliked_by={vibeCheck.disliked_by}
           />
         ))
       ) : (
-        <Typography variant="h6" align="center">
-          No vibeChecks found.
-        </Typography>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100vh" // Full viewport height to vertically center
+        >
+          <Typography variant="h6" align="center">
+            No VibeChecks
+          </Typography>
+        </Box>
       )}
     </>
   )

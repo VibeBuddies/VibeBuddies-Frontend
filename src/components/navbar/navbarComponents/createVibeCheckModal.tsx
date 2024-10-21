@@ -26,12 +26,14 @@ const materialTheme = extendMaterialTheme()
 
 interface CreateVibeCheckModalProps {
   openVibeCheck: boolean
-  handleCloseVibeCheck: () => void
+  handleCloseVibeCheck: () => void,
+  setSnackbarOpen: any
 }
 
 const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
   openVibeCheck,
   handleCloseVibeCheck,
+  setSnackbarOpen
 }) => {
   const [ratingValue, setRatingValue] = React.useState<number | null>(null)
   const [options, setOptions] = React.useState<AutocompleteOption[]>([]) // State for options array
@@ -118,6 +120,7 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
                   setSelectedAlbum(null) // Clear selected album
                   setReviewValue("") // Clear review text
                   setRatingValue(null)
+                  setSnackbarOpen(true);
                   handleCloseVibeCheck()
                 }}
               >
