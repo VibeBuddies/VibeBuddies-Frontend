@@ -39,12 +39,14 @@ const UserProfile: React.FC<UserProfileProps> = ({
     username: loggedInUser,
     isEditing,
     setProperty,
+    friendList,
   } = useContext(UserContext)!;
 
   // state to keep track if user is editting their information
   // const [isEditing, setProperty] = useState(false);
   // state to keep track of the user information lcoally
   const [localUserInfo, setLocalUserInfo] = useState(userInfo);
+  let isFriend = friendList?.has(localUserInfo.username);
 
   // block to check when userInfo changes, only happens if the save button is clicked
   useEffect(() => {
@@ -85,6 +87,11 @@ const UserProfile: React.FC<UserProfileProps> = ({
     });
     setProperty('isEditing', false);
   };
+
+  function handleAddFriend(): void {}
+
+  function handleRemoveFriend(): void {}
+
   return (
     <Box sx={{ textAlign: 'center', mt: 4 }}>
       {/* profile image and username */}
@@ -101,6 +108,30 @@ const UserProfile: React.FC<UserProfileProps> = ({
           <SettingsIcon />
         </IconButton>
       )}
+
+      {/* Conditionally display Add Friend or Remove Friend button */}
+      {loggedInUser !== userInfo.username && !isEditing && (
+        <Box sx={{ mt: 2 }}>
+          {isFriend ? (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleRemoveFriend}
+            >
+              Remove Friend
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddFriend}
+            >
+              Add Friend
+            </Button>
+          )}
+        </Box>
+      )}
+
       {/* profile details conditionally shown, only when editting and the information is present in the state  */}
       {!isEditing ? (
         <Box sx={{ mt: 2 }}>

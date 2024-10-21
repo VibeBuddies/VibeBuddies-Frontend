@@ -26,7 +26,6 @@ interface FriendListProps {
 const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
   // state to hold the friends
   const [friends, setFriends] = useState<FriendsDataReturned[]>([]);
-  const { friendList } = useContext(UserContext)!;
 
   // block to get the friends of the user that was passed through
   useEffect(() => {
