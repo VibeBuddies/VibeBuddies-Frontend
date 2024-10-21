@@ -58,7 +58,9 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
   }
 
   //likesordislikes button props 
-  const { token, username: contextUsername } = useContext(AuthContext)!
+  const { token } = useContext(AuthContext)!
+  //add username from user context
+  const contextUsername = "luisito";
   const [likePressed, setLikePressed] = useState<boolean>(false);
   const [dislikePressed, setDislikePressed] = useState<boolean>(false);
   const [localLikes, setLocalLikes] = useState<number>(likes);
@@ -66,10 +68,10 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
 
   //checks if current auth user is in the string arrays liked_by and disliked_by
   useEffect(() => {
-    if (liked_by.includes(contextUsername!)) {
+    if (liked_by.includes(contextUsername)) {
       setLikePressed(true);
       setDislikePressed(false);
-    } else if (disliked_by.includes(contextUsername!)) {
+    } else if (disliked_by.includes(contextUsername)) {
       setDislikePressed(true);
       setLikePressed(false);
     } else {
