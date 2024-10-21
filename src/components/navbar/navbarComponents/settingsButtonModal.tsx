@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useContext } from "react"
+import { useNavigate } from "react-router-dom"
 import {
   Dialog,
   DialogTitle,
@@ -7,6 +8,7 @@ import {
   Button,
   Box,
 } from "@mui/material"
+import { AuthContext } from "../../Context/AuthContext"
 
 /* settings button modal that will display user settings:
  * Users can log off.
@@ -17,7 +19,6 @@ import {
 interface SettingsButtonModalProps {
   openSettings: boolean
   handleCloseSettings: () => void
-  handleLogOff: () => void
   handleDeleteAccount: () => void
   handleChangePassword: () => void
 }
@@ -25,10 +26,17 @@ interface SettingsButtonModalProps {
 const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
   openSettings,
   handleCloseSettings,
-  handleLogOff,
   handleDeleteAccount,
   handleChangePassword,
 }) => {
+  const { logOff } = useContext(AuthContext)! // not-null assertion needed!
+  const navigate = useNavigate()
+
+  const handleLogOff = () => {
+    logOff()
+    navigate("/")
+  }
+
   return (
     <Dialog
       open={openSettings}

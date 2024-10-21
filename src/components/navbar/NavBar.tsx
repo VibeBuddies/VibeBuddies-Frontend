@@ -104,7 +104,6 @@ const Navbar: React.FC = () => {
         <SettingsButtonModal
           openSettings={openSettingsModal}
           handleCloseSettings={handleCloseSettings}
-          handleLogOff={handleLogOff}
           handleDeleteAccount={handleDeleteAccount}
           handleChangePassword={handleChangePassword}
         />
