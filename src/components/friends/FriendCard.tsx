@@ -5,10 +5,11 @@ import {
   Card,
   CardContent,
   CardMedia,
-  IconButton,
   Avatar,
+  Button,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { UserContext } from '../Context/UserContext';
 
 interface FriendProps {
@@ -27,7 +28,13 @@ interface FriendProps {
 
 const FriendCard: React.FC<FriendProps> = ({ friend }) => {
   // grabbing our logged in username from the usercontext
-  const { username: loggedInUser, setProperty } = useContext(UserContext)!;
+  const {
+    username: loggedInUser,
+    setProperty,
+    friendList,
+  } = useContext(UserContext)!;
+
+  let isFriend = friendList?.has(friend.username!);
 
   //   intializing our navigate object
   const navigate = useNavigate();
@@ -41,7 +48,9 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
   };
 
   // block to handle the deleting function
-  const handleDeleteFriend = (username: string | undefined) => {};
+  function handleDeleteFriend(usernaem: string | undefined) {}
+
+  function handleAddFriend(usernaem: string | undefined): void {}
 
   return (
     <Card>
@@ -53,7 +62,6 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
               ? friend.profileImage
               : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
           }
-          //   usernaem
           alt={friend.username}
           sx={{
             width: 100,
@@ -63,6 +71,7 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
           }}
         />
       </CardMedia>
+
       {/* clickable username */}
       <CardContent>
         <Typography
@@ -77,15 +86,21 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
           {friend.username}
         </Typography>
 
-        {/* block to conditionally render the delete button */}
+        {/* conditionally render delete/add buttons*/}
         {loggedInUser !== friend.username && (
-          <IconButton
-            aria-label="delete"
-            onClick={() => handleDeleteFriend(friend.username)}
+          <Button
+            variant="contained"
+            color={isFriend ? 'error' : 'primary'}
+            startIcon={isFriend ? <PersonRemoveIcon /> : <PersonAddIcon />}
+            onClick={() =>
+              isFriend
+                ? handleDeleteFriend(friend.username)
+                : handleAddFriend(friend.username)
+            }
             sx={{ display: 'block', margin: 'auto', marginTop: 2 }}
           >
-            <DeleteIcon />
-          </IconButton>
+            {isFriend ? 'Remove Friend' : 'Add Friend'}
+          </Button>
         )}
       </CardContent>
     </Card>

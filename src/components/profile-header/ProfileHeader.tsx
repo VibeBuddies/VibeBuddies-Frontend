@@ -109,7 +109,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
         </IconButton>
       )}
 
-      {/* Conditionally display Add Friend or Remove Friend button */}
+      {/* conditionally show add/remove friend */}
       {loggedInUser !== userInfo.username && !isEditing && (
         <Box sx={{ mt: 2 }}>
           {isFriend ? (
