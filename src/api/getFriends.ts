@@ -1,13 +1,15 @@
 import axios from 'axios';
 
-const getPersonalInformation = async (username: string) => {
-  // function to get the user's personal informaiton from the backend
+const getFriends = async (username: string) => {
+  /**
+   * function to get the friends of a user
+   */
 
   const token = localStorage.getItem('token');
   try {
     // Send GET request
     const response = await axios.get(
-      `http://35.172.116.68:3000/users/${username}`,
+      `http://35.172.116.68:3000/friends/${username}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -21,4 +23,4 @@ const getPersonalInformation = async (username: string) => {
   }
 };
 
-export default getPersonalInformation;
+export default getFriends;

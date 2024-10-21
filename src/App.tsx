@@ -11,7 +11,7 @@ import Feed from './pages/feed';
 import Profile from './pages/Profile';
 import Navbar from './components/navbar/NavBar';
 import { AuthProvider, AuthContext } from './components/Context/AuthContext';
-
+import { UserProvider } from './components/Context/UserContext';
 
 // ProtectedRoute component to protect routes based on authentication
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
@@ -48,7 +48,7 @@ const App: React.FC = () => {
           }
         />
         <Route
-          path="/profile"
+          path="/profile/:username"
           element={
             <ProtectedRoute>
               <Profile />
@@ -62,9 +62,11 @@ const App: React.FC = () => {
 
 const WrappedApp = () => (
   <Router>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <UserProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </UserProvider>
   </Router>
 );
 

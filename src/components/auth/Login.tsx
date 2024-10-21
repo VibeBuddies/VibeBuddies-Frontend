@@ -1,47 +1,50 @@
-import React, { useState, ChangeEvent, FormEvent, useContext } from "react"
-import { TextField, Button, Container, Alert } from "@mui/material"
-import { login as loginApi } from "../../api/loginApi"
-import { AuthContext } from "../Context/AuthContext"
-import { useNavigate } from "react-router-dom"
+import React, { useState, ChangeEvent, FormEvent, useContext } from 'react';
+import { TextField, Button, Container, Alert } from '@mui/material';
+import { login as loginApi } from '../../api/loginApi';
+import { AuthContext } from '../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../Context/UserContext';
 
 interface FormData {
-  username: string
-  password: string
+  username: string;
+  password: string;
 }
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    username: "",
-    password: "",
-  })
-  const [error, setError] = useState<string>("")
+    username: '',
+    password: '',
+  });
+  const [error, setError] = useState<string>('');
 
   // Get the login function from context
-  const { login } = useContext(AuthContext)!
-  const navigate = useNavigate()
+  const { login } = useContext(AuthContext)!;
+  const { setProperty } = useContext(UserContext)!;
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (formData.username === "" || formData.password === "") {
-      setError("Both username and password are required")
-      return
+    if (formData.username === '' || formData.password === '') {
+      setError('Both username and password are required');
+      return;
     }
 
     try {
-      const response = await loginApi(formData.username, formData.password)
-      const token = response.data.token
-      login(token, formData.username) // Save the token using the context login function
-      navigate("/feed") // Redirect to the feed page after login
+      const response = await loginApi(formData.username, formData.password);
+      const token = response.data.token;
+      login(token); // Save the token using the context login function
+      setProperty('username', formData.username);
+      navigate('/feed'); // Redirect to the feed page after login
     } catch (err) {
-      setError("Unable to log in. Please try again.")
+      setError('Unable to log in. Please try again.');
     }
-  }
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   return (
     <Container maxWidth="sm">
@@ -71,7 +74,7 @@ const Login: React.FC = () => {
         </Button>
       </form>
     </Container>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
