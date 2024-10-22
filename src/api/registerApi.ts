@@ -1,9 +1,8 @@
 import axios from "axios"
+import { API_URL } from "../utils/APIURL"
 
 /*preliminary work to get API
 connectivity with axios */
-
-const API_URL = "http://35.172.116.68:3000"
 
 // Registration request
 export const register = async (

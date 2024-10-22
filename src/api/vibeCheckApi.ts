@@ -1,5 +1,6 @@
 import axios from "axios";
 import { SelectedAlbum } from "../types";
+import { API_URL } from "../utils/APIURL";
 
 const sendCreateVibeCheck = async (isFormValid:boolean, selectedAlbum: SelectedAlbum | null, review: string, rating: number | null) => {
 
@@ -14,7 +15,7 @@ const sendCreateVibeCheck = async (isFormValid:boolean, selectedAlbum: SelectedA
       const token = localStorage.getItem("token");
       try {
         // Send POST request
-        const response = await axios.post("http://35.172.116.68:3000/vibe-checks", data,
+        const response = await axios.post(`${API_URL}/vibe-checks`, data,
            {  
             headers: {
             Authorization: `Bearer ${token}`,  // Adding the token to the headers

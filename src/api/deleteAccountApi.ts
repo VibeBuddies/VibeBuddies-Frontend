@@ -3,18 +3,18 @@ import { API_URL } from "../utils/APIURL"
 
 const token = localStorage.getItem("token")
 
-//get all friends request, needs a jwt
-const getAllFriends = async () => {
+const deleteAccount = async () => {
   try {
-    const response = await axios.get(`${API_URL}/friends`, {
+    const response = await axios.delete(`${API_URL}/users`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
+    console.log("here is the DATA: ", response.data)
     return response.data
   } catch (error) {
-    throw new Error("failed to retrieve friends")
+    throw new Error("failed to delete account")
   }
 }
 
-export default getAllFriends
+export default deleteAccount

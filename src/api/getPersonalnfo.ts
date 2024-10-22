@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_URL } from '../utils/APIURL';
 
 const getPersonalInformation = async (username: string) => {
   // function to get the user's personal informaiton from the backend
@@ -7,7 +8,7 @@ const getPersonalInformation = async (username: string) => {
   try {
     // Send GET request
     const response = await axios.get(
-      `http://35.172.116.68:3000/users/${username}`,
+      `${API_URL}/users/${username}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

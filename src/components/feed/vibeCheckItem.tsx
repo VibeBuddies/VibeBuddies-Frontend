@@ -7,6 +7,7 @@ import LikeOrDislikeButtons from "./LikeOrDislikeButtons/LikeOrDislikeButtons"
 import sendLike from "../../api/sendLikeApi"
 import sendDislike from "../../api/sendDislikeApi"
 import { AuthContext } from "../Context/AuthContext"
+import { UserContext } from "../Context/UserContext"
 
 
 interface VibeCheckItemProps {
@@ -60,7 +61,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
   //likesordislikes button props 
   const { token } = useContext(AuthContext)!
   //add username from user context
-  const contextUsername = "luisito";
+  const {username: contextUsername} = useContext(UserContext)!;
   const [likePressed, setLikePressed] = useState<boolean>(false);
   const [dislikePressed, setDislikePressed] = useState<boolean>(false);
   const [localLikes, setLocalLikes] = useState<number>(likes);
