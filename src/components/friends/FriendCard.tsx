@@ -11,6 +11,8 @@ import {
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { UserContext } from '../Context/UserContext';
+import deleteFriend from '../../api/deleteFriend';
+import sendFriendRequest from '../../api/sendFriendRequest';
 
 interface FriendProps {
   friend: {
@@ -48,9 +50,15 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
   };
 
   // block to handle the deleting function
-  function handleDeleteFriend(usernaem: string | undefined) {}
+  async function handleDeleteFriend(
+    username: string | undefined
+  ): Promise<void> {
+    await deleteFriend(username!);
+  }
 
-  function handleAddFriend(usernaem: string | undefined): void {}
+  async function handleAddFriend(username: string | undefined): Promise<void> {
+    await sendFriendRequest(username!);
+  }
 
   return (
     <Card>

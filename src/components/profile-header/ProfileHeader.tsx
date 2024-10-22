@@ -34,6 +34,8 @@ const UserProfile: React.FC<UserProfileProps> = ({
   setUserInfo,
   profileImage = '',
 }) => {
+  // react component displays the profile information
+
   // getting the logged in username from the context
   const {
     username: loggedInUser,

@@ -1,26 +1,23 @@
 import axios from 'axios';
-import { API_URL } from "../utils/APIURL"
+import { API_URL } from '../utils/APIURL';
 
 const getFriends = async (username: string) => {
   /**
-   * function to get the friends of a user
+   * api function to handle getting the friends of a given username
    */
 
   const token = localStorage.getItem('token');
   try {
     // Send GET request
-    const response = await axios.get(
-      `${API_URL}/friends/${username}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`${API_URL}/friends/${username}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     return response;
   } catch (error) {
-    console.error('Error getting personal information:', error); // Log any error that occurs
+    console.error('Error getting friend', error); // Log any error that occurs
   }
 };
 

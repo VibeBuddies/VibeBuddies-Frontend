@@ -2,19 +2,18 @@ import axios from 'axios';
 import { API_URL } from '../utils/APIURL';
 
 const getPersonalInformation = async (username: string) => {
-  // function to get the user's personal informaiton from the backend
+  /**
+   * api function to handle retrieving data of logged in user
+   */
 
   const token = localStorage.getItem('token');
   try {
     // Send GET request
-    const response = await axios.get(
-      `${API_URL}/users/${username}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`${API_URL}/users/${username}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     return response;
   } catch (error) {
