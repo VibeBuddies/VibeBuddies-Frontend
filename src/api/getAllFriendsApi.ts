@@ -1,6 +1,6 @@
 import axios from "axios"
-import { API_URL } from "../utils/APIURL"
 
+const API_URL = "http://35.172.116.68:3000"
 const token = localStorage.getItem("token")
 
 //get all friends request, needs a jwt

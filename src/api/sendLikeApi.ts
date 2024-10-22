@@ -1,5 +1,4 @@
 import axios from "axios";
-import { API_URL } from "../utils/APIURL";
 
 const sendLike = async (token: string | null, vibe_check_id: string) => {
 
@@ -8,7 +7,7 @@ const sendLike = async (token: string | null, vibe_check_id: string) => {
       //const token = localStorage.getItem("token");
       try {
         // Send POST request
-        const response = await axios.patch(`${API_URL}/vibe-checks/${vibe_check_id}/like`, data,
+        const response = await axios.patch(`http://35.172.116.68:3000/vibe-checks/${vibe_check_id}/like`, data,
            {  
             headers: {
             Authorization: `Bearer ${token}`,  // Adding the token to the headers
