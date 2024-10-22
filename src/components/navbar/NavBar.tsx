@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
 
   // Handle the search input change
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value.toLowerCase())
+    setSearchTerm(e.target.value)
   }
 
   const handleOpenVibeCheck = () => setOpenVibeCheckModal(true)
