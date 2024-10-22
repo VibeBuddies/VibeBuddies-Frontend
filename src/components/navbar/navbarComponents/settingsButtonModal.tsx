@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import {
   Dialog,
@@ -7,8 +7,13 @@ import {
   DialogContent,
   Button,
   Box,
+  TextField,
+  Typography,
+  IconButton,
 } from "@mui/material"
+import { Close as CloseIcon } from "@mui/icons-material"
 import { AuthContext } from "../../Context/AuthContext"
+import deleteAccount from "../../../api/deleteAccountApi"
 
 /* settings button modal that will display user settings:
  * Users can log off.
@@ -19,22 +24,45 @@ import { AuthContext } from "../../Context/AuthContext"
 interface SettingsButtonModalProps {
   openSettings: boolean
   handleCloseSettings: () => void
-  handleDeleteAccount: () => void
   handleChangePassword: () => void
 }
 
 const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
   openSettings,
   handleCloseSettings,
-  handleDeleteAccount,
   handleChangePassword,
 }) => {
   const { logOff } = useContext(AuthContext)! // not-null assertion needed!
   const navigate = useNavigate()
 
+  const [confirmationText, setConfirmationText] = useState<string>("")
+  const [showConfirmationInput, setShowConfirmationInput] = useState(false)
+
   const handleLogOff = () => {
     logOff()
     navigate("/")
+  }
+
+  const handleDeleteAccount = async () => {
+    if (confirmationText === "I am sure") {
+      try {
+        await deleteAccount()
+        navigate("/")
+      } catch (err) {
+        console.log("failed to delete account: ", err)
+      }
+    } else {
+      console.log("Incorrect confirmation text")
+    }
+  }
+
+  const handleShowConfirmation = () => {
+    setShowConfirmationInput(true)
+  }
+
+  const handleCancelConfirmation = () => {
+    setShowConfirmationInput(false)
+    setConfirmationText("")
   }
 
   return (
@@ -71,14 +99,48 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
           </Button>
 
           {/* Delete Account Button */}
-          <Button
-            onClick={handleDeleteAccount}
-            variant="contained"
-            color="primary"
-            sx={{ mb: 2 }}
-          >
-            Delete Account
-          </Button>
+          {!showConfirmationInput ? (
+            <Button
+              onClick={handleShowConfirmation}
+              variant="contained"
+              color="primary"
+              sx={{ mb: 2 }}
+            >
+              Delete Account
+            </Button>
+          ) : (
+            <>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                mb={2}
+              >
+                <Typography>
+                  Type <strong>"I am sure"</strong> to confirm account deletion.
+                </Typography>
+                <IconButton onClick={handleCancelConfirmation} size="small">
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+              <TextField
+                fullWidth
+                variant="outlined"
+                value={confirmationText}
+                onChange={(e) => setConfirmationText(e.target.value)}
+                placeholder="I am sure"
+                sx={{ mb: 2 }}
+              />
+              <Button
+                onClick={handleDeleteAccount}
+                variant="contained"
+                color="primary"
+                disabled={confirmationText !== "I am sure"}
+              >
+                Confirm Delete
+              </Button>
+            </>
+          )}
 
           {/* Log Off Button */}
           <Button onClick={handleLogOff} variant="contained" color="primary">
