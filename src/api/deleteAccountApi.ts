@@ -1,10 +1,14 @@
 import axios from "axios"
 import { API_URL } from "../utils/APIURL"
 
-const token = localStorage.getItem("token")
-
 const deleteAccount = async () => {
   try {
+    const token = localStorage.getItem("token")
+
+    if (!token) {
+      throw new Error("No token found, please log in.")
+    }
+
     const response = await axios.delete(`${API_URL}/users`, {
       headers: {
         Authorization: `Bearer ${token}`,

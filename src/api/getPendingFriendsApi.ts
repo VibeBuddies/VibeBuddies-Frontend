@@ -1,11 +1,15 @@
 import axios from "axios"
 import { API_URL } from "../utils/APIURL"
 
-const token = localStorage.getItem("token")
-
 //get all friends request, needs a jwt
 const getPendingFriends = async () => {
   try {
+    const token = localStorage.getItem("token")
+
+    if (!token) {
+      throw new Error("No token found, please log in.")
+    }
+
     const response = await axios.get(`${API_URL}/friends?status=pending`, {
       headers: {
         Authorization: `Bearer ${token}`,
