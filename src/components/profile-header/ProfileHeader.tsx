@@ -14,8 +14,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import updatePersonalProfile from '../../api/updateProfile';
 import sendFriendRequest from '../../api/sendFriendRequest';
 import deleteFriend from '../../api/deleteFriend';
+import BoxInformation from './BoxInformation';
 
-// interface for the props we expect
+// interface for the component prop params
 interface UserProfileProps {
   userInfo: {
     username: string;
@@ -31,14 +32,17 @@ interface UserProfileProps {
   profileImage: string;
 }
 
+// functional component with user information
 const UserProfile: React.FC<UserProfileProps> = ({
   userInfo,
   setUserInfo,
   profileImage = '',
 }) => {
-  // react component displays the profile information
+  /**
+   * functional component that displays the users information at the top of the page
+   */
 
-  // getting the logged in username from the context
+  // getting information and functions for UserContext
   const {
     username: loggedInUser,
     isEditing,
@@ -46,10 +50,10 @@ const UserProfile: React.FC<UserProfileProps> = ({
     friendList,
   } = useContext(UserContext)!;
 
-  // state to keep track if user is editting their information
-  // const [isEditing, setProperty] = useState(false);
-  // state to keep track of the user information lcoally
+  // state to keep track of local user information based on the user who was passed through
   const [localUserInfo, setLocalUserInfo] = useState(userInfo);
+
+  // variable to check if the user is a friend of the user who is currently logged in
   let isFriend = friendList?.has(localUserInfo.username);
 
   // block to check when userInfo changes, only happens if the save button is clicked
@@ -69,11 +73,9 @@ const UserProfile: React.FC<UserProfileProps> = ({
     setLocalUserInfo({ ...localUserInfo, [name]: value });
   };
 
-  // function to handle the saving of information
+  // function to handle the saving/updating of user information
   const handleSave = async () => {
-    setProperty('isEditing', true);
-
-    // block makes a call to the axios function that calls the api to update user information
+    // api function call to update informaiton, set information to show in real time
     try {
       await updatePersonalProfile(localUserInfo);
       setUserInfo(localUserInfo);
@@ -84,7 +86,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
     }
   };
 
-  // function to handle the canceling of editting profile
+  // function to handle the canceling of editting profile, returns to previous state and closes editing form
   const handleCancel = () => {
     setLocalUserInfo({
       ...userInfo,
@@ -92,10 +94,12 @@ const UserProfile: React.FC<UserProfileProps> = ({
     setProperty('isEditing', false);
   };
 
+  // block handles sending a friend request
   async function handleAddFriend(username: string | undefined): Promise<void> {
     await sendFriendRequest(username!);
   }
 
+  // block handles deleting a friend, updates context friendlist to show removal friend in real time
   async function handleRemoveFriend(
     username: string | undefined
   ): Promise<void> {
@@ -106,15 +110,18 @@ const UserProfile: React.FC<UserProfileProps> = ({
     );
   }
 
+  // JSX
   return (
+    // box to hold all the elements
     <Box sx={{ textAlign: 'center', mt: 4 }}>
-      {/* profile image and username */}
+      {/* profile image*/}
       <Avatar
         alt={userInfo.username}
         src={profileImage}
         sx={{ width: 100, height: 100, margin: 'auto' }}
       ></Avatar>
-      {/* username */}
+
+      {/* user username */}
       <Typography variant="h4">{userInfo.username}</Typography>
       {/* settings button, only present when not in editting form */}
       {loggedInUser === userInfo.username && !isEditing && (
@@ -123,10 +130,11 @@ const UserProfile: React.FC<UserProfileProps> = ({
         </IconButton>
       )}
 
-      {/* conditionally show add/remove friend */}
+      {/* conditionally show add/remove friend depending if user is friend or not */}
       {loggedInUser !== userInfo.username && !isEditing && (
         <Box sx={{ mt: 2 }}>
           {isFriend ? (
+            // remove button
             <Button
               variant="contained"
               color="secondary"
@@ -135,6 +143,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               Remove Friend
             </Button>
           ) : (
+            // add friend
             <Button
               variant="contained"
               color="primary"
@@ -146,38 +155,32 @@ const UserProfile: React.FC<UserProfileProps> = ({
         </Box>
       )}
 
-      {/* profile details conditionally shown, only when editting and the information is present in the state  */}
+      {/* user information being displayed */}
       {!isEditing ? (
         <Box sx={{ mt: 2 }}>
           {/* favorite song */}
-          {localUserInfo.favoriteSong && (
-            <Typography>Favorite Song: {localUserInfo.favoriteSong}</Typography>
-          )}
+          <BoxInformation
+            property={localUserInfo.favoriteSong}
+            phrase={'Favorite Song'}
+          />
           {/* favorite artist */}
-          {localUserInfo.favoriteArtist && (
-            <Typography>
-              Favorite Artist: {localUserInfo.favoriteArtist}
-            </Typography>
-          )}
+          <BoxInformation
+            property={localUserInfo.favoriteArtist}
+            phrase={'Favorite Artist'}
+          />
           {/* favorite album */}
-          {localUserInfo.favoriteAlbum && (
-            <Typography>
-              Favorite Album: {localUserInfo.favoriteAlbum}
-            </Typography>
-          )}
-          {/* city, state and country */}
-          {localUserInfo.city &&
-            localUserInfo.state &&
-            localUserInfo.country && (
-              <Typography>
-                Location: {localUserInfo.city}, {localUserInfo.state},{' '}
-                {localUserInfo.country}
-              </Typography>
-            )}
-          {/* user bio */}
-          {localUserInfo.bio && (
-            <Typography>Bio: {localUserInfo.bio}</Typography>
-          )}
+          <BoxInformation
+            property={localUserInfo.favoriteAlbum}
+            phrase={'Favorite Album'}
+          />
+          {/* city*/}
+          <BoxInformation property={localUserInfo.city} phrase={'City'} />
+          {/* state*/}
+          <BoxInformation property={localUserInfo.state} phrase={'State'} />
+          {/* country*/}
+          <BoxInformation property={localUserInfo.country} phrase={'Country'} />
+          {/* bio */}
+          <BoxInformation property={localUserInfo.bio} phrase={'Bio '} />
         </Box>
       ) : (
         loggedInUser === userInfo.username && (
