@@ -22,6 +22,7 @@ import {
   createTheme as extendMaterialTheme,
   THEME_ID,
 } from "@mui/material/styles"
+import { AuthContext } from "../../Context/AuthContext";
 
 const materialTheme = extendMaterialTheme()
 
@@ -94,10 +95,11 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
     setReviewValue('');       // Clear review text
     setRatingValue(null);    //clear rating
   }
-
+  const {token} = React.useContext(AuthContext)!;
   const handleSubmitButton = async () => {
     try{
       const response = await sendCreateVibeCheck(
+                                                  token,
                                                   isFormValid,
                                                   selectedAlbum,
                                                   reviewValue,
