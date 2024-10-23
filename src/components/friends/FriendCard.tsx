@@ -54,6 +54,10 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
     username: string | undefined
   ): Promise<void> {
     await deleteFriend(username!);
+    setProperty(
+      `friendList`,
+      new Set([...friendList!].filter((friend) => friend !== username))
+    );
   }
 
   async function handleAddFriend(username: string | undefined): Promise<void> {

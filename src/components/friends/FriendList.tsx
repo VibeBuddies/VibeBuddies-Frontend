@@ -27,6 +27,8 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
   // state to hold the friends
   const [friends, setFriends] = useState<FriendsDataReturned[]>([]);
 
+  const { username: loggedInUser, setProperty } = useContext(UserContext)!;
+
   // block to get the friends of the user that was passed through
   useEffect(() => {
     const fetchFriends = async () => {
@@ -35,6 +37,15 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
         const data = await getFriends(usernameProp);
         if (data?.data?.data.friendList) {
           setFriends(data.data.data.friendList);
+
+          if (loggedInUser === usernameProp) {
+            setProperty(
+              'friendList',
+              new Set(
+                data.data.data.friendList.map((friend: any) => friend.username)
+              )
+            );
+          }
         }
       } catch (error) {
         console.log(
