@@ -5,7 +5,7 @@ const organizData = async () => {
     const friendRequests = await getPendingFriends()
 
     // Log the entire response to check its structure
-    console.log("Friend requests response: ", friendRequests)
+    //console.log("Friend requests response: ", friendRequests)
 
     // Safely access data and map through friendList if it exists
 
