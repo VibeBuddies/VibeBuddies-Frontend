@@ -12,6 +12,8 @@ import {
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import updatePersonalProfile from '../../api/updateProfile';
+import sendFriendRequest from '../../api/sendFriendRequest';
+import deleteFriend from '../../api/deleteFriend';
 
 // interface for the props we expect
 interface UserProfileProps {
@@ -90,9 +92,19 @@ const UserProfile: React.FC<UserProfileProps> = ({
     setProperty('isEditing', false);
   };
 
-  function handleAddFriend(): void {}
+  async function handleAddFriend(username: string | undefined): Promise<void> {
+    await sendFriendRequest(username!);
+  }
 
-  function handleRemoveFriend(): void {}
+  async function handleRemoveFriend(
+    username: string | undefined
+  ): Promise<void> {
+    await deleteFriend(username!);
+    setProperty(
+      `friendList`,
+      new Set([...friendList!].filter((friend) => friend !== username))
+    );
+  }
 
   return (
     <Box sx={{ textAlign: 'center', mt: 4 }}>
@@ -118,7 +130,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
             <Button
               variant="contained"
               color="secondary"
-              onClick={handleRemoveFriend}
+              onClick={() => handleRemoveFriend(userInfo.username)}
             >
               Remove Friend
             </Button>
@@ -126,7 +138,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
             <Button
               variant="contained"
               color="primary"
-              onClick={handleAddFriend}
+              onClick={() => handleAddFriend(userInfo.username)}
             >
               Add Friend
             </Button>
