@@ -88,6 +88,13 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
     setIsFormValid(isAlbumOrArtistValid && isReviewValid && isRatingValid)
   }, [selectedAlbum, reviewValue, ratingValue])
 
+  //handling when close button is pressed
+  const handleCloseButton = () =>{
+    setSelectedAlbum(null);  // Clear selected album
+    setReviewValue('');       // Clear review text
+    setRatingValue(null);    //clear rating
+  }
+
   return (
     <MaterialCssVarsProvider theme={{ [THEME_ID]: materialTheme }}>
       <JoyCssVarsProvider>
@@ -101,7 +108,7 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
               maxWidth: "none",
             }}
           >
-            <ModalClose variant="plain" sx={{ m: 1 }} />
+            <ModalClose onClick={handleCloseButton} variant="plain" sx={{ m: 1 }} />
             <DialogTitle>Create new VibeCheck</DialogTitle>
             <DialogContent
               sx={{
