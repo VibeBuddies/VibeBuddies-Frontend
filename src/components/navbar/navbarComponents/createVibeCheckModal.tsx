@@ -28,13 +28,13 @@ const materialTheme = extendMaterialTheme()
 interface CreateVibeCheckModalProps {
   openVibeCheck: boolean
   handleCloseVibeCheck: () => void,
-  setSnackbarOpen: any
+  onVibeCheckResponse: (message: string, success: boolean) => void,
 }
 
 const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
   openVibeCheck,
   handleCloseVibeCheck,
-  setSnackbarOpen
+  onVibeCheckResponse
 }) => {
   const [ratingValue, setRatingValue] = React.useState<number | null>(null)
   const [options, setOptions] = React.useState<AutocompleteOption[]>([]) // State for options array
@@ -95,6 +95,27 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
     setRatingValue(null);    //clear rating
   }
 
+  const handleSubmitButton = async () => {
+    try{
+      const response = await sendCreateVibeCheck(
+                                                  isFormValid,
+                                                  selectedAlbum,
+                                                  reviewValue,
+                                                  ratingValue
+                                                )
+      if(response.status == 'success'){
+        onVibeCheckResponse('VibeCheck created successfully!', true);
+        setSelectedAlbum(null) // Clear selected album
+        setReviewValue("") // Clear review text
+        setRatingValue(null)
+      }else{
+        onVibeCheckResponse('Failed to create VibeCheck.', false);
+      }
+    }catch(error){
+        onVibeCheckResponse('An error occurred while creating VibeCheck.', false);
+    }
+  }
+
   return (
     <MaterialCssVarsProvider theme={{ [THEME_ID]: materialTheme }}>
       <JoyCssVarsProvider>
@@ -120,16 +141,8 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
               <form
                 onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                   event.preventDefault()
-                  sendCreateVibeCheck(
-                    isFormValid,
-                    selectedAlbum,
-                    reviewValue,
-                    ratingValue
-                  )
-                  setSelectedAlbum(null) // Clear selected album
-                  setReviewValue("") // Clear review text
-                  setRatingValue(null)
-                  setSnackbarOpen(true);
+                  handleSubmitButton()
+                  
                   handleCloseVibeCheck()
                 }}
               >

@@ -23,6 +23,7 @@ const sendCreateVibeCheck = async (isFormValid:boolean, selectedAlbum: SelectedA
           }
       });
         console.log("Response:", response.data); // Log the response for debugging
+        return response.data;
       } catch (error) {
         console.error("Error submitting the form:", error); // Log any error that occurs
       }
