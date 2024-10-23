@@ -7,7 +7,15 @@ interface BoxInformationProp {
 }
 
 const BoxInformation: React.FC<BoxInformationProp> = ({ property, phrase }) => {
+  /**
+   * functional component to show the information of the user
+   *
+   */
+
+  // returns nothing is property is empty
   if (!property) return null;
+
+  // JSX
   return (
     <Typography>
       {phrase}: {property}

@@ -15,6 +15,7 @@ import updatePersonalProfile from '../../api/updateProfile';
 import sendFriendRequest from '../../api/sendFriendRequest';
 import deleteFriend from '../../api/deleteFriend';
 import BoxInformation from './BoxInformation';
+import BoxUpdate from './BoxUpdate';
 
 // interface for the component prop params
 interface UserProfileProps {
@@ -183,65 +184,54 @@ const UserProfile: React.FC<UserProfileProps> = ({
           <BoxInformation property={localUserInfo.bio} phrase={'Bio '} />
         </Box>
       ) : (
+        // JSX only shown if the user is the same as the logged in user
         loggedInUser === userInfo.username && (
-          // block for user to edit the fields
+          // box to hold inputs
           <Box sx={{ mt: 2 }}>
             {/* grid to hold the fields that are editable */}
             <Grid container spacing={1}>
               {/* favorite song */}
-              <Grid item xs={3}>
-                <TextField
-                  label="Favorite Song"
-                  name="favoriteSong"
-                  value={localUserInfo.favoriteSong}
-                  onChange={handleInputChange}
-                />
-              </Grid>
+              <BoxUpdate
+                name={'favoriteSong'}
+                property={localUserInfo.favoriteSong}
+                handleChange={handleInputChange}
+              ></BoxUpdate>
+
               {/* favorite artist */}
-              <Grid item xs={3}>
-                <TextField
-                  label="Favorite Artist"
-                  name="favoriteArtist"
-                  value={localUserInfo.favoriteArtist}
-                  onChange={handleInputChange}
-                />
-              </Grid>
+              <BoxUpdate
+                name={'favoriteArtist'}
+                property={localUserInfo.favoriteArtist}
+                handleChange={handleInputChange}
+              ></BoxUpdate>
+
               {/* favorite album */}
-              <Grid item xs={3}>
-                <TextField
-                  label="Favorite Album"
-                  name="favoriteAlbum"
-                  value={localUserInfo.favoriteAlbum}
-                  onChange={handleInputChange}
-                />
-              </Grid>
+              <BoxUpdate
+                name={'favoriteAlbum'}
+                property={localUserInfo.favoriteAlbum}
+                handleChange={handleInputChange}
+              ></BoxUpdate>
+
               {/* user city */}
-              <Grid item xs={3}>
-                <TextField
-                  label="City"
-                  name="city"
-                  value={localUserInfo.city}
-                  onChange={handleInputChange}
-                />
-              </Grid>
+              <BoxUpdate
+                name={'city'}
+                property={localUserInfo.city}
+                handleChange={handleInputChange}
+              ></BoxUpdate>
+
               {/* user state */}
-              <Grid item xs={3}>
-                <TextField
-                  label="State"
-                  name="state"
-                  value={localUserInfo.state}
-                  onChange={handleInputChange}
-                />
-              </Grid>
+              <BoxUpdate
+                name={'state'}
+                property={localUserInfo.state}
+                handleChange={handleInputChange}
+              ></BoxUpdate>
+
               {/* user country */}
-              <Grid item xs={3}>
-                <TextField
-                  label="Country"
-                  name="country"
-                  value={localUserInfo.country}
-                  onChange={handleInputChange}
-                />
-              </Grid>
+              <BoxUpdate
+                name={'country'}
+                property={localUserInfo.country}
+                handleChange={handleInputChange}
+              ></BoxUpdate>
+
               {/* user bio */}
               <Grid item xs={3}>
                 <TextField
@@ -255,7 +245,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               </Grid>
             </Grid>
 
-            {/* save and cancel button, only present when editting*/}
+            {/* save and cancel button, only present when editing*/}
             <Box sx={{ mt: 2 }}>
               <Button variant="contained" color="primary" onClick={handleSave}>
                 Save
