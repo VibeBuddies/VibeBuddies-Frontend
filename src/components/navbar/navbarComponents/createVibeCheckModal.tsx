@@ -3,6 +3,7 @@
 import * as React from "react"
 import Modal from "@mui/joy/Modal"
 import ModalDialog from "@mui/joy/ModalDialog"
+import ModalClose from '@mui/joy/ModalClose';
 import DialogTitle from "@mui/joy/DialogTitle"
 import DialogContent from "@mui/joy/DialogContent"
 import { searchAlbum } from "../../createVibeCheck/SearchAlbum"
@@ -100,6 +101,7 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
               maxWidth: "none",
             }}
           >
+            <ModalClose variant="plain" sx={{ m: 1 }} />
             <DialogTitle>Create new VibeCheck</DialogTitle>
             <DialogContent
               sx={{
