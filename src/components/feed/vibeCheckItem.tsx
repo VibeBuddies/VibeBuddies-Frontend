@@ -9,7 +9,6 @@ import sendDislike from "../../api/sendDislikeApi"
 import { AuthContext } from "../Context/AuthContext"
 import { UserContext } from "../Context/UserContext"
 
-
 interface VibeCheckItemProps {
   vibe_check_id: string
   album_id: {
@@ -19,6 +18,7 @@ interface VibeCheckItemProps {
   }
   review: string
   rating: number
+  comments: any[]
   likes: number
   dislikes: number
   timestamp: number
@@ -32,6 +32,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
   album_id,
   review,
   rating,
+  comments,
   likes,
   dislikes,
   timestamp,
@@ -58,63 +59,65 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
     return text
   }
 
-  //likesordislikes button props 
+  //likesordislikes button props
   const { token } = useContext(AuthContext)!
   //add username from user context
-  const {username: contextUsername} = useContext(UserContext)!;
-  const [likePressed, setLikePressed] = useState<boolean>(false);
-  const [dislikePressed, setDislikePressed] = useState<boolean>(false);
-  const [localLikes, setLocalLikes] = useState<number>(likes);
-  const [localDislikes, setLocalDislikes] = useState<number>(dislikes);
+  const { username: contextUsername } = useContext(UserContext)!
+  const [likePressed, setLikePressed] = useState<boolean>(false)
+  const [dislikePressed, setDislikePressed] = useState<boolean>(false)
+  const [localLikes, setLocalLikes] = useState<number>(likes)
+  const [localDislikes, setLocalDislikes] = useState<number>(dislikes)
 
   //checks if current auth user is in the string arrays liked_by and disliked_by
   useEffect(() => {
     if (liked_by.includes(contextUsername)) {
-      setLikePressed(true);
-      setDislikePressed(false);
+      setLikePressed(true)
+      setDislikePressed(false)
     } else if (disliked_by.includes(contextUsername)) {
-      setDislikePressed(true);
-      setLikePressed(false);
+      setDislikePressed(true)
+      setLikePressed(false)
     } else {
-      setLikePressed(false);
-      setDislikePressed(false);
+      setLikePressed(false)
+      setDislikePressed(false)
     }
-  }, [liked_by, disliked_by, contextUsername]);
+  }, [liked_by, disliked_by, contextUsername])
 
   const handleLikePress = async () => {
     try {
-      const updatedLikes: any = await sendLike(token, vibe_check_id);
+      const updatedLikes: any = await sendLike(token, vibe_check_id)
       // console.log(`these are updatedLike: ${updatedLikes.data.updatedVibeCheck.likes}`)
-      setLocalLikes(updatedLikes.data.updatedVibeCheck.likes); // Update local likes
-      setLikePressed(prevState => !prevState);        // Mark like as pressed
-      setDislikePressed(false);    // Reset dislike
+      setLocalLikes(updatedLikes.data.updatedVibeCheck.likes) // Update local likes
+      setLikePressed((prevState) => !prevState) // Mark like as pressed
+      setDislikePressed(false) // Reset dislike
     } catch (error) {
-      console.error("Error liking the item:", error);
+      console.error("Error liking the item:", error)
     }
-  };
+  }
 
   const handleDislikePress = async () => {
     try {
-      const updatedDislikes: any = await sendDislike(token, vibe_check_id);
+      const updatedDislikes: any = await sendDislike(token, vibe_check_id)
       // console.log(`these are updatedLike: ${updatedLikes.data.updatedVibeCheck.likes}`)
-      setLocalDislikes(updatedDislikes.data.updatedVibeCheck.dislikes); // Update local likes
-      setDislikePressed(prevState => !prevState);        // Mark like as pressed
-      setLikePressed(false);    // Reset dislike
+      setLocalDislikes(updatedDislikes.data.updatedVibeCheck.dislikes) // Update local likes
+      setDislikePressed((prevState) => !prevState) // Mark like as pressed
+      setLikePressed(false) // Reset dislike
     } catch (error) {
-      console.error("Error disliking the item:", error);
+      console.error("Error disliking the item:", error)
     }
-  };
+  }
 
   //rendered beforehand as to easily pass down JSX.Element to modal as prop
-  const renderedLikeOrDislikeButtonsElement = <LikeOrDislikeButtons 
-                                                vibe_check_id={vibe_check_id}
-                                                likePressed={likePressed}
-                                                dislikePressed={dislikePressed}
-                                                onLikePress={handleLikePress}
-                                                onDislikePress={handleDislikePress}
-                                                likes={localLikes}
-                                                dislikes={localDislikes}
-                                                />
+  const renderedLikeOrDislikeButtonsElement = (
+    <LikeOrDislikeButtons
+      vibe_check_id={vibe_check_id}
+      likePressed={likePressed}
+      dislikePressed={dislikePressed}
+      onLikePress={handleLikePress}
+      onDislikePress={handleDislikePress}
+      likes={localLikes}
+      dislikes={localDislikes}
+    />
+  )
 
   return (
     <>
@@ -177,14 +180,14 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
               precision={0.5}
               readOnly
             />
-            </Box>
-            <Box 
-              sx={{
-                alignSelf: "right",
-                }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* <LikeOrDislikeButtons 
+          </Box>
+          <Box
+            sx={{
+              alignSelf: "right",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* <LikeOrDislikeButtons 
               vibe_check_id={vibe_check_id}
               likePressed={likePressed}
               dislikePressed={dislikePressed}
@@ -193,8 +196,8 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
               likes={localLikes}
               dislikes={localDislikes}
               /> */}
-              {renderedLikeOrDislikeButtonsElement}
-            </Box>
+            {renderedLikeOrDislikeButtonsElement}
+          </Box>
         </Box>
       </Box>
 
@@ -205,6 +208,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
         album_id={album_id}
         review={review}
         rating={rating}
+        comments={comments}
         likes={likes}
         dislikes={dislikes}
         timestamp={timestamp}

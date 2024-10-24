@@ -12,6 +12,7 @@ interface VibeCheckModalProps {
   }
   review: string
   rating: number
+  comments: any[]
   likes: number
   dislikes: number
   timestamp: number
@@ -25,6 +26,7 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
   album_id,
   review,
   rating,
+  comments,
   likes,
   dislikes,
   timestamp,
@@ -103,9 +105,7 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
               readOnly
               sx={{ mt: 2 }}
             />
-            <Box>
-            {likeOrDislikeButtonsElement}
-            </Box>
+            <Box>{likeOrDislikeButtonsElement}</Box>
           </Box>
         </Box>
       </Box>
