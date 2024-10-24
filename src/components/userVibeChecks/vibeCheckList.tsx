@@ -1,6 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Card } from '@mui/material';
 import getVibeChecksByUsername from '../../api/getVibeChecksByUsername';
-import { UserContext } from '../Context/UserContext';
+import VibeCheckCard from './vibeCheckCard';
+import deleteVibeCheck from '../../api/deleteVibeCheck';
 
 interface vibeCheckListProps {
   usernameProp: string;
@@ -13,9 +15,6 @@ const VibeCheckList: React.FC<vibeCheckListProps> = ({ usernameProp }) => {
 
   // state to hold the user's vibeChecks
   const [vibeChecks, setVibeChecks] = useState<any>([]);
-
-  // getting information from the context
-  const { username: loggedInUser } = useContext(UserContext)!;
 
   // block to make api call to get vibeChecks from the backend
   useEffect(() => {
@@ -35,10 +34,29 @@ const VibeCheckList: React.FC<vibeCheckListProps> = ({ usernameProp }) => {
     fetchVibeChecks();
   }, [usernameProp]);
 
-  console.log(vibeChecks);
+  // function to handle the deleting of a vibeCheck
+  function handleDelete(vibeCheckId: string): void {
+    deleteVibeCheck(vibeCheckId);
+    setVibeChecks(
+      vibeChecks.filter((vibeCheck: any) => {
+        return vibeCheckId !== vibeCheck.vibe_check_id;
+      })
+    );
+  }
 
   // JSX
-  return <div>this is the vibeChecks for {usernameProp}</div>;
+  return (
+    <div>
+      {vibeChecks.map((vibeCheck: any, index: number) => (
+        <Card key={index} sx={{ display: 'flex', marginBottom: 2 }}>
+          <VibeCheckCard
+            vibeCheckInfo={vibeCheck}
+            handleDelete={handleDelete}
+          ></VibeCheckCard>
+        </Card>
+      ))}
+    </div>
+  );
 };
 
 export default VibeCheckList;
