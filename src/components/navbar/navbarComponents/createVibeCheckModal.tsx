@@ -105,7 +105,7 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
                                                   reviewValue,
                                                   ratingValue
                                                 )
-      if(response.status == 'success'){
+      if(response.status === 'success'){
         onVibeCheckResponse('VibeCheck created successfully!', true);
         setSelectedAlbum(null) // Clear selected album
         setReviewValue("") // Clear review text
