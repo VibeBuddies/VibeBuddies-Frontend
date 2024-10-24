@@ -2,7 +2,7 @@ import React from "react"
 import { Box, Typography } from "@mui/material"
 import CommentItem from "./commentItem"
 
-/* arranges the commentss into a scrollable list on the modal*/
+/* arranges the comments into a scrollable list on the modal*/
 
 interface Comment {
   username: string
@@ -18,7 +18,15 @@ interface CommentListProps {
 
 const CommentList: React.FC<CommentListProps> = ({ comments }) => {
   return (
-    <>
+    <Box
+      sx={{
+        maxHeight: "18vh", // Adjust the max height as needed
+        overflowY: "auto", // Enable vertical scrolling
+        paddingRight: "10px", // Add space for scrollbar
+        marginTop: 2,
+        padding: 1,
+      }}
+    >
       {comments.length > 0 ? (
         comments.map((comment) => (
           <CommentItem
@@ -35,14 +43,14 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          height="100vh" // Full viewport height to vertically center
+          height="100%"
         >
           <Typography variant="h6" align="center">
             No Comments
           </Typography>
         </Box>
       )}
-    </>
+    </Box>
   )
 }
 

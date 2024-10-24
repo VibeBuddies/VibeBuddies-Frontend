@@ -1,6 +1,12 @@
-import React from "react"
-import { Box, Typography, Rating, Modal } from "@mui/material"
-import defaultAvi from "./default-avi.jpg"
+import React, { useState } from "react"
+import {
+  Box,
+  Typography,
+  Rating,
+  Modal,
+  TextField,
+  Button,
+} from "@mui/material"
 import CommentList from "./comments/commentList"
 
 interface VibeCheckModalProps {
@@ -19,6 +25,7 @@ interface VibeCheckModalProps {
   timestamp: number
   username: string
   likeOrDislikeButtonsElement: JSX.Element
+  onSubmitComment: (comment: string) => void // Add this prop
 }
 
 const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
@@ -33,7 +40,18 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
   timestamp,
   username,
   likeOrDislikeButtonsElement,
+  onSubmitComment, // Destructure this
 }) => {
+  const [newComment, setNewComment] = useState("")
+
+  // Function to handle adding a new comment
+  const handleAddComment = () => {
+    if (newComment.trim()) {
+      onSubmitComment(newComment) // Call the passed in function to handle comment submission
+      setNewComment("") // Clear the input after submission
+    }
+  }
+
   return (
     <Modal
       open={open}
@@ -45,28 +63,23 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
         },
       }}
     >
-      {/* Wrap everything in a single Box to avoid the multiple children error */}
       <Box
+        p={4}
         sx={{
           backgroundColor: "white",
           borderRadius: 2,
           maxWidth: "80%",
+          maxHeight: "90vh",
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
           padding: "2rem",
           position: "absolute",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
+          overflowY: "auto", // Make modal scrollable
         }}
       >
         <Box display="flex" alignItems="flex-start" mr={2}>
-          <Box mr={1}>
-            <img
-              src={defaultAvi}
-              alt={"err"}
-              style={{ width: "45px", height: "45px", borderRadius: "25px" }}
-            />
-          </Box>
           <Typography variant="h5" marginTop={0.5}>
             {username}
           </Typography>
@@ -84,8 +97,6 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
           </Box>
           <Box>
             <Typography variant="h6">{album_id.artist}</Typography>
-
-            {/* Scrollable review box with scrollbar always visible */}
             <Box
               sx={{
                 maxHeight: "200px",
@@ -96,7 +107,6 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
             >
               <Typography>{review}</Typography>
             </Box>
-
             <Rating
               name={`modal-rating-${album_id.name}`}
               value={rating}
@@ -108,8 +118,34 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
           </Box>
         </Box>
 
-        {/* CommentList component for displaying comments */}
-        <CommentList comments={comments} />
+        <Box mt={4}>
+          {/* Input field to add a new comment */}
+          <Box mt={2} display="flex" alignItems="center">
+            <TextField
+              fullWidth
+              label="Add a comment..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+            />
+            <Button
+              onClick={handleAddComment}
+              sx={{ ml: 2 }}
+              variant="contained"
+              color="primary"
+            >
+              Submit
+            </Button>
+          </Box>
+          <Box
+            sx={
+              {
+                // maxHeight: "50vh",
+              }
+            }
+          >
+            <CommentList comments={comments} />
+          </Box>
+        </Box>
       </Box>
     </Modal>
   )
