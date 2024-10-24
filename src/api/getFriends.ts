@@ -1,15 +1,15 @@
-import axios from "axios"
-import { API_URL } from "../utils/APIURL"
+import axios from 'axios';
+import { API_URL } from '../utils/APIURL';
 
 const getFriends = async (username: string) => {
   /**
-   * function to get the friends of a user
+   * api function to handle getting the friends of a given username
    */
 
   try {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem('token');
     if (!token) {
-      throw new Error("No token found, please log in.")
+      throw new Error('No token found, please log in.');
     }
 
     // Send GET request
@@ -17,12 +17,12 @@ const getFriends = async (username: string) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    })
+    });
 
-    return response
+    return response;
   } catch (error) {
-    console.error("Error getting personal information:", error) // Log any error that occurs
+    console.error('Error getting personal information:', error); // Log any error that occurs
   }
-}
+};
 
-export default getFriends
+export default getFriends;
