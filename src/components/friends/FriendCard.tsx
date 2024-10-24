@@ -11,6 +11,8 @@ import {
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { UserContext } from '../Context/UserContext';
+import deleteFriend from '../../api/deleteFriend';
+import sendFriendRequest from '../../api/sendFriendRequest';
 
 interface FriendProps {
   friend: {
@@ -27,19 +29,25 @@ interface FriendProps {
 }
 
 const FriendCard: React.FC<FriendProps> = ({ friend }) => {
-  // grabbing our logged in username from the usercontext
+  /**
+   * functional compoenent to display individual user information in card
+   *
+   */
+
+  // getting information from usercontext
   const {
     username: loggedInUser,
     setProperty,
     friendList,
   } = useContext(UserContext)!;
 
+  // checking if current user is friend of the logged in user
   let isFriend = friendList?.has(friend.username!);
 
-  //   intializing our navigate object
+  // navigate object
   const navigate = useNavigate();
 
-  // function to handle navigating to user's profile
+  // function to handle navigating to user's profile when username is clicked, sets editing option to false
   const handleUsernameClick = (username: string | undefined) => {
     if (username) {
       navigate(`/profile/${username}`);
@@ -47,11 +55,23 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
     }
   };
 
-  // block to handle the deleting function
-  function handleDeleteFriend(usernaem: string | undefined) {}
+  // function to handle the deleting of a friend, updates context friendList
+  async function handleDeleteFriend(
+    username: string | undefined
+  ): Promise<void> {
+    await deleteFriend(username!);
+    setProperty(
+      `friendList`,
+      new Set([...friendList!].filter((friend) => friend !== username))
+    );
+  }
 
-  function handleAddFriend(usernaem: string | undefined): void {}
+  // function to send a friend request
+  async function handleAddFriend(username: string | undefined): Promise<void> {
+    await sendFriendRequest(username!);
+  }
 
+  // JSX
   return (
     <Card>
       <CardMedia>

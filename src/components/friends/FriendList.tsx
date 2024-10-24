@@ -22,19 +22,37 @@ interface FriendListProps {
   usernameProp: string;
 }
 
-// functional component with username passed through
 const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
+  /**
+   * react functional component to get the list of friends of a user
+   *
+   */
+
   // state to hold the friends
   const [friends, setFriends] = useState<FriendsDataReturned[]>([]);
 
-  // block to get the friends of the user that was passed through
+  // grabbing information from the usercontext
+  const { username: loggedInUser, setProperty } = useContext(UserContext)!;
+
+  // block to make api call to get friends from backend
   useEffect(() => {
     const fetchFriends = async () => {
       try {
-        // calling the api
+        // api function call
         const data = await getFriends(usernameProp);
+        // block checks if data contains friendList, if so then sets the friends in state
         if (data?.data?.data.friendList) {
           setFriends(data.data.data.friendList);
+
+          // block checks if logged in user is accessing their profile to update their friendList
+          if (loggedInUser === usernameProp) {
+            setProperty(
+              'friendList',
+              new Set(
+                data.data.data.friendList.map((friend: any) => friend.username)
+              )
+            );
+          }
         }
       } catch (error) {
         console.log(
@@ -45,12 +63,14 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
     fetchFriends();
   }, [usernameProp]);
 
+  // JSX
   return (
     <>
       {/* grid for all friends */}
       <Grid container spacing={2}>
         {/* conditionally render friend list if friends are present */}
         {friends.length > 0 ? (
+          // iterating through the friends
           friends.map((friend, index) => (
             <Grid item xs={12} sm={6} md={2} key={index}>
               {/* friendcard compoennt with friend info */}
