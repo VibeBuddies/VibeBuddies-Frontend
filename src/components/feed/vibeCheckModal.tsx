@@ -1,6 +1,7 @@
 import React from "react"
 import { Box, Typography, Rating, Modal } from "@mui/material"
 import defaultAvi from "./default-avi.jpg"
+import CommentList from "./comments/commentList"
 
 interface VibeCheckModalProps {
   open: boolean
@@ -44,16 +45,14 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
         },
       }}
     >
+      {/* Wrap everything in a single Box to avoid the multiple children error */}
       <Box
-        p={4}
         sx={{
           backgroundColor: "white",
           borderRadius: 2,
           maxWidth: "80%",
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
           padding: "2rem",
-
-          // Centers the content
           position: "absolute",
           top: "50%",
           left: "50%",
@@ -108,6 +107,9 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
             <Box>{likeOrDislikeButtonsElement}</Box>
           </Box>
         </Box>
+
+        {/* CommentList component for displaying comments */}
+        <CommentList comments={comments} />
       </Box>
     </Modal>
   )
