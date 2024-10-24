@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../utils/APIURL';
 
-const token = localStorage.getItem('token');
-
 //get all friends request, needs a jwt
 const getAllFriends = async () => {
   /**
@@ -10,14 +8,22 @@ const getAllFriends = async () => {
    *
    */
   try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      throw new Error('No token found, please log in.');
+    }
+
     const response = await axios.get(`${API_URL}/friends`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+
     return response.data;
   } catch (error) {
-    throw new Error('failed to retrieve friends');
+    console.error('Error in getAllFriends: ', error);
+    throw new Error('Failed to retrieve friends');
   }
 };
 

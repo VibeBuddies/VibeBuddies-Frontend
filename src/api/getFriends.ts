@@ -6,8 +6,12 @@ const getFriends = async (username: string) => {
    * api function to handle getting the friends of a given username
    */
 
-  const token = localStorage.getItem('token');
   try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found, please log in.');
+    }
+
     // Send GET request
     const response = await axios.get(`${API_URL}/friends/${username}`, {
       headers: {
@@ -17,7 +21,7 @@ const getFriends = async (username: string) => {
 
     return response;
   } catch (error) {
-    console.error('Error getting friend', error); // Log any error that occurs
+    console.error('Error getting personal information:', error); // Log any error that occurs
   }
 };
 

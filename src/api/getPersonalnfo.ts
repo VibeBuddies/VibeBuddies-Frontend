@@ -7,6 +7,11 @@ const getPersonalInformation = async (username: string) => {
    */
 
   const token = localStorage.getItem('token');
+
+  if (!token) {
+    throw new Error('No token found, please log in.');
+  }
+
   try {
     // Send GET request
     const response = await axios.get(`${API_URL}/users/${username}`, {
