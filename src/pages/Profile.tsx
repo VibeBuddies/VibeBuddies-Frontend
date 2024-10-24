@@ -4,6 +4,7 @@ import getPersonalInformation from '../api/getPersonalnfo';
 import { Tabs, Tab, Box } from '@mui/material';
 import FriendList from '../components/friends/FriendList';
 import { useParams } from 'react-router-dom';
+import VibeCheckList from '../components/userVibeChecks/vibeCheckList';
 
 /* arranges the Profile componenets into an profile page 
 which is accessible through a button on the feed page*/
@@ -101,7 +102,9 @@ const Profile: React.FC = () => {
         </Tabs>
 
         {/* rendering either vibeChecks or friendsList */}
-        {activeTab === 'vibechecks' && <p>vibeChecks</p>}
+        {activeTab === 'vibechecks' && (
+          <VibeCheckList usernameProp={usernameSearch}></VibeCheckList>
+        )}
         {activeTab === 'friends' && (
           <FriendList usernameProp={usernameSearch}></FriendList>
         )}
