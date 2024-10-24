@@ -21,8 +21,11 @@ interface UserProfileData {
   bio?: string;
 }
 
-// functional component for the profile page
 const Profile: React.FC = () => {
+  /**
+   * functional component to display the profile of the user
+   */
+
   // state to store user info, initially will be empty
   const [userInfo, setUserInfo] = useState<UserProfileData | null>(null);
   // state to keep track of which tab is open
@@ -37,6 +40,7 @@ const Profile: React.FC = () => {
     const fetchPersonalInformation = async () => {
       try {
         const data = await getPersonalInformation(usernameSearch);
+        // block checks if data contains information about the user
         if (data?.data?.data?.user) {
           const {
             username,
@@ -86,7 +90,7 @@ const Profile: React.FC = () => {
       )}
 
       <Box>
-        {/* Material-UI Tabs */}
+        {/* material ui tab */}
         <Tabs
           value={activeTab}
           onChange={handleTabChange}
@@ -96,8 +100,7 @@ const Profile: React.FC = () => {
           <Tab label="Friends" value="friends" />
         </Tabs>
 
-        {/* Conditional rendering based on active tab */}
-        {/* {activeTab === 'vibechecks' && <VibeChecks />} */}
+        {/* rendering either vibeChecks or friendsList */}
         {activeTab === 'vibechecks' && <p>vibeChecks</p>}
         {activeTab === 'friends' && (
           <FriendList usernameProp={usernameSearch}></FriendList>
