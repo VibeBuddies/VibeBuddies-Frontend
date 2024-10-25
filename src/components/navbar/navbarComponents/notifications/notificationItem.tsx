@@ -52,8 +52,8 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center">
             <Box mr={2}>
-              <Avatar alt={contextUsername} sx={{ width: 40, height: 40 }}>
-                {contextUsername.charAt(0).toUpperCase()}
+              <Avatar alt={username} sx={{ width: 40, height: 40 }}>
+                {username.charAt(0).toUpperCase()}
               </Avatar>
             </Box>
             {/* clickable link username */}

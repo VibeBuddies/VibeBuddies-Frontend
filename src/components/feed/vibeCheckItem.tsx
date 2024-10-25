@@ -153,8 +153,8 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
           {/* profile pic and username side by side */}
           <Box display="flex" alignItems="flex-start" mr={2} mb={1}>
             <Box mr={1}>
-              <Avatar alt={contextUsername} sx={{ width: 30, height: 30 }}>
-                {contextUsername.charAt(0).toUpperCase()}
+              <Avatar alt={username} sx={{ width: 30, height: 30 }}>
+                {username.charAt(0).toUpperCase()}
               </Avatar>
             </Box>
             <Box>
