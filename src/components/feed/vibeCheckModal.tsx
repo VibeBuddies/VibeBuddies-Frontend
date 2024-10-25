@@ -5,11 +5,12 @@ import {
   Rating,
   Modal,
   TextField,
-  Button,
+  IconButton,
   Snackbar,
   Alert,
   Avatar,
 } from "@mui/material"
+import CommentIcon from "@mui/icons-material/Comment"
 import CommentList from "./comments/commentList"
 import createComment from "../../api/createComment"
 import { UserContext } from "../../components/Context/UserContext"
@@ -181,14 +182,12 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
             />
-            <Button
+            <IconButton
               onClick={handleAddComment}
-              sx={{ ml: 2 }}
-              variant="contained"
-              color="primary"
+              sx={{ ml: 2, color: "grey.500" }}
             >
-              Submit
-            </Button>
+              <CommentIcon />
+            </IconButton>
           </Box>
           <Box>
             <CommentList comments={localComments} />
