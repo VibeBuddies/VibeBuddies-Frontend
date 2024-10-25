@@ -165,7 +165,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
                 variant="body2"
                 color="textSecondary"
                 gutterBottom
-                mt={0.6}
+                mt={0.5}
                 ml={0.5}
               >
                 {formatTimeDifference(timestamp)}
