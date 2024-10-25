@@ -1,6 +1,5 @@
 import React from "react"
 import { Box, Typography, Avatar } from "@mui/material"
-import { formatDistanceToNow } from "date-fns"
 import { formatTimeDifference } from "../../../utils/formatTimeDifference"
 import { Link } from "react-router-dom"
 
@@ -36,29 +35,37 @@ const CommentItem: React.FC<CommentItemProps> = ({
 
       {/* Comment Content */}
       <Box flex={1}>
-        {/* Username link with visual indicator */}
-        <Typography variant="subtitle1" fontWeight="bold">
-          <Link
-            to={`/profile/${username}`}
-            style={{
-              textDecoration: "none",
-              color: "inherit",
-              cursor: "pointer",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.textDecoration = "underline")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.textDecoration = "none")
-            }
+        {/* Username and Time Container */}
+        <Box display="flex" alignItems="center">
+          {/* Username link with visual indicator */}
+          <Typography
+            variant="subtitle1"
+            fontWeight="bold"
+            sx={{ marginRight: 1 }}
           >
-            {username}
-          </Link>
-        </Typography>
-        <Typography variant="body2" color="textSecondary" gutterBottom>
-          {/* {formatDistanceToNow(new Date(timestamp))} */}
-          {formatTimeDifference(timestamp)}
-        </Typography>
+            <Link
+              to={`/profile/${username}`}
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.textDecoration = "underline")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.textDecoration = "none")
+              }
+            >
+              {username}
+            </Link>
+          </Typography>
+
+          {/* Time displayed next to the username */}
+          <Typography variant="body2" color="textSecondary">
+            {formatTimeDifference(timestamp)}
+          </Typography>
+        </Box>
 
         <Typography variant="body1" marginBottom={1}>
           {comment_body}
