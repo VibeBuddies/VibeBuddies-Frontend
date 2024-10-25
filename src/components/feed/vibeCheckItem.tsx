@@ -155,24 +155,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
                 {contextUsername.charAt(0).toUpperCase()}
               </Avatar>
             </Box>
-            <Typography variant="subtitle1">
-              <Link
-                to={`/profile/${username}`}
-                style={{
-                  textDecoration: "bold",
-                  color: "inherit",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.textDecoration = "underline")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.textDecoration = "none")
-                }
-              >
-                {username}
-              </Link>
-            </Typography>
+            <Typography variant="subtitle1">{username}</Typography>
           </Box>
           <img
             src={album_id.cover_url}
