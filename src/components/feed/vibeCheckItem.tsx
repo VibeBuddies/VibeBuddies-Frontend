@@ -9,6 +9,8 @@ import sendDislike from "../../api/sendDislikeApi"
 import { AuthContext } from "../Context/AuthContext"
 import { UserContext } from "../Context/UserContext"
 import { Link } from "react-router-dom"
+import { formatDistanceToNow } from "date-fns"
+import { formatTimeDifference } from "../../utils/formatTimeDifference"
 
 interface VibeCheckItemProps {
   vibe_check_id: string
@@ -155,7 +157,20 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
                 {contextUsername.charAt(0).toUpperCase()}
               </Avatar>
             </Box>
-            <Typography variant="subtitle1">{username}</Typography>
+            <Box>
+              <Typography variant="subtitle1">{username}</Typography>
+            </Box>
+            <Box>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                gutterBottom
+                mt={0.6}
+                ml={0.5}
+              >
+                {formatTimeDifference(timestamp)}
+              </Typography>
+            </Box>
           </Box>
           <img
             src={album_id.cover_url}

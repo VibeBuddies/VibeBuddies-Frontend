@@ -1,6 +1,7 @@
 import React from "react"
 import { Box, Typography, Avatar } from "@mui/material"
 import { formatDistanceToNow } from "date-fns"
+import { formatTimeDifference } from "../../../utils/formatTimeDifference"
 import { Link } from "react-router-dom"
 
 interface CommentItemProps {
@@ -55,7 +56,8 @@ const CommentItem: React.FC<CommentItemProps> = ({
           </Link>
         </Typography>
         <Typography variant="body2" color="textSecondary" gutterBottom>
-          {formatDistanceToNow(new Date(timestamp), { addSuffix: true })}
+          {/* {formatDistanceToNow(new Date(timestamp))} */}
+          {formatTimeDifference(timestamp)}
         </Typography>
 
         <Typography variant="body1" marginBottom={1}>
