@@ -1,6 +1,7 @@
 import React from "react"
-import { Box, Typography, Avatar, Divider } from "@mui/material"
-import { formatDistanceToNow } from "date-fns" // Library to format timestamps (install it using npm or yarn)
+import { Box, Typography, Avatar } from "@mui/material"
+import { formatDistanceToNow } from "date-fns"
+import { Link } from "react-router-dom"
 
 interface CommentItemProps {
   username: string
@@ -35,8 +36,24 @@ const CommentItem: React.FC<CommentItemProps> = ({
 
       {/* Comment Content */}
       <Box flex={1}>
+        {/* Username as a clickable link with better visual indicator */}
         <Typography variant="subtitle1" fontWeight="bold">
-          {username}
+          <Link
+            to={`/profile/${username}`}
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.textDecoration = "underline")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.textDecoration = "none")
+            }
+          >
+            {username}
+          </Link>
         </Typography>
         <Typography variant="body2" color="textSecondary" gutterBottom>
           {formatDistanceToNow(new Date(timestamp), { addSuffix: true })}
