@@ -18,5 +18,5 @@ async function sendFriendRequest(username: string): Promise<void> {
     throw new Error(`failed to send friend request to ${username}, ${error}`);
   }
 }
-
+// minor
 export default sendFriendRequest;
