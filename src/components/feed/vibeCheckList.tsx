@@ -13,6 +13,7 @@ interface VibeCheck {
   }
   review: string
   rating: number
+  comments: any[]
   likes: number
   dislikes: number
   timestamp: number
@@ -36,6 +37,7 @@ const VibeCheckList: React.FC<VibeCheckListProps> = ({ vibeChecks }) => {
             album_id={vibeCheck.album_id}
             review={vibeCheck.review}
             rating={vibeCheck.rating}
+            comments={vibeCheck.comments}
             likes={vibeCheck.likes}
             dislikes={vibeCheck.dislikes}
             timestamp={vibeCheck.timestamp}
