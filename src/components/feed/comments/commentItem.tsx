@@ -29,14 +29,13 @@ const CommentItem: React.FC<CommentItemProps> = ({
       marginBottom={2}
       boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1)"
     >
-      {/* User Avatar */}
       <Avatar alt={username} sx={{ width: 40, height: 40, marginRight: 2 }}>
         {username.charAt(0).toUpperCase()}
       </Avatar>
 
       {/* Comment Content */}
       <Box flex={1}>
-        {/* Username as a clickable link with better visual indicator */}
+        {/* Username link with visual indicator */}
         <Typography variant="subtitle1" fontWeight="bold">
           <Link
             to={`/profile/${username}`}

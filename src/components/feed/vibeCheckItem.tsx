@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { Box, Typography, Rating } from "@mui/material"
+import { Box, Typography, Rating, Avatar } from "@mui/material"
 import VibeCheckModal from "./vibeCheckModal"
 import defaultAvi from "./default-avi.jpg"
 import { relative } from "path"
@@ -8,6 +8,7 @@ import sendLike from "../../api/sendLikeApi"
 import sendDislike from "../../api/sendDislikeApi"
 import { AuthContext } from "../Context/AuthContext"
 import { UserContext } from "../Context/UserContext"
+import { Link } from "react-router-dom"
 
 interface VibeCheckItemProps {
   vibe_check_id: string
@@ -148,15 +149,30 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
           mr={2}
         >
           {/* profile pic and username side by side */}
-          <Box display="flex" alignItems="flex-start" mr={2}>
+          <Box display="flex" alignItems="flex-start" mr={2} mb={1}>
             <Box mr={1}>
-              <img
-                src={defaultAvi}
-                alt={"err"}
-                style={{ width: "30px", height: "30px", borderRadius: "25px" }}
-              />
+              <Avatar alt={contextUsername} sx={{ width: 30, height: 30 }}>
+                {contextUsername.charAt(0).toUpperCase()}
+              </Avatar>
             </Box>
-            <Typography variant="subtitle1">{username}</Typography>
+            <Typography variant="subtitle1">
+              <Link
+                to={`/profile/${username}`}
+                style={{
+                  textDecoration: "bold",
+                  color: "inherit",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.textDecoration = "underline")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.textDecoration = "none")
+                }
+              >
+                {username}
+              </Link>
+            </Typography>
           </Box>
           <img
             src={album_id.cover_url}

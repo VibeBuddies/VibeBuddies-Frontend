@@ -8,10 +8,12 @@ import {
   Button,
   Snackbar,
   Alert,
+  Avatar,
 } from "@mui/material"
 import CommentList from "./comments/commentList"
 import createComment from "../../api/createComment"
 import { UserContext } from "../../components/Context/UserContext"
+import { Link } from "react-router-dom"
 
 interface VibeCheckModalProps {
   open: boolean
@@ -109,14 +111,36 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
           overflowY: "auto",
         }}
       >
-        <Box display="flex" alignItems="flex-start" mr={2}>
+        <Box display="flex" alignItems="flex-start">
+          <Box mr={1}>
+            <Avatar alt={loggedInUser} sx={{ width: 40, height: 40 }}>
+              {loggedInUser.charAt(0).toUpperCase()}
+            </Avatar>
+          </Box>
           <Typography variant="h5" marginTop={0.5}>
-            {username}
+            <Link
+              to={`/profile/${username}`}
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.textDecoration = "underline")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.textDecoration = "none")
+              }
+            >
+              {username}
+            </Link>
           </Typography>
         </Box>
-        <Typography variant="h4" mb={2}>
-          {album_id.name}
-        </Typography>
+        <Box>
+          <Typography variant="h4" mb={1} mt={1}>
+            {album_id.name}
+          </Typography>
+        </Box>
         <Box display="flex" alignItems="center">
           <Box mr={2}>
             <img
