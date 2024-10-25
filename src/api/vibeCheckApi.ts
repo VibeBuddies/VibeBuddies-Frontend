@@ -2,7 +2,7 @@ import axios from "axios";
 import { SelectedAlbum } from "../types";
 import { API_URL } from "../utils/APIURL";
 
-const sendCreateVibeCheck = async (isFormValid:boolean, selectedAlbum: SelectedAlbum | null, review: string, rating: number | null) => {
+const sendCreateVibeCheck = async (token:string|null, isFormValid:boolean, selectedAlbum: SelectedAlbum | null, review: string, rating: number | null) => {
 
     if (isFormValid) {
       // Prepare the data to send
@@ -12,7 +12,6 @@ const sendCreateVibeCheck = async (isFormValid:boolean, selectedAlbum: SelectedA
         rating: rating,
       };
       
-      const token = localStorage.getItem("token");
       try {
         // Send POST request
         const response = await axios.post(`${API_URL}/vibe-checks`, data,
@@ -23,6 +22,7 @@ const sendCreateVibeCheck = async (isFormValid:boolean, selectedAlbum: SelectedA
           }
       });
         console.log("Response:", response.data); // Log the response for debugging
+        return response.data;
       } catch (error) {
         console.error("Error submitting the form:", error); // Log any error that occurs
       }
