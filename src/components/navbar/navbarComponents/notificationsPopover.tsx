@@ -143,7 +143,7 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
       {/* Snackbar for success or error messages */}
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000}
+        autoHideDuration={2000}
         onClose={handleCloseSnackbar}
         message={snackbarMessage}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}

@@ -174,7 +174,7 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
         {/* Snackbar for comment submission */}
         <Snackbar
           open={snackbarOpen}
-          autoHideDuration={3000}
+          autoHideDuration={2000}
           onClose={handleCloseSnackbar}
           message={snackbarMessage}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
