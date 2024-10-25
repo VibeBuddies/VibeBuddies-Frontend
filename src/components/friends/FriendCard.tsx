@@ -4,16 +4,17 @@ import {
   Typography,
   Card,
   CardContent,
-  CardMedia,
   Avatar,
-  Button,
+  IconButton,
+  Box,
 } from '@mui/material';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { UserContext } from '../Context/UserContext';
 import deleteFriend from '../../api/deleteFriend';
 import sendFriendRequest from '../../api/sendFriendRequest';
 
+// interface
 interface FriendProps {
   friend: {
     username?: string;
@@ -73,56 +74,55 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
 
   // JSX
   return (
-    <Card>
-      <CardMedia>
-        {/* profile image */}
-        <Avatar
-          src={
-            friend.profileImage
-              ? friend.profileImage
-              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
-          }
-          alt={friend.username}
-          sx={{
-            width: 100,
-            height: 100,
-            margin: 'auto',
-            marginTop: 2,
-          }}
-        />
-      </CardMedia>
+    // card for the friend
+    <Card
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        padding: 1,
+      }}
+    >
+      {/* profile image */}
+      <Avatar
+        src={
+          friend.profileImage
+            ? friend.profileImage
+            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
+        }
+        alt={friend.username}
+        sx={{ width: 60, height: 60, marginRight: 2, cursor: 'pointer' }}
+        onClick={() => handleUsernameClick(friend.username)}
+      />
 
-      {/* clickable username */}
-      <CardContent>
+      {/* username */}
+      <CardContent sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
         <Typography
           variant="h6"
           onClick={() => handleUsernameClick(friend.username)}
           sx={{
             cursor: 'pointer',
-            textAlign: 'center',
-            textDecoration: 'underline',
           }}
         >
           {friend.username}
         </Typography>
+      </CardContent>
 
-        {/* conditionally render delete/add buttons*/}
-        {loggedInUser !== friend.username && (
-          <Button
-            variant="contained"
+      {/* displaying the delete/add button conditionally */}
+      {loggedInUser !== friend.username && (
+        <Box sx={{ marginLeft: 'auto' }}>
+          <IconButton
             color={isFriend ? 'error' : 'primary'}
-            startIcon={isFriend ? <PersonRemoveIcon /> : <PersonAddIcon />}
             onClick={() =>
               isFriend
                 ? handleDeleteFriend(friend.username)
                 : handleAddFriend(friend.username)
             }
-            sx={{ margin: 'auto', marginTop: 2 }}
           >
-            {isFriend ? 'Remove Friend' : 'Add Friend'}
-          </Button>
-        )}
-      </CardContent>
+            {isFriend ? <PersonRemoveIcon /> : <PersonAddIcon />}
+          </IconButton>
+        </Box>
+      )}
     </Card>
   );
 };
