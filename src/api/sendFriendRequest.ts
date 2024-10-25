@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { API_URL } from '../utils/APIURL';
 
-const token = localStorage.getItem('token');
-
 //get all friends request, needs a jwt
 async function sendFriendRequest(username: string): Promise<void> {
   try {
+    const token = localStorage.getItem('token');
     await axios.post(
       `${API_URL}/friends`,
       { username },
