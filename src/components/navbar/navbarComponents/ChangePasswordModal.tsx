@@ -40,7 +40,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
         return;
       }
       if(containsIllegalCharacters(newPassword)){
-        setError("Passwords must not contain /[<>\[\]{}()=|:;,+\*\?%&\s]/")
+        setError("Passwords must not contain [<>\[\]{}()=|:;,+\*\?%&\s]")
         return;
       }
       if (newPassword !== confirmNewPassword) {
