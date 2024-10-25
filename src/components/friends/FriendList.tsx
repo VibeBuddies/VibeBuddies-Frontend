@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import getFriends from '../../api/getFriends';
-import { Typography, Grid } from '@mui/material';
+import { Typography, List, ListItem } from '@mui/material';
 import FriendCard from './FriendCard';
 import { UserContext } from '../Context/UserContext';
 
@@ -66,25 +66,28 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
   // JSX
   return (
     <>
-      {/* grid for all friends */}
-      <Grid container spacing={2}>
-        {/* conditionally render friend list if friends are present */}
-        {friends.length > 0 ? (
-          // iterating through the friends
-          friends.map((friend, index) => (
-            <Grid item xs={12} sm={6} md={2} key={index}>
-              {/* friendcard compoennt with friend info */}
-              <FriendCard friend={friend}></FriendCard>
-            </Grid>
-          ))
-        ) : (
-          <Grid item xs={12}>
-            <Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
-              No friends.
-            </Typography>
-          </Grid>
-        )}
-      </Grid>
+      {/* checking if friends is empty or not, maps through it if not */}
+      {friends.length > 0 ? (
+        // list to hold the friend
+        <List
+          sx={{
+            marginLeft: -2,
+          }}
+        >
+          {friends.map((friend, index) => (
+            <React.Fragment key={index}>
+              <ListItem>
+                <FriendCard friend={friend} />
+              </ListItem>
+            </React.Fragment>
+          ))}
+        </List>
+      ) : (
+        // no friends found
+        <Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
+          No friends.
+        </Typography>
+      )}
     </>
   );
 };
