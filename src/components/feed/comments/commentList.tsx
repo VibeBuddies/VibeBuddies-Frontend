@@ -17,18 +17,20 @@ interface CommentListProps {
 }
 
 const CommentList: React.FC<CommentListProps> = ({ comments }) => {
+  const sortedComments = [...comments].sort((a, b) => b.timestamp - a.timestamp)
+
   return (
     <Box
       sx={{
-        maxHeight: "18vh", // Adjust the max height as needed
-        overflowY: "auto", // Enable vertical scrolling
-        paddingRight: "10px", // Add space for scrollbar
+        maxHeight: "18vh",
+        overflowY: "auto",
+        paddingRight: "10px",
         marginTop: 2,
         padding: 1,
       }}
     >
-      {comments.length > 0 ? (
-        comments.map((comment) => (
+      {sortedComments.length > 0 ? (
+        sortedComments.map((comment) => (
           <CommentItem
             key={comment.comment_id}
             comment_id={comment.comment_id}

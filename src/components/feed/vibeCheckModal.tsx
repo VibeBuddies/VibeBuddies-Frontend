@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import {
   Box,
   Typography,
@@ -6,12 +6,17 @@ import {
   Modal,
   TextField,
   Button,
+  Snackbar,
+  Alert,
 } from "@mui/material"
 import CommentList from "./comments/commentList"
+import createComment from "../../api/createComment"
+import { UserContext } from "../../components/Context/UserContext"
 
 interface VibeCheckModalProps {
   open: boolean
   handleClose: () => void
+  vibe_check_id: string
   album_id: {
     artist: string
     cover_url: string
@@ -25,12 +30,12 @@ interface VibeCheckModalProps {
   timestamp: number
   username: string
   likeOrDislikeButtonsElement: JSX.Element
-  onSubmitComment: (comment: string) => void // Add this prop
 }
 
 const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
   open,
   handleClose,
+  vibe_check_id,
   album_id,
   review,
   rating,
@@ -40,16 +45,41 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
   timestamp,
   username,
   likeOrDislikeButtonsElement,
-  onSubmitComment, // Destructure this
 }) => {
   const [newComment, setNewComment] = useState("")
+  const [localComments, setLocalComments] = useState<any[]>(comments)
 
-  // Function to handle adding a new comment
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState("")
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false)
+  }
+
+  // handle adding a new comment
   const handleAddComment = () => {
     if (newComment.trim()) {
-      onSubmitComment(newComment) // Call the passed in function to handle comment submission
-      setNewComment("") // Clear the input after submission
+      createComment(vibe_check_id, newComment)
+      handleTempComment(newComment)
+      setNewComment("")
+      setSnackbarMessage("Comment added successfully!")
+      setSnackbarOpen(true)
     }
+  }
+
+  const { username: loggedInUser } = useContext(UserContext)!
+
+  //creates a temporary comment so the user
+  //can see their comment get added in real time
+  const handleTempComment = (comment: string) => {
+    const newComment = {
+      username: loggedInUser,
+      user_id: "",
+      comment_id: "",
+      comment_body: comment,
+      timestamp: Date.now(),
+    }
+    setLocalComments((prevComments) => [...prevComments, newComment])
   }
 
   return (
@@ -76,7 +106,7 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          overflowY: "auto", // Make modal scrollable
+          overflowY: "auto",
         }}
       >
         <Box display="flex" alignItems="flex-start" mr={2}>
@@ -136,16 +166,19 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
               Submit
             </Button>
           </Box>
-          <Box
-            sx={
-              {
-                // maxHeight: "50vh",
-              }
-            }
-          >
-            <CommentList comments={comments} />
+          <Box>
+            <CommentList comments={localComments} />
           </Box>
         </Box>
+
+        {/* Snackbar for comment submission */}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          onClose={handleCloseSnackbar}
+          message={snackbarMessage}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        />
       </Box>
     </Modal>
   )

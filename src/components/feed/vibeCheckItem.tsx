@@ -40,6 +40,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
   disliked_by,
 }) => {
   const [openModal, setOpenModal] = useState<boolean>(false)
+
   const handleOpenModal = () => setOpenModal(true)
   const handleCloseModal = () => setOpenModal(false)
 
@@ -90,12 +91,6 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
     } catch (error) {
       console.error("Error disliking the item:", error)
     }
-  }
-
-  // Handle comment submission
-  const handleSubmitComment = (comment: string) => {
-    console.log("New comment submitted:", comment)
-    // Logic for submitting the comment (e.g., API call)
   }
 
   const renderedLikeOrDislikeButtonsElement = (
@@ -179,6 +174,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
       <VibeCheckModal
         open={openModal}
         handleClose={handleCloseModal}
+        vibe_check_id={vibe_check_id}
         album_id={album_id}
         review={review}
         rating={rating}
@@ -188,7 +184,6 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
         timestamp={timestamp}
         username={username}
         likeOrDislikeButtonsElement={renderedLikeOrDislikeButtonsElement}
-        onSubmitComment={handleSubmitComment} // Pass the comment handler
       />
     </>
   )

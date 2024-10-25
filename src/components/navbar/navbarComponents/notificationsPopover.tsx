@@ -145,12 +145,9 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={handleCloseSnackbar}
+        message={snackbarMessage}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        sx={{ zIndex: 1300 }}
-        color={snackbarSeverity}
-      >
-        <Alert variant="filled">{snackbarMessage}</Alert>
-      </Snackbar>
+      />
     </>
   )
 }
