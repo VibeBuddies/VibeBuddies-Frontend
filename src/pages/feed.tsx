@@ -13,6 +13,7 @@ interface VibeCheck {
   }
   review: string
   rating: number
+  comments: any[]
   likes: number
   dislikes: number
   timestamp: number
