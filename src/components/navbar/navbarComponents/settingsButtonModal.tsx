@@ -14,6 +14,7 @@ import {
 import { Close as CloseIcon } from "@mui/icons-material"
 import { AuthContext } from "../../Context/AuthContext"
 import deleteAccount from "../../../api/deleteAccountApi"
+import ChangePasswordModal from "./ChangePasswordModal"
 
 /* settings button modal that will display user settings:
  * Users can log off.
@@ -30,13 +31,13 @@ interface SettingsButtonModalProps {
 const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
   openSettings,
   handleCloseSettings,
-  handleChangePassword,
 }) => {
   const { logOff } = useContext(AuthContext)! // not-null assertion needed!
   const navigate = useNavigate()
 
   const [confirmationText, setConfirmationText] = useState<string>("")
   const [showConfirmationInput, setShowConfirmationInput] = useState(false)
+  const [openChangePassword, setOpenChangePassword] = useState(false);
 
   const handleLogOff = () => {
     logOff()
@@ -64,6 +65,10 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
     setShowConfirmationInput(false)
     setConfirmationText("")
   }
+
+  const handleChangePassword = () => setOpenChangePassword(true);
+  const handleCloseChangePassword = () => setOpenChangePassword(false);
+  
 
   return (
     <Dialog
@@ -97,6 +102,11 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
           >
             Change Password
           </Button>
+          {/* change password modal */}
+          <ChangePasswordModal
+          open={openChangePassword}
+          onClose={handleCloseChangePassword}
+          />
 
           {/* Delete Account Button */}
           {!showConfirmationInput ? (
