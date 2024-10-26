@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Card } from "@mui/material"
+import { Card, Box } from "@mui/material"
 import getVibeChecksByUsername from "../../api/getVibeChecksByUsername"
 import VibeCheckCard from "./vibeCheckCard"
 import deleteVibeCheck from "../../api/deleteVibeCheck"
@@ -46,16 +46,24 @@ const VibeCheckList: React.FC<vibeCheckListProps> = ({ usernameProp }) => {
 
   // JSX
   return (
-    <div>
+    <Box>
       {vibeChecks.map((vibeCheck: any, index: number) => (
-        <Card key={index} sx={{ display: "flex", marginBottom: 2 }}>
+        <Box
+          key={index}
+          sx={{
+            display: "flex",
+            width: "100%",
+            marginBottom: 2,
+            boxSizing: "border-box",
+          }}
+        >
           <VibeCheckCard
             vibeCheckInfo={vibeCheck}
             handleDelete={handleDelete}
           ></VibeCheckCard>
-        </Card>
+        </Box>
       ))}
-    </div>
+    </Box>
   )
 }
 

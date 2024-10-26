@@ -2,10 +2,7 @@ import React, { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import {
   Dialog,
-  DialogTitle,
-  DialogActions,
   DialogContent,
-  Button,
   Box,
   TextField,
   Typography,
@@ -15,6 +12,9 @@ import { Close as CloseIcon } from "@mui/icons-material"
 import { AuthContext } from "../../Context/AuthContext"
 import deleteAccount from "../../../api/deleteAccountApi"
 import ChangePasswordModal from "./ChangePasswordModal"
+import ChangeCircleIcon from "@mui/icons-material/ChangeCircle"
+import DeleteIcon from "@mui/icons-material/Delete"
+import LogoutIcon from "@mui/icons-material/Logout"
 
 /* settings button modal that will display user settings:
  * Users can log off.
@@ -32,12 +32,12 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
   openSettings,
   handleCloseSettings,
 }) => {
-  const { logOff } = useContext(AuthContext)! // not-null assertion needed!
+  const { logOff } = useContext(AuthContext)!
   const navigate = useNavigate()
 
   const [confirmationText, setConfirmationText] = useState<string>("")
   const [showConfirmationInput, setShowConfirmationInput] = useState(false)
-  const [openChangePassword, setOpenChangePassword] = useState(false);
+  const [openChangePassword, setOpenChangePassword] = useState(false)
 
   const handleLogOff = () => {
     logOff()
@@ -66,9 +66,8 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
     setConfirmationText("")
   }
 
-  const handleChangePassword = () => setOpenChangePassword(true);
-  const handleCloseChangePassword = () => setOpenChangePassword(false);
-  
+  const handleChangePassword = () => setOpenChangePassword(true)
+  const handleCloseChangePassword = () => setOpenChangePassword(false)
 
   return (
     <Dialog
@@ -90,34 +89,46 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
         },
       }}
     >
-      <DialogTitle>User Settings</DialogTitle>
+      <DialogContent sx={{ position: "absolute", top: 1, right: 1 }}>
+        <IconButton onClick={handleCloseSettings}>
+          <CloseIcon />
+        </IconButton>
+      </DialogContent>
       <DialogContent>
-        <Box display="flex" flexDirection="column">
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems={"flex-start"}
+          marginRight={1}
+        >
           {/* Change Password Button */}
-          <Button
+          <IconButton
             onClick={handleChangePassword}
-            variant="contained"
-            color="primary"
-            sx={{ mb: 2 }}
+            sx={{
+              borderRadius: 1,
+            }}
           >
-            Change Password
-          </Button>
-          {/* change password modal */}
+            <ChangeCircleIcon />
+            <Typography ml={1}>Change Password</Typography>
+          </IconButton>
+
+          {/* Change password modal */}
           <ChangePasswordModal
-          open={openChangePassword}
-          onClose={handleCloseChangePassword}
+            open={openChangePassword}
+            onClose={handleCloseChangePassword}
           />
 
           {/* Delete Account Button */}
           {!showConfirmationInput ? (
-            <Button
+            <IconButton
               onClick={handleShowConfirmation}
-              variant="contained"
-              color="primary"
-              sx={{ mb: 2 }}
+              sx={{
+                borderRadius: 1,
+              }}
             >
-              Delete Account
-            </Button>
+              <DeleteIcon />
+              <Typography ml={1}>Delete Account</Typography>
+            </IconButton>
           ) : (
             <>
               <Box
@@ -141,28 +152,33 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
                 placeholder="I am sure"
                 sx={{ mb: 2 }}
               />
-              <Button
+              <IconButton
                 onClick={handleDeleteAccount}
-                variant="contained"
-                color="primary"
                 disabled={confirmationText !== "I am sure"}
+                sx={{
+                  borderRadius: 1,
+                }}
               >
-                Confirm Delete
-              </Button>
+                <DeleteIcon />
+                <Typography ml={1}>Delete Account</Typography>
+              </IconButton>
             </>
           )}
 
           {/* Log Off Button */}
-          <Button onClick={handleLogOff} variant="contained" color="primary">
-            Log Off
-          </Button>
+          <Box ml={0.5}>
+            <IconButton
+              onClick={handleLogOff}
+              sx={{
+                borderRadius: 1,
+              }}
+            >
+              <LogoutIcon />
+              <Typography ml={1}>Log Off</Typography>
+            </IconButton>
+          </Box>
         </Box>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleCloseSettings} color="primary">
-          Close
-        </Button>
-      </DialogActions>
     </Dialog>
   )
 }
