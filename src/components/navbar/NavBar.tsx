@@ -25,15 +25,14 @@ const Navbar: React.FC = () => {
     useState<HTMLElement | null>(null)
   //snackbar states
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
-  const [snackbarMessage, setSnackbarMessage] = useState<string>('');
-  const [isSuccess, setIsSuccess] = useState<boolean>(true); 
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("")
+  const [isSuccess, setIsSuccess] = useState<boolean>(true)
 
-  const handleVibeCheckResponse = (message:string, success:boolean) => {
-    setSnackbarMessage(message);
-    setIsSuccess(success);
-    setSnackbarOpen(true);
-  };
-
+  const handleVibeCheckResponse = (message: string, success: boolean) => {
+    setSnackbarMessage(message)
+    setIsSuccess(success)
+    setSnackbarOpen(true)
+  }
 
   const mockNotifications = [
     "You have a new friend request.",
@@ -114,7 +113,6 @@ const Navbar: React.FC = () => {
         <SettingsButtonModal
           openSettings={openSettingsModal}
           handleCloseSettings={handleCloseSettings}
-          handleDeleteAccount={handleDeleteAccount}
           handleChangePassword={handleChangePassword}
         />
         <ProfileButton />
@@ -123,7 +121,7 @@ const Navbar: React.FC = () => {
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={() => setSnackbarOpen(false)}
-        color={isSuccess ? 'success' : 'danger'}
+        color={isSuccess ? "success" : "danger"}
         size="md"
         variant="solid"
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
