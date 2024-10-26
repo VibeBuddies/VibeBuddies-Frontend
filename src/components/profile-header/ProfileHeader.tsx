@@ -16,6 +16,7 @@ import sendFriendRequest from '../../api/sendFriendRequest';
 import deleteFriend from '../../api/deleteFriend';
 import BoxInformation from './BoxInformation';
 import BoxUpdate from './BoxUpdate';
+import InfoIcon from '@mui/icons-material/Info';
 
 // interface for the component prop params
 interface UserProfileProps {
@@ -113,154 +114,135 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   // JSX
   return (
-    // box to hold all the elements
-    <Box sx={{ textAlign: 'center', mt: 4 }}>
-      {/* profile image*/}
-      <Avatar
-        alt={userInfo.username}
-        src={profileImage}
-        sx={{ width: 100, height: 100, margin: 'auto' }}
-      ></Avatar>
-
-      {/* user username */}
-      <Typography variant="h4">{userInfo.username}</Typography>
-      {/* settings button, only present when not in editting form */}
-      {loggedInUser === userInfo.username && !isEditing && (
-        <IconButton onClick={handleEdit} aria-label="settings">
-          <SettingsIcon />
-        </IconButton>
-      )}
-
-      {/* conditionally show add/remove friend depending if user is friend or not */}
-      {loggedInUser !== userInfo.username && !isEditing && (
-        <Box sx={{ mt: 2 }}>
-          {isFriend ? (
-            // remove button
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => handleRemoveFriend(userInfo.username)}
-            >
-              Remove Friend
-            </Button>
-          ) : (
-            // add friend
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleAddFriend(userInfo.username)}
-            >
-              Add Friend
-            </Button>
-          )}
-        </Box>
-      )}
-
-      {/* user information being displayed */}
-      {!isEditing ? (
-        <Box sx={{ mt: 2 }}>
-          {/* favorite song */}
-          <BoxInformation
-            property={localUserInfo.favoriteSong}
-            phrase={'Favorite Song'}
-          />
-          {/* favorite artist */}
-          <BoxInformation
-            property={localUserInfo.favoriteArtist}
-            phrase={'Favorite Artist'}
-          />
-          {/* favorite album */}
-          <BoxInformation
-            property={localUserInfo.favoriteAlbum}
-            phrase={'Favorite Album'}
-          />
-          {/* city*/}
-          <BoxInformation property={localUserInfo.city} phrase={'City'} />
-          {/* state*/}
-          <BoxInformation property={localUserInfo.state} phrase={'State'} />
-          {/* country*/}
-          <BoxInformation property={localUserInfo.country} phrase={'Country'} />
-          {/* bio */}
-          <BoxInformation property={localUserInfo.bio} phrase={'Bio '} />
-        </Box>
-      ) : (
-        // JSX only shown if the user is the same as the logged in user
-        loggedInUser === userInfo.username && (
-          // box to hold inputs
-          <Box sx={{ mt: 2 }}>
-            {/* grid to hold the fields that are editable */}
-            <Grid container spacing={1}>
-              {/* favorite song */}
-              <BoxUpdate
-                name={'favoriteSong'}
-                property={localUserInfo.favoriteSong}
-                handleChange={handleInputChange}
-              ></BoxUpdate>
-
-              {/* favorite artist */}
-              <BoxUpdate
-                name={'favoriteArtist'}
-                property={localUserInfo.favoriteArtist}
-                handleChange={handleInputChange}
-              ></BoxUpdate>
-
-              {/* favorite album */}
-              <BoxUpdate
-                name={'favoriteAlbum'}
-                property={localUserInfo.favoriteAlbum}
-                handleChange={handleInputChange}
-              ></BoxUpdate>
-
-              {/* user city */}
-              <BoxUpdate
-                name={'city'}
-                property={localUserInfo.city}
-                handleChange={handleInputChange}
-              ></BoxUpdate>
-
-              {/* user state */}
-              <BoxUpdate
-                name={'state'}
-                property={localUserInfo.state}
-                handleChange={handleInputChange}
-              ></BoxUpdate>
-
-              {/* user country */}
-              <BoxUpdate
-                name={'country'}
-                property={localUserInfo.country}
-                handleChange={handleInputChange}
-              ></BoxUpdate>
-
-              {/* user bio */}
-              <Grid item xs={3}>
-                <TextField
-                  label="Bio"
-                  name="bio"
-                  value={localUserInfo.bio}
-                  onChange={handleInputChange}
-                  multiline
-                  rows={3}
-                />
-              </Grid>
-            </Grid>
-
-            {/* save and cancel button, only present when editing*/}
-            <Box sx={{ mt: 2 }}>
-              <Button variant="contained" color="primary" onClick={handleSave}>
-                Save
-              </Button>
-              <Button
-                sx={{ ml: 2 }}
-                variant="outlined"
-                color="secondary"
-                onClick={handleCancel}
-              >
-                Cancel
-              </Button>
+    <Box sx={{ mt: 4, marginLeft: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+        <Avatar
+          alt={userInfo.username}
+          src={profileImage}
+          sx={{
+            width: 220,
+            height: 250,
+            marginRight: 2,
+          }}
+        />
+        <Box sx={{ flexGrow: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h4">{userInfo.username}</Typography>
+            <Box>
+              {loggedInUser === userInfo.username && !isEditing && (
+                <IconButton onClick={handleEdit} aria-label="settings">
+                  <SettingsIcon />
+                </IconButton>
+              )}
+              {loggedInUser !== userInfo.username && !isEditing && (
+                <Button
+                  variant="contained"
+                  color={isFriend ? 'secondary' : 'primary'}
+                  onClick={() =>
+                    isFriend
+                      ? handleRemoveFriend(userInfo.username)
+                      : handleAddFriend(userInfo.username)
+                  }
+                >
+                  {isFriend ? 'Remove Friend' : 'Add Friend'}
+                </Button>
+              )}
             </Box>
           </Box>
-        )
+
+          <Box sx={{ mt: 2 }}>
+            <BoxInformation
+              property={localUserInfo.favoriteArtist}
+              phrase={'Favorite Artist'}
+            />
+            <BoxInformation
+              property={localUserInfo.favoriteAlbum}
+              phrase={'Favorite Album'}
+            />
+            <BoxInformation
+              property={localUserInfo.favoriteSong}
+              phrase={'Favorite Song'}
+            />
+          </Box>
+        </Box>
+      </Box>
+
+      <Box sx={{ mt: 1, width: '100%' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <InfoIcon sx={{ mr: 0, alignSelf: 'center' }} />
+          <Typography variant="h6" sx={{ mb: 0 }} color="textSecondary">
+            Bio
+          </Typography>
+        </Box>
+        <Typography variant="body1" sx={{ maxWidth: '100%' }}>
+          {localUserInfo.bio}
+        </Typography>
+      </Box>
+
+      {isEditing && (
+        <Box sx={{ mt: 2 }}>
+          <Grid container spacing={1}>
+            <BoxUpdate
+              name={'favoriteSong'}
+              property={localUserInfo.favoriteSong}
+              handleChange={handleInputChange}
+            />
+            <BoxUpdate
+              name={'favoriteArtist'}
+              property={localUserInfo.favoriteArtist}
+              handleChange={handleInputChange}
+            />
+            <BoxUpdate
+              name={'favoriteAlbum'}
+              property={localUserInfo.favoriteAlbum}
+              handleChange={handleInputChange}
+            />
+            <BoxUpdate
+              name={'city'}
+              property={localUserInfo.city}
+              handleChange={handleInputChange}
+            />
+            <BoxUpdate
+              name={'state'}
+              property={localUserInfo.state}
+              handleChange={handleInputChange}
+            />
+            <BoxUpdate
+              name={'country'}
+              property={localUserInfo.country}
+              handleChange={handleInputChange}
+            />
+            <Grid item xs={3}>
+              <TextField
+                label="Bio"
+                name="bio"
+                value={localUserInfo.bio}
+                onChange={handleInputChange}
+                multiline
+                rows={3}
+              />
+            </Grid>
+          </Grid>
+          <Box sx={{ mt: 2 }}>
+            <Button variant="contained" color="primary" onClick={handleSave}>
+              Save
+            </Button>
+            <Button
+              sx={{ ml: 2 }}
+              variant="outlined"
+              color="secondary"
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+          </Box>
+        </Box>
       )}
     </Box>
   );
