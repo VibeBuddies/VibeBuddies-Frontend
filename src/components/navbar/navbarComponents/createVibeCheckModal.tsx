@@ -3,6 +3,7 @@
 import * as React from "react"
 import Modal from "@mui/joy/Modal"
 import ModalDialog from "@mui/joy/ModalDialog"
+import ModalClose from '@mui/joy/ModalClose';
 import DialogTitle from "@mui/joy/DialogTitle"
 import DialogContent from "@mui/joy/DialogContent"
 import { searchAlbum } from "../../createVibeCheck/SearchAlbum"
@@ -21,19 +22,20 @@ import {
   createTheme as extendMaterialTheme,
   THEME_ID,
 } from "@mui/material/styles"
+import { AuthContext } from "../../Context/AuthContext";
 
 const materialTheme = extendMaterialTheme()
 
 interface CreateVibeCheckModalProps {
   openVibeCheck: boolean
   handleCloseVibeCheck: () => void,
-  setSnackbarOpen: any
+  onVibeCheckResponse: (message: string, success: boolean) => void,
 }
 
 const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
   openVibeCheck,
   handleCloseVibeCheck,
-  setSnackbarOpen
+  onVibeCheckResponse
 }) => {
   const [ratingValue, setRatingValue] = React.useState<number | null>(null)
   const [options, setOptions] = React.useState<AutocompleteOption[]>([]) // State for options array
@@ -87,6 +89,35 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
     setIsFormValid(isAlbumOrArtistValid && isReviewValid && isRatingValid)
   }, [selectedAlbum, reviewValue, ratingValue])
 
+  //handling when close button is pressed
+  const handleCloseButton = () =>{
+    setSelectedAlbum(null);  // Clear selected album
+    setReviewValue('');       // Clear review text
+    setRatingValue(null);    //clear rating
+  }
+  const {token} = React.useContext(AuthContext)!;
+  const handleSubmitButton = async () => {
+    try{
+      const response = await sendCreateVibeCheck(
+                                                  token,
+                                                  isFormValid,
+                                                  selectedAlbum,
+                                                  reviewValue,
+                                                  ratingValue
+                                                )
+      if(response.status === 'success'){
+        onVibeCheckResponse('VibeCheck created successfully!', true);
+        setSelectedAlbum(null) // Clear selected album
+        setReviewValue("") // Clear review text
+        setRatingValue(null)
+      }else{
+        onVibeCheckResponse('Failed to create VibeCheck.', false);
+      }
+    }catch(error){
+        onVibeCheckResponse('An error occurred while creating VibeCheck.', false);
+    }
+  }
+
   return (
     <MaterialCssVarsProvider theme={{ [THEME_ID]: materialTheme }}>
       <JoyCssVarsProvider>
@@ -100,6 +131,7 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
               maxWidth: "none",
             }}
           >
+            <ModalClose onClick={handleCloseButton} variant="plain" sx={{ m: 1 }} />
             <DialogTitle>Create new VibeCheck</DialogTitle>
             <DialogContent
               sx={{
@@ -111,16 +143,8 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
               <form
                 onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                   event.preventDefault()
-                  sendCreateVibeCheck(
-                    isFormValid,
-                    selectedAlbum,
-                    reviewValue,
-                    ratingValue
-                  )
-                  setSelectedAlbum(null) // Clear selected album
-                  setReviewValue("") // Clear review text
-                  setRatingValue(null)
-                  setSnackbarOpen(true);
+                  handleSubmitButton()
+                  
                   handleCloseVibeCheck()
                 }}
               >

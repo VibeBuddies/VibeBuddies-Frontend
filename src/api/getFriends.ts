@@ -1,21 +1,23 @@
 import axios from 'axios';
+import { API_URL } from '../utils/APIURL';
 
 const getFriends = async (username: string) => {
   /**
-   * function to get the friends of a user
+   * api function to handle getting the friends of a given username
    */
 
-  const token = localStorage.getItem('token');
   try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found, please log in.');
+    }
+
     // Send GET request
-    const response = await axios.get(
-      `http://35.172.116.68:3000/friends/${username}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`${API_URL}/friends/${username}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     return response;
   } catch (error) {

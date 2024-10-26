@@ -1,9 +1,17 @@
-import React from "react"
-import { Box, Typography, IconButton, Card, CardContent } from "@mui/material"
+import React, { useContext } from "react"
+import {
+  Box,
+  Typography,
+  IconButton,
+  Card,
+  CardContent,
+  Avatar,
+} from "@mui/material"
 import updateFriendRequest from "../../../../api/updateFriendRequestApi"
-import defaultAvi from "./default-avi.jpg"
 import PersonAddIcon from "@mui/icons-material/PersonAdd"
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove"
+import { UserContext } from "../../../Context/UserContext"
+import { Link } from "react-router-dom"
 
 interface NotificationItemProps {
   username: string
@@ -36,19 +44,37 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
     }
   }
 
+  const { username: contextUsername } = useContext(UserContext)!
+
   return (
     <Card sx={{ mb: 2 }}>
       <CardContent>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center">
             <Box mr={2}>
-              <img
-                src={defaultAvi}
-                alt={"err"}
-                style={{ width: "40px", height: "40px", borderRadius: "50%" }}
-              />
+              <Avatar alt={username} sx={{ width: 40, height: 40 }}>
+                {username.charAt(0).toUpperCase()}
+              </Avatar>
             </Box>
-            <Typography variant="body1">{username}</Typography>
+            {/* clickable link username */}
+            <Typography variant="subtitle1" fontWeight="bold">
+              <Link
+                to={`/profile/${username}`}
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.textDecoration = "underline")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.textDecoration = "none")
+                }
+              >
+                {username}
+              </Link>
+            </Typography>
           </Box>
           <Box display="flex">
             <IconButton

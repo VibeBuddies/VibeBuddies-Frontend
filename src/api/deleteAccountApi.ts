@@ -1,8 +1,7 @@
 import axios from "axios"
 import { API_URL } from "../utils/APIURL"
 
-//get all friends request, needs a jwt
-const getPendingFriends = async () => {
+const deleteAccount = async () => {
   try {
     const token = localStorage.getItem("token")
 
@@ -10,15 +9,16 @@ const getPendingFriends = async () => {
       throw new Error("No token found, please log in.")
     }
 
-    const response = await axios.get(`${API_URL}/friends?status=pending`, {
+    const response = await axios.delete(`${API_URL}/users`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
+    console.log("here is the DATA: ", response.data)
     return response.data
   } catch (error) {
-    throw new Error("failed to retrieve friends")
+    throw new Error("failed to delete account")
   }
 }
 
-export default getPendingFriends
+export default deleteAccount

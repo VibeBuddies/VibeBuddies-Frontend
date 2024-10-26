@@ -1,8 +1,8 @@
 import axios from "axios"
 import { API_URL } from "../utils/APIURL"
 
-//get all vibe checks for a given user
-const getAllVibeChecksById = async (userId: string) => {
+//get all vibe checks for a given user by username
+const getAllVibeChecksByUsername = async (username: string) => {
   try {
     // fetch token
     const token = localStorage.getItem("token")
@@ -11,11 +11,14 @@ const getAllVibeChecksById = async (userId: string) => {
       throw new Error("No token found, please log in.")
     }
 
-    const response = await axios.get(`${API_URL}/vibe-checks/users/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const response = await axios.get(
+      `${API_URL}/vibe-checks/username/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
     return response.data
   } catch (error) {
     console.error("Error in getAllVibeChecksById: ", error)
@@ -23,4 +26,4 @@ const getAllVibeChecksById = async (userId: string) => {
   }
 }
 
-export default getAllVibeChecksById
+export default getAllVibeChecksByUsername

@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from "react"
-import { TextField, Button, Container, Alert } from "@mui/material"
+import { TextField, Button, Container, Alert, Snackbar } from "@mui/material"
 import { register as registerApi } from "../../api/registerApi"
 
 /* registration component of the Access page
@@ -17,7 +17,7 @@ interface FormData {
 }
 
 const Register: React.FC = () => {
-  // State for form data
+  // state for form data
   const [formData, setFormData] = useState<FormData>({
     username: "",
     email: "",
@@ -25,14 +25,17 @@ const Register: React.FC = () => {
     confirmPassword: "",
   })
 
-  // State for errors
+  // state for errors
   const [errors, setErrors] = useState<string>("")
+  // state for snackbar
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("")
 
   // Handle form submit
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // basic password match validation and insurance that all fields have been filled
+    // basic password match validation and ensuring all fields are filled out
     if (formData.password !== formData.confirmPassword) {
       setErrors("Passwords do not match!")
       return
@@ -47,22 +50,33 @@ const Register: React.FC = () => {
     }
 
     try {
-      const response = await registerApi(
-        formData.username,
-        formData.password,
-        formData.email
-      )
-      return response.data
-    } catch (err) {
-      console.log("failed to register the user: ", err)
-    }
+      const response = await registerApi({
+        username: formData.username,
+        password: formData.password,
+        email: formData.email,
+      })
 
-    // Clear the form fields and errors
-    setFormData({ username: "", email: "", password: "", confirmPassword: "" })
-    setErrors("") // Clear any previous errors
+      // if registration is successful display snackbar
+      if (response.data.status === "success") {
+        setSnackbarMessage("Registration successful!")
+        setSnackbarOpen(true) // Open the snackbar
+      }
+
+      // clear the form
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      })
+      setErrors("") // clear errors
+    } catch (err) {
+      console.log("Failed to register the user: ", err)
+      setErrors("Registration failed. Please try again.")
+    }
   }
 
-  // Handle input change
+  // handle input change
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -70,10 +84,14 @@ const Register: React.FC = () => {
     setFormData({ ...formData, [name]: value })
   }
 
+  // Close the snackbar
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false)
+  }
+
   return (
     <Container maxWidth="sm">
       {errors && <Alert severity="error">{errors}</Alert>}
-      {/* When the registration button is clicked, this will trigger the function to check the filled-out fields */}
       <form onSubmit={handleSubmit}>
         <TextField
           fullWidth
@@ -83,6 +101,7 @@ const Register: React.FC = () => {
           value={formData.username}
           onChange={handleInputChange}
           required
+          autoComplete="off"
         />
         <TextField
           fullWidth
@@ -93,6 +112,7 @@ const Register: React.FC = () => {
           value={formData.email}
           onChange={handleInputChange}
           required
+          autoComplete="off"
         />
         <TextField
           fullWidth
@@ -103,6 +123,7 @@ const Register: React.FC = () => {
           value={formData.password}
           onChange={handleInputChange}
           required
+          autoComplete="off"
         />
         <TextField
           fullWidth
@@ -113,6 +134,7 @@ const Register: React.FC = () => {
           value={formData.confirmPassword}
           onChange={handleInputChange}
           required
+          autoComplete="off"
         />
         <Button
           variant="contained"
@@ -130,6 +152,15 @@ const Register: React.FC = () => {
           Register
         </Button>
       </form>
+
+      {/* Snackbar for success messages */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        message={snackbarMessage}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      />
     </Container>
   )
 }

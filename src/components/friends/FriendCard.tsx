@@ -4,14 +4,17 @@ import {
   Typography,
   Card,
   CardContent,
-  CardMedia,
   Avatar,
-  Button,
+  IconButton,
+  Box,
 } from '@mui/material';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { UserContext } from '../Context/UserContext';
+import deleteFriend from '../../api/deleteFriend';
+import sendFriendRequest from '../../api/sendFriendRequest';
 
+// interface
 interface FriendProps {
   friend: {
     username?: string;
@@ -27,19 +30,25 @@ interface FriendProps {
 }
 
 const FriendCard: React.FC<FriendProps> = ({ friend }) => {
-  // grabbing our logged in username from the usercontext
+  /**
+   * functional compoenent to display individual user information in card
+   *
+   */
+
+  // getting information from usercontext
   const {
     username: loggedInUser,
     setProperty,
     friendList,
   } = useContext(UserContext)!;
 
+  // checking if current user is friend of the logged in user
   let isFriend = friendList?.has(friend.username!);
 
-  //   intializing our navigate object
+  // navigate object
   const navigate = useNavigate();
 
-  // function to handle navigating to user's profile
+  // function to handle navigating to user's profile when username is clicked, sets editing option to false
   const handleUsernameClick = (username: string | undefined) => {
     if (username) {
       navigate(`/profile/${username}`);
@@ -47,62 +56,73 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
     }
   };
 
-  // block to handle the deleting function
-  function handleDeleteFriend(usernaem: string | undefined) {}
+  // function to handle the deleting of a friend, updates context friendList
+  async function handleDeleteFriend(
+    username: string | undefined
+  ): Promise<void> {
+    await deleteFriend(username!);
+    setProperty(
+      `friendList`,
+      new Set([...friendList!].filter((friend) => friend !== username))
+    );
+  }
 
-  function handleAddFriend(usernaem: string | undefined): void {}
+  // function to send a friend request
+  async function handleAddFriend(username: string | undefined): Promise<void> {
+    await sendFriendRequest(username!);
+  }
 
+  // JSX
   return (
-    <Card>
-      <CardMedia>
-        {/* profile image */}
-        <Avatar
-          src={
-            friend.profileImage
-              ? friend.profileImage
-              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
-          }
-          alt={friend.username}
-          sx={{
-            width: 100,
-            height: 100,
-            margin: 'auto',
-            marginTop: 2,
-          }}
-        />
-      </CardMedia>
+    // card for the friend
+    <Card
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        padding: 1,
+      }}
+    >
+      {/* profile image */}
+      <Avatar
+        src={
+          friend.profileImage
+            ? friend.profileImage
+            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
+        }
+        alt={friend.username}
+        sx={{ width: 60, height: 60, marginRight: 2, cursor: 'pointer' }}
+        onClick={() => handleUsernameClick(friend.username)}
+      />
 
-      {/* clickable username */}
-      <CardContent>
+      {/* username */}
+      <CardContent sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
         <Typography
           variant="h6"
           onClick={() => handleUsernameClick(friend.username)}
           sx={{
             cursor: 'pointer',
-            textAlign: 'center',
-            textDecoration: 'underline',
           }}
         >
           {friend.username}
         </Typography>
+      </CardContent>
 
-        {/* conditionally render delete/add buttons*/}
-        {loggedInUser !== friend.username && (
-          <Button
-            variant="contained"
+      {/* displaying the delete/add button conditionally */}
+      {loggedInUser !== friend.username && (
+        <Box sx={{ marginLeft: 'auto' }}>
+          <IconButton
             color={isFriend ? 'error' : 'primary'}
-            startIcon={isFriend ? <PersonRemoveIcon /> : <PersonAddIcon />}
             onClick={() =>
               isFriend
                 ? handleDeleteFriend(friend.username)
                 : handleAddFriend(friend.username)
             }
-            sx={{ margin: 'auto', marginTop: 2 }}
           >
-            {isFriend ? 'Remove Friend' : 'Add Friend'}
-          </Button>
-        )}
-      </CardContent>
+            {isFriend ? <PersonRemoveIcon /> : <PersonAddIcon />}
+          </IconButton>
+        </Box>
+      )}
     </Card>
   );
 };

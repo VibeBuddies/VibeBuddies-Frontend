@@ -23,7 +23,17 @@ const Navbar: React.FC = () => {
   const [openSettingsModal, setOpenSettingsModal] = useState<boolean>(false)
   const [notificationAnchorEl, setNotificationAnchorEl] =
     useState<HTMLElement | null>(null)
+  //snackbar states
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
+  const [snackbarMessage, setSnackbarMessage] = useState<string>('');
+  const [isSuccess, setIsSuccess] = useState<boolean>(true); 
+
+  const handleVibeCheckResponse = (message:string, success:boolean) => {
+    setSnackbarMessage(message);
+    setIsSuccess(success);
+    setSnackbarOpen(true);
+  };
+
 
   const mockNotifications = [
     "You have a new friend request.",
@@ -33,7 +43,7 @@ const Navbar: React.FC = () => {
 
   // Handle the search input change
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value.toLowerCase())
+    setSearchTerm(e.target.value)
   }
 
   const handleOpenVibeCheck = () => setOpenVibeCheckModal(true)
@@ -86,7 +96,7 @@ const Navbar: React.FC = () => {
         <CreateVibeCheckModal
           openVibeCheck={openVibeCheckModal}
           handleCloseVibeCheck={handleCloseVibeCheck}
-          setSnackbarOpen={setSnackbarOpen}
+          onVibeCheckResponse={handleVibeCheckResponse}
         />
 
         {/* Notifications Button and Popover */}
@@ -113,13 +123,13 @@ const Navbar: React.FC = () => {
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={() => setSnackbarOpen(false)}
-        color="success"
+        color={isSuccess ? 'success' : 'danger'}
         size="md"
         variant="solid"
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         sx={{ zIndex: 1300 }}
       >
-        Success! VibeCheck submitted.
+        {snackbarMessage}
       </Snackbar>
     </Box>
   )

@@ -1,10 +1,25 @@
-import React from "react"
-import { Box, Typography, Rating, Modal } from "@mui/material"
-import defaultAvi from "./default-avi.jpg"
+import React, { useState, useContext } from "react"
+import {
+  Box,
+  Typography,
+  Rating,
+  Modal,
+  TextField,
+  IconButton,
+  Snackbar,
+  Alert,
+  Avatar,
+} from "@mui/material"
+import CommentIcon from "@mui/icons-material/Comment"
+import CommentList from "./comments/commentList"
+import createComment from "../../api/createComment"
+import { UserContext } from "../../components/Context/UserContext"
+import { Link } from "react-router-dom"
 
 interface VibeCheckModalProps {
   open: boolean
   handleClose: () => void
+  vibe_check_id: string
   album_id: {
     artist: string
     cover_url: string
@@ -12,6 +27,7 @@ interface VibeCheckModalProps {
   }
   review: string
   rating: number
+  comments: any[]
   likes: number
   dislikes: number
   timestamp: number
@@ -22,15 +38,53 @@ interface VibeCheckModalProps {
 const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
   open,
   handleClose,
+  vibe_check_id,
   album_id,
   review,
   rating,
+  comments,
   likes,
   dislikes,
   timestamp,
   username,
   likeOrDislikeButtonsElement,
 }) => {
+  const [newComment, setNewComment] = useState("")
+  const [localComments, setLocalComments] = useState<any[]>(comments)
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState("")
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false)
+  }
+
+  // handle adding a new comment
+  const handleAddComment = () => {
+    if (newComment.trim()) {
+      createComment(vibe_check_id, newComment)
+      handleTempComment(newComment)
+      setNewComment("")
+      setSnackbarMessage("Comment added successfully!")
+      setSnackbarOpen(true)
+    }
+  }
+
+  const { username: loggedInUser } = useContext(UserContext)!
+
+  //creates a temporary comment so the user
+  //can see their comment get added in real time
+  const handleTempComment = (comment: string) => {
+    const newComment = {
+      username: loggedInUser,
+      user_id: "",
+      comment_id: "",
+      comment_body: comment,
+      timestamp: Date.now(),
+    }
+    setLocalComments((prevComments) => [...prevComments, newComment])
+  }
+
   return (
     <Modal
       open={open}
@@ -48,31 +102,46 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
           backgroundColor: "white",
           borderRadius: 2,
           maxWidth: "80%",
+          maxHeight: "90vh",
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
           padding: "2rem",
-
-          // Centers the content
           position: "absolute",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
+          overflowY: "auto",
         }}
       >
-        <Box display="flex" alignItems="flex-start" mr={2}>
+        <Box display="flex" alignItems="flex-start">
           <Box mr={1}>
-            <img
-              src={defaultAvi}
-              alt={"err"}
-              style={{ width: "45px", height: "45px", borderRadius: "25px" }}
-            />
+            <Avatar alt={loggedInUser} sx={{ width: 40, height: 40 }}>
+              {loggedInUser.charAt(0).toUpperCase()}
+            </Avatar>
           </Box>
           <Typography variant="h5" marginTop={0.5}>
-            {username}
+            <Link
+              to={`/profile/${username}`}
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.textDecoration = "underline")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.textDecoration = "none")
+              }
+            >
+              {username}
+            </Link>
           </Typography>
         </Box>
-        <Typography variant="h4" mb={2}>
-          {album_id.name}
-        </Typography>
+        <Box>
+          <Typography variant="h4" mb={1} mt={1}>
+            {album_id.name}
+          </Typography>
+        </Box>
         <Box display="flex" alignItems="center">
           <Box mr={2}>
             <img
@@ -83,8 +152,6 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
           </Box>
           <Box>
             <Typography variant="h6">{album_id.artist}</Typography>
-
-            {/* Scrollable review box with scrollbar always visible */}
             <Box
               sx={{
                 maxHeight: "200px",
@@ -95,7 +162,6 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
             >
               <Typography>{review}</Typography>
             </Box>
-
             <Rating
               name={`modal-rating-${album_id.name}`}
               value={rating}
@@ -103,11 +169,39 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
               readOnly
               sx={{ mt: 2 }}
             />
-            <Box>
-            {likeOrDislikeButtonsElement}
-            </Box>
+            <Box>{likeOrDislikeButtonsElement}</Box>
           </Box>
         </Box>
+
+        <Box mt={4}>
+          {/* Input field to add a new comment */}
+          <Box mt={2} display="flex" alignItems="center">
+            <TextField
+              fullWidth
+              label="Add a comment..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+            />
+            <IconButton
+              onClick={handleAddComment}
+              sx={{ ml: 2, color: "grey.500" }}
+            >
+              <CommentIcon />
+            </IconButton>
+          </Box>
+          <Box>
+            <CommentList comments={localComments} />
+          </Box>
+        </Box>
+
+        {/* Snackbar for comment submission */}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={2000}
+          onClose={handleCloseSnackbar}
+          message={snackbarMessage}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        />
       </Box>
     </Modal>
   )

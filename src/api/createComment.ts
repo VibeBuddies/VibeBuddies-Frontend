@@ -1,8 +1,7 @@
 import axios from "axios"
 import { API_URL } from "../utils/APIURL"
 
-// update the status of a friend request
-const updateFriendRequest = async (username: string, status: string) => {
+const createComment = async (vibe_check_id: string, comment_body: string) => {
   try {
     const token = localStorage.getItem("token")
 
@@ -11,22 +10,20 @@ const updateFriendRequest = async (username: string, status: string) => {
     }
 
     const response = await axios.patch(
-      `${API_URL}/friends`,
-      {
-        username,
-        status,
-      },
+      `${API_URL}/vibe-checks/comments`,
+      { vibe_check_id, comment_body },
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     )
+    console.log("here is the DATA: ", response.data)
     return response.data
   } catch (error) {
-    console.error("failed to update friend request:", error)
-    throw error
+    //need to fix the backend for this api call.....
+    //throw new Error("failed to create comment")
   }
 }
 
-export default updateFriendRequest
+export default createComment

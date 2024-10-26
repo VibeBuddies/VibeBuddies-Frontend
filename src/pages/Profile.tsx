@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import UserProfile from '../components/profile-header/ProfileHeader';
 import getPersonalInformation from '../api/getPersonalnfo';
-import { Tabs, Tab, Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import FriendList from '../components/friends/FriendList';
 import { useParams } from 'react-router-dom';
-
-/* arranges the Profile componenets into an profile page 
-which is accessible through a button on the feed page*/
+import VibeCheckList from '../components/userVibeChecks/vibeCheckList';
 
 // interface for the user data
 interface UserProfileData {
@@ -21,8 +19,11 @@ interface UserProfileData {
   bio?: string;
 }
 
-// functional component for the profile page
 const Profile: React.FC = () => {
+  /**
+   * functional component to display the profile of the user
+   */
+
   // state to store user info, initially will be empty
   const [userInfo, setUserInfo] = useState<UserProfileData | null>(null);
   // state to keep track of which tab is open
@@ -37,6 +38,7 @@ const Profile: React.FC = () => {
     const fetchPersonalInformation = async () => {
       try {
         const data = await getPersonalInformation(usernameSearch);
+        // block checks if data contains information about the user
         if (data?.data?.data?.user) {
           const {
             username,
@@ -69,40 +71,47 @@ const Profile: React.FC = () => {
     fetchPersonalInformation();
   }, [usernameSearch]);
 
-  // function to handle the clicking of a different tab
-  const handleTabChange = (event: React.SyntheticEvent, value: string) => {
-    setActiveTab(value);
-  };
-
+  // JSX
   return (
     <>
-      {/* block checks that the userInfo is present, and then calls the UserProfile component */}
-      {userInfo && (
-        <UserProfile
-          userInfo={userInfo}
-          setUserInfo={setUserInfo}
-          profileImage="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s"
-        ></UserProfile>
-      )}
+      {/* grid for the overall page */}
+      <Grid container spacing={2} sx={{ marginTop: 2 }}>
+        {/* grid for userprofile and the vibechecks */}
+        <Grid item xs={12} md={8}>
+          <Box sx={{ marginBottom: 2 }}>
+            {/* user info/profile */}
+            {userInfo && (
+              <UserProfile
+                userInfo={userInfo}
+                setUserInfo={setUserInfo}
+                profileImage="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s"
+              />
+            )}
+          </Box>
 
-      <Box>
-        {/* Material-UI Tabs */}
-        <Tabs
-          value={activeTab}
-          onChange={handleTabChange}
-          aria-label="profile tabs"
-        >
-          <Tab label="Vibechecks" value="vibechecks" />
-          <Tab label="Friends" value="friends" />
-        </Tabs>
+          {/* vibechecks */}
+          <Box>
+            <h2>VibeChecks</h2>
+            <VibeCheckList usernameProp={usernameSearch} />
+          </Box>
+        </Grid>
 
-        {/* Conditional rendering based on active tab */}
-        {/* {activeTab === 'vibechecks' && <VibeChecks />} */}
-        {activeTab === 'vibechecks' && <p>vibeChecks</p>}
-        {activeTab === 'friends' && (
-          <FriendList usernameProp={usernameSearch}></FriendList>
-        )}
-      </Box>
+        {/* grid for friends */}
+        <Grid item xs={12} md={4}>
+          {/* box for friends */}
+          <Box
+            sx={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+            }}
+          >
+            <h2>Friends</h2>
+            <FriendList usernameProp={usernameSearch} />
+          </Box>
+        </Grid>
+      </Grid>
     </>
   );
 };

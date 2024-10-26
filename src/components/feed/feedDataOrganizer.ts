@@ -1,33 +1,44 @@
 import getAllFriends from "../../api/getAllFriendsApi"
 import getAllVibeChecksById from "../../api/getAllVibeChecksByIdApi"
+import getAllVibeChecksByUsername from "../../api/getAllVibeChecksForSelfApi"
 
-const organizeData = async () => {
+const organizeData = async (username: string) => {
   try {
+    // Fetch the user's own vibe checks by their username
+    let userVibeChecks = []
+    try {
+      const userVibeChecksResponse = await getAllVibeChecksByUsername(username)
+      userVibeChecks = userVibeChecksResponse.data.returnedVibeChecks || [] //incase no vibechecks
+    } catch (error) {
+      console.log(`${username} has no vibeChecks: `, error)
+    }
+
+    // friends vibeChecks
     const friends = await getAllFriends()
 
-    // extract userId from each friend and populate friendsIdList
+    // getting userId from each friend
     const friendsIdList = friends.data.friendList.map(
       (friend: any) => friend.userId
     )
 
-    // fetch all vibe checks for friends
+    // getting all vibeChecks for each friend
     const allVibeChecksPromises = friendsIdList.map(async (userId: string) => {
       try {
         const response = await getAllVibeChecksById(userId)
-        return response.data.returnedVibeChecks || [] // Return empty array if no vibe checks
+        return response.data.returnedVibeChecks || [] //incase no vibechecks
       } catch (error) {
-        console.log(` ${userId} has no vibeChecks to fetch: `, error)
-        return [] // Return empty array in case of error
+        console.log(`${userId} has no vibeChecks to fetch: `, error)
+        return []
       }
     })
-
-    // resolve all promises and clean up the final array
     const allVibeChecksResponses = await Promise.all(allVibeChecksPromises)
 
-    // Combine all vibe checks into one list
-    const vibeCheckList = allVibeChecksResponses.flat()
+    // combine lists of vibeChecks
+    let vibeCheckList = [...userVibeChecks, ...allVibeChecksResponses.flat()]
 
-    console.log(vibeCheckList)
+    // sort list by timestamp
+    vibeCheckList = vibeCheckList.sort((a, b) => b.timestamp - a.timestamp)
+
     return vibeCheckList
   } catch (error) {
     console.error("Error fetching vibe checks: ", error)
