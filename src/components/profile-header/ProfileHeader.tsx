@@ -135,115 +135,113 @@ const UserProfile: React.FC<UserProfileProps> = ({
           >
             <Typography variant="h4">{userInfo.username}</Typography>
             <Box>
-              {loggedInUser === userInfo.username && !isEditing && (
-                <IconButton onClick={handleEdit} aria-label="settings">
-                  <SettingsIcon />
-                </IconButton>
-              )}
-              {loggedInUser !== userInfo.username && !isEditing && (
-                <Button
-                  variant="contained"
-                  color={isFriend ? 'secondary' : 'primary'}
-                  onClick={() =>
-                    isFriend
-                      ? handleRemoveFriend(userInfo.username)
-                      : handleAddFriend(userInfo.username)
-                  }
-                >
-                  {isFriend ? 'Remove Friend' : 'Add Friend'}
-                </Button>
+              {isEditing ? (
+                <>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSave}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    sx={{ ml: 2 }}
+                    variant="contained"
+                    color="error"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </Button>
+                </>
+              ) : (
+                <>
+                  {loggedInUser === userInfo.username && (
+                    <IconButton onClick={handleEdit} aria-label="settings">
+                      <SettingsIcon />
+                    </IconButton>
+                  )}
+                  {loggedInUser !== userInfo.username && (
+                    <Button
+                      variant="contained"
+                      color={isFriend ? 'secondary' : 'primary'}
+                      onClick={() =>
+                        isFriend
+                          ? handleRemoveFriend(userInfo.username)
+                          : handleAddFriend(userInfo.username)
+                      }
+                    >
+                      {isFriend ? 'Remove Friend' : 'Add Friend'}
+                    </Button>
+                  )}
+                </>
               )}
             </Box>
           </Box>
 
           <Box sx={{ mt: 2 }}>
-            <BoxInformation
-              property={localUserInfo.favoriteArtist}
-              phrase={'Favorite Artist'}
-            />
-            <BoxInformation
-              property={localUserInfo.favoriteAlbum}
-              phrase={'Favorite Album'}
-            />
-            <BoxInformation
-              property={localUserInfo.favoriteSong}
-              phrase={'Favorite Song'}
-            />
+            {isEditing ? (
+              <>
+                <BoxUpdate
+                  name={'favoriteArtist'}
+                  property={localUserInfo.favoriteArtist}
+                  handleChange={handleInputChange}
+                />
+                <BoxUpdate
+                  name={'favoriteAlbum'}
+                  property={localUserInfo.favoriteAlbum}
+                  handleChange={handleInputChange}
+                  sx={{ mt: 1.5 }}
+                />
+                <BoxUpdate
+                  name={'favoriteSong'}
+                  property={localUserInfo.favoriteSong}
+                  handleChange={handleInputChange}
+                  sx={{ mt: 1.5 }}
+                />
+              </>
+            ) : (
+              <>
+                <BoxInformation
+                  property={localUserInfo.favoriteArtist}
+                  phrase={'Favorite Artist'}
+                />
+                <BoxInformation
+                  property={localUserInfo.favoriteAlbum}
+                  phrase={'Favorite Album'}
+                />
+                <BoxInformation
+                  property={localUserInfo.favoriteSong}
+                  phrase={'Favorite Song'}
+                />
+              </>
+            )}
           </Box>
         </Box>
       </Box>
 
-      <Box sx={{ mt: 1, width: '100%' }}>
+      <Box sx={{ mt: 2, width: '100%' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <InfoIcon sx={{ mr: 0, alignSelf: 'center' }} />
-          <Typography variant="h6" sx={{ mb: 0 }} color="textSecondary">
+          <InfoIcon sx={{ mr: 1 }} />
+          <Typography variant="h6" sx={{ mb: 1 }} color="textSecondary">
             Bio
           </Typography>
         </Box>
-        <Typography variant="body1" sx={{ maxWidth: '100%' }}>
-          {localUserInfo.bio}
-        </Typography>
+        {isEditing ? (
+          <TextField
+            label="Bio"
+            name="bio"
+            value={localUserInfo.bio}
+            onChange={handleInputChange}
+            multiline
+            rows={3}
+            fullWidth
+          />
+        ) : (
+          <Typography variant="body1" sx={{ maxWidth: '100%' }}>
+            {localUserInfo.bio}
+          </Typography>
+        )}
       </Box>
-
-      {isEditing && (
-        <Box sx={{ mt: 2 }}>
-          <Grid container spacing={1}>
-            <BoxUpdate
-              name={'favoriteSong'}
-              property={localUserInfo.favoriteSong}
-              handleChange={handleInputChange}
-            />
-            <BoxUpdate
-              name={'favoriteArtist'}
-              property={localUserInfo.favoriteArtist}
-              handleChange={handleInputChange}
-            />
-            <BoxUpdate
-              name={'favoriteAlbum'}
-              property={localUserInfo.favoriteAlbum}
-              handleChange={handleInputChange}
-            />
-            <BoxUpdate
-              name={'city'}
-              property={localUserInfo.city}
-              handleChange={handleInputChange}
-            />
-            <BoxUpdate
-              name={'state'}
-              property={localUserInfo.state}
-              handleChange={handleInputChange}
-            />
-            <BoxUpdate
-              name={'country'}
-              property={localUserInfo.country}
-              handleChange={handleInputChange}
-            />
-            <Grid item xs={3}>
-              <TextField
-                label="Bio"
-                name="bio"
-                value={localUserInfo.bio}
-                onChange={handleInputChange}
-                multiline
-                rows={3}
-              />
-            </Grid>
-          </Grid>
-          <Box sx={{ mt: 2 }}>
-            <Button variant="contained" color="primary" onClick={handleSave}>
-              Save
-            </Button>
-            <Button
-              sx={{ ml: 2 }}
-              variant="outlined"
-              color="secondary"
-              onClick={handleCancel}
-            >
-              Cancel
-            </Button>
-          </Box>
-        </Box>
-      )}
     </Box>
   );
 };
