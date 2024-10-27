@@ -7,6 +7,7 @@ import ProfileButton from "./navbarComponents/profileButton"
 import SettingsButton from "./navbarComponents/settingsButton"
 import SettingsButtonModal from "./navbarComponents/settingsButtonModal"
 import FeedButton from "./navbarComponents/feedButton"
+import GlobalFeedButton from "./navbarComponents/globalFeedButton"
 import NotificationsButton from "./navbarComponents/notificationButton"
 import NotificationsPopover from "./navbarComponents/notificationsPopover"
 import {
@@ -25,15 +26,14 @@ const Navbar: React.FC = () => {
     useState<HTMLElement | null>(null)
   //snackbar states
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
-  const [snackbarMessage, setSnackbarMessage] = useState<string>('');
-  const [isSuccess, setIsSuccess] = useState<boolean>(true); 
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("")
+  const [isSuccess, setIsSuccess] = useState<boolean>(true)
 
-  const handleVibeCheckResponse = (message:string, success:boolean) => {
-    setSnackbarMessage(message);
-    setIsSuccess(success);
-    setSnackbarOpen(true);
-  };
-
+  const handleVibeCheckResponse = (message: string, success: boolean) => {
+    setSnackbarMessage(message)
+    setIsSuccess(success)
+    setSnackbarOpen(true)
+  }
 
   const mockNotifications = [
     "You have a new friend request.",
@@ -85,6 +85,9 @@ const Navbar: React.FC = () => {
       <Box sx={{ alignItems: "right" }}>
         <FeedButton />
       </Box>
+      <Box sx={{ alignItems: "right" }}>
+        <GlobalFeedButton />
+      </Box>
       <Box>
         <SearchBar
           searchTerm={searchTerm}
@@ -122,7 +125,7 @@ const Navbar: React.FC = () => {
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={() => setSnackbarOpen(false)}
-        color={isSuccess ? 'success' : 'danger'}
+        color={isSuccess ? "success" : "danger"}
         size="md"
         variant="solid"
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
