@@ -28,7 +28,6 @@ const Profile: React.FC = () => {
   // state to store user info, initially will be empty
   const [userInfo, setUserInfo] = useState<UserProfileData | null>(null);
   // state to keep track of which tab is open
-  const [activeTab, setActiveTab] = useState<string>('vibechecks');
 
   // getting the route params
   const params = useParams();

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_URL } from '../utils/APIURL';
 
-const updatePersonalProfile = async (profileData: any) => {
+const updatePersonalProfile = async (profileImageFile: any) => {
   // function to get the user's personal informaiton from the backend
   try {
     const token = localStorage.getItem('token');
@@ -9,10 +9,15 @@ const updatePersonalProfile = async (profileData: any) => {
     if (!token) {
       throw new Error('No token found, please log in.');
     }
+
+    // form data object to hold the file
+    const formData = new FormData();
+    formData.append('profileImage', profileImageFile);
     // Send GET request
-    const response = await axios.patch(`${API_URL}/users`, profileData, {
+    const response = await axios.patch(`${API_URL}/users`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
       },
     });
 
