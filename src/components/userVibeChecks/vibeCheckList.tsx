@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import getVibeChecksByUsername from '../../api/getVibeChecksByUsername';
 import VibeCheckCard from './vibeCheckCard';
 import deleteVibeCheck from '../../api/deleteVibeCheck';

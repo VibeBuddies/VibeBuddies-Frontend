@@ -8,7 +8,6 @@ import {
   TextField,
   Button,
   Box,
-  Grid,
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import updatePersonalProfile from '../../api/updateProfile';

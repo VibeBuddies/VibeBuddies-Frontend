@@ -1,52 +1,45 @@
-import React, { useContext, useState } from "react"
-import {
-  Box,
-  Typography,
-  Avatar,
-  IconButton,
-  Rating,
-  Badge,
-} from "@mui/material"
-import DeleteIcon from "@mui/icons-material/Delete"
-import ThumbUpIcon from "@mui/icons-material/ThumbUp"
-import ThumbDownIcon from "@mui/icons-material/ThumbDown"
-import { UserContext } from "../Context/UserContext"
-import VibeCheckModal from "../feed/vibeCheckModal"
-import { formatTimeDifference } from "../../utils/formatTimeDifference"
+import React, { useContext, useState } from 'react';
+import { Box, Typography, Avatar, IconButton, Rating } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import { UserContext } from '../Context/UserContext';
+import VibeCheckModal from '../feed/vibeCheckModal';
+import { formatTimeDifference } from '../../utils/formatTimeDifference';
 
 interface VibeCheckProps {
-  handleDelete(vibe_check_id: string): void
+  handleDelete(vibe_check_id: string): void;
   vibeCheckInfo: {
     album_id: {
-      artist: string
-      cover_url: string
-      name: string
-    }
-    dislikes: number
-    likes: number
-    rating: number
-    review: string
-    timestamp: number
-    username: string
-    vibe_check_id: string
-    comments: any[]
-  }
+      artist: string;
+      cover_url: string;
+      name: string;
+    };
+    dislikes: number;
+    likes: number;
+    rating: number;
+    review: string;
+    timestamp: number;
+    username: string;
+    vibe_check_id: string;
+    comments: any[];
+  };
 }
 
 const VibeCheckCard: React.FC<VibeCheckProps> = ({
   vibeCheckInfo,
   handleDelete,
 }) => {
-  const { username: loggedInUser } = useContext(UserContext)!
-  const [openModal, setOpenModal] = useState(false)
+  const { username: loggedInUser } = useContext(UserContext)!;
+  const [openModal, setOpenModal] = useState(false);
 
-  const handleOpenModal = () => setOpenModal(true)
-  const handleCloseModal = () => setOpenModal(false)
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   // truncates review
   const truncateReview = (text: string, limit: number) => {
-    return text.length > limit ? `${text.slice(0, limit)}[...]` : text
-  }
+    return text.length > limit ? `${text.slice(0, limit)}[...]` : text;
+  };
 
   return (
     <>
@@ -61,13 +54,13 @@ const VibeCheckCard: React.FC<VibeCheckProps> = ({
         position="relative"
         onClick={handleOpenModal}
         sx={{
-          cursor: "pointer",
-          backgroundColor: "white",
-          transition: "background-color 0.3s ease-in-out",
-          "&:hover": {
-            backgroundColor: "#f0f0f0",
+          cursor: 'pointer',
+          backgroundColor: 'white',
+          transition: 'background-color 0.3s ease-in-out',
+          '&:hover': {
+            backgroundColor: '#f0f0f0',
           },
-          minWidth: "100%",
+          minWidth: '100%',
         }}
       >
         {/* Left side with avatar and album cover */}
@@ -96,7 +89,7 @@ const VibeCheckCard: React.FC<VibeCheckProps> = ({
           <img
             src={vibeCheckInfo.album_id.cover_url}
             alt={vibeCheckInfo.album_id.name}
-            style={{ width: "300px", height: "300px", borderRadius: "5px" }}
+            style={{ width: '300px', height: '300px', borderRadius: '5px' }}
           />
         </Box>
 
@@ -118,11 +111,11 @@ const VibeCheckCard: React.FC<VibeCheckProps> = ({
         {/* Display only static like and dislike counts */}
         <Box
           sx={{
-            position: "absolute",
+            position: 'absolute',
             bottom: 8,
             right: 8,
-            display: "flex",
-            alignItems: "center",
+            display: 'flex',
+            alignItems: 'center',
           }}
         >
           <Typography>{vibeCheckInfo.likes}</Typography>
@@ -137,8 +130,8 @@ const VibeCheckCard: React.FC<VibeCheckProps> = ({
             <IconButton
               aria-label="delete"
               onClick={(e) => {
-                e.stopPropagation()
-                handleDelete(vibeCheckInfo.vibe_check_id)
+                e.stopPropagation();
+                handleDelete(vibeCheckInfo.vibe_check_id);
               }}
               sx={{ marginRight: 1 }}
             >
@@ -164,7 +157,7 @@ const VibeCheckCard: React.FC<VibeCheckProps> = ({
         likeOrDislikeButtonsElement={<></>}
       />
     </>
-  )
-}
+  );
+};
 
-export default VibeCheckCard
+export default VibeCheckCard;
