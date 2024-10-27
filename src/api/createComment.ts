@@ -21,8 +21,7 @@ const createComment = async (vibe_check_id: string, comment_body: string) => {
     console.log("here is the DATA: ", response.data)
     return response.data
   } catch (error) {
-    //need to fix the backend for this api call.....
-    //throw new Error("failed to create comment")
+    throw new Error("failed to create comment")
   }
 }
 
