@@ -90,7 +90,7 @@ const Profile: React.FC = () => {
           </Box>
 
           {/* vibechecks */}
-          <Box>
+          <Box sx={{ marginLeft: 2 }}>
             <h2>VibeChecks</h2>
             <VibeCheckList usernameProp={usernameSearch} />
           </Box>

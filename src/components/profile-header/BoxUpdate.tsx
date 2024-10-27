@@ -4,6 +4,7 @@ import { Grid, TextField } from '@mui/material';
 interface BoxUpdateProp {
   name?: string;
   property?: string;
+  sx?: any;
   handleChange(event: React.ChangeEvent<HTMLInputElement>): void;
 }
 
@@ -11,6 +12,7 @@ const BoxUpdate: React.FC<BoxUpdateProp> = ({
   name,
   property,
   handleChange,
+  sx,
   ...rest
 }) => {
   /**
@@ -19,7 +21,7 @@ const BoxUpdate: React.FC<BoxUpdateProp> = ({
    */
 
   return (
-    <Grid item xs={3}>
+    <Grid item xs={3} sx={sx}>
       <TextField
         label={name}
         name={name}
