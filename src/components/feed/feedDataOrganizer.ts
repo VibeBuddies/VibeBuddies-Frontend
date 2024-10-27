@@ -44,6 +44,9 @@ const organizeData = async (username: string) => {
       return vibeCheckList
     } catch (err) {
       console.log("failed to get all friend/ user may not have friends", err)
+      userVibeChecks = userVibeChecks.sort(
+        (a: any, b: any) => b.timestamp - a.timestamp
+      )
       return userVibeChecks
     }
   } catch (error) {
