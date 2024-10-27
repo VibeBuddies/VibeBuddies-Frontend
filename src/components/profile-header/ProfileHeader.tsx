@@ -28,17 +28,13 @@ interface UserProfileProps {
     state?: string;
     country?: string;
     bio?: string;
+    profileImageUrl?: string;
   };
   setUserInfo: any;
-  profileImage: string;
 }
 
 // functional component with user information
-const UserProfile: React.FC<UserProfileProps> = ({
-  userInfo,
-  setUserInfo,
-  profileImage = '',
-}) => {
+const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
   /**
    * functional component that displays the users information at the top of the page
    */
@@ -50,6 +46,8 @@ const UserProfile: React.FC<UserProfileProps> = ({
     setProperty,
     friendList,
   } = useContext(UserContext)!;
+
+  // console.log(userInfo);
 
   // state to keep track of local user information based on the user who was passed through
   const [localUserInfo, setLocalUserInfo] = useState(userInfo);
@@ -117,7 +115,10 @@ const UserProfile: React.FC<UserProfileProps> = ({
       <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
         <Avatar
           alt={userInfo.username}
-          src={profileImage}
+          src={
+            userInfo.profileImageUrl ||
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
+          }
           sx={{
             width: 220,
             height: 250,
