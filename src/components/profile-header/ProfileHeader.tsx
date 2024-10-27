@@ -163,7 +163,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
                   {loggedInUser !== userInfo.username && (
                     <Button
                       variant="contained"
-                      color={isFriend ? 'secondary' : 'primary'}
+                      color={isFriend ? 'error' : 'primary'}
                       onClick={() =>
                         isFriend
                           ? handleRemoveFriend(userInfo.username)
@@ -220,12 +220,15 @@ const UserProfile: React.FC<UserProfileProps> = ({
       </Box>
 
       <Box sx={{ mt: 2, width: '100%' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <InfoIcon sx={{ mr: 1 }} />
-          <Typography variant="h6" sx={{ mb: 1 }} color="textSecondary">
-            Bio
-          </Typography>
-        </Box>
+        {localUserInfo.bio && (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <InfoIcon sx={{ mr: 1, alignSelf: 'center' }} />{' '}
+            <Typography variant="body1" sx={{ mb: 0 }} color="textSecondary">
+              Bio
+            </Typography>
+          </Box>
+        )}
+
         {isEditing ? (
           <TextField
             label="Bio"
