@@ -1,21 +1,21 @@
 import React from "react"
 import { IconButton, Tooltip } from "@mui/material"
-import BallotIcon from "@mui/icons-material/Ballot"
+import LanguageIcon from "@mui/icons-material/Language"
 import { useNavigate } from "react-router-dom"
 
-/* feed button on the navbar which will navigate 
-the user to their feed */
+/* global feed button on the navbar which will navigate 
+the user to the global feed */
 
-const FeedButton: React.FC = () => {
+const GlobalFeedButton: React.FC = () => {
   const navigate = useNavigate()
 
-  // navigate to the feed page on button click
+  // Navigate to the global feed page on button click
   const handleFeedClick = () => {
-    navigate("/feed")
+    navigate("/global-feed")
   }
 
   return (
-    <Tooltip title="Go to Global Feed" arrow placement="bottom">
+    <Tooltip title="Go to Feed" arrow placement="bottom">
       <IconButton
         onClick={handleFeedClick}
         sx={{
@@ -24,10 +24,10 @@ const FeedButton: React.FC = () => {
           height: "100px",
         }}
       >
-        <BallotIcon sx={{ fontSize: 60 }} />
+        <LanguageIcon sx={{ fontSize: 60 }} />
       </IconButton>
     </Tooltip>
   )
 }
 
-export default FeedButton
+export default GlobalFeedButton
