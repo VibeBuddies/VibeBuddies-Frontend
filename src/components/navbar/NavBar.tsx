@@ -7,6 +7,7 @@ import ProfileButton from "./navbarComponents/profileButton"
 import SettingsButton from "./navbarComponents/settingsButton"
 import SettingsButtonModal from "./navbarComponents/settingsButtonModal"
 import FeedButton from "./navbarComponents/feedButton"
+import GlobalFeedButton from "./navbarComponents/globalFeedButton"
 import NotificationsButton from "./navbarComponents/notificationButton"
 import NotificationsPopover from "./navbarComponents/notificationsPopover"
 import {
@@ -83,6 +84,9 @@ const Navbar: React.FC = () => {
     >
       <Box sx={{ alignItems: "right" }}>
         <FeedButton />
+      </Box>
+      <Box sx={{ alignItems: "right" }}>
+        <GlobalFeedButton />
       </Box>
       <Box>
         <SearchBar

@@ -13,33 +13,42 @@ const organizeData = async (username: string) => {
       console.log(`${username} has no vibeChecks: `, error)
     }
 
-    // friends vibeChecks
-    const friends = await getAllFriends()
+    try {
+      // friends vibeChecks
+      const friends = await getAllFriends()
 
-    // getting userId from each friend
-    const friendsIdList = friends.data.friendList.map(
-      (friend: any) => friend.userId
-    )
+      // getting userId from each friend
+      const friendsIdList = friends.data.friendList.map(
+        (friend: any) => friend.userId
+      )
 
-    // getting all vibeChecks for each friend
-    const allVibeChecksPromises = friendsIdList.map(async (userId: string) => {
-      try {
-        const response = await getAllVibeChecksById(userId)
-        return response.data.returnedVibeChecks || [] //incase no vibechecks
-      } catch (error) {
-        console.log(`${userId} has no vibeChecks to fetch: `, error)
-        return []
-      }
-    })
-    const allVibeChecksResponses = await Promise.all(allVibeChecksPromises)
+      // getting all vibeChecks for each friend
+      const allVibeChecksPromises = friendsIdList.map(
+        async (userId: string) => {
+          try {
+            const response = await getAllVibeChecksById(userId)
+            return response.data.returnedVibeChecks || [] //incase no vibechecks
+          } catch (error) {
+            console.log(`${userId} has no vibeChecks to fetch: `, error)
+            return []
+          }
+        }
+      )
+      const allVibeChecksResponses = await Promise.all(allVibeChecksPromises)
 
-    // combine lists of vibeChecks
-    let vibeCheckList = [...userVibeChecks, ...allVibeChecksResponses.flat()]
+      // combine lists of vibeChecks
+      let vibeCheckList = [...userVibeChecks, ...allVibeChecksResponses.flat()]
 
-    // sort list by timestamp
-    vibeCheckList = vibeCheckList.sort((a, b) => b.timestamp - a.timestamp)
-
-    return vibeCheckList
+      // sort list by timestamp
+      vibeCheckList = vibeCheckList.sort((a, b) => b.timestamp - a.timestamp)
+      return vibeCheckList
+    } catch (err) {
+      console.log("failed to get all friend/ user may not have friends", err)
+      userVibeChecks = userVibeChecks.sort(
+        (a: any, b: any) => b.timestamp - a.timestamp
+      )
+      return userVibeChecks
+    }
   } catch (error) {
     console.error("Error fetching vibe checks: ", error)
     return []
