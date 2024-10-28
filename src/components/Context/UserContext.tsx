@@ -30,26 +30,27 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   // block to get the friends of the user that was passed through
   useEffect(() => {
     const fetchFriends = async () => {
-      if (!user.username) return;
       try {
+        // calling the api
         const data = await getFriends(user.username);
         if (data?.data?.data.friendList) {
-          const allFriends = data.data.data.friendList.map(
-            (friend: any) => friend.username
-          );
+          const allFriends = data?.data?.data.friendList;
+          const allUsernames = allFriends.map((friend: any) => {
+            return friend.username;
+          });
           setUser({
             ...user,
-            friendList: new Set(allFriends),
+            friendList: new Set<string>([...allUsernames]),
           });
-        } else {
-          setUser({ ...user, friendList: new Set<string>() });
         }
       } catch (error) {
-        console.log(`Error retrieving friends: ${error}`);
+        console.log(
+          `There was an error while retrieving personal info: ${error}`
+        );
       }
     };
     fetchFriends();
-  }, [user.username, user]);
+  }, [user.username]);
 
   // function to update a property based on the name and value
   function setProperty(name: string, value: any): void {
