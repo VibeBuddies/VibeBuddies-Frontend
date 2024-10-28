@@ -36,9 +36,8 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
 
   // block to make api call to get friends from backend
   useEffect(() => {
-    setFriends([]); // Reset friends on username change
+    setFriends([]);
     const fetchFriends = async () => {
-      if (!usernameProp) return; // Ensure username exists
       try {
         const data = await getFriends(usernameProp);
         if (data?.data?.data.friendList) {
@@ -57,7 +56,7 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
       }
     };
     fetchFriends();
-  }, [usernameProp, loggedInUser]);
+  }, [usernameProp]);
 
   // JSX
   return (
