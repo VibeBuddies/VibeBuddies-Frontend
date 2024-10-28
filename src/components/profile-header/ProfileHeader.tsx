@@ -8,6 +8,8 @@ import {
   TextField,
   Button,
   Box,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import updatePersonalProfile from '../../api/updateProfile';
@@ -17,6 +19,8 @@ import BoxInformation from './BoxInformation';
 import BoxUpdate from './BoxUpdate';
 import InfoIcon from '@mui/icons-material/Info';
 import updateProfileImage from '../../api/updateProfileImage';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
 // interface for the component prop params
 interface UserProfileProps {
@@ -53,6 +57,8 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
   // state to keep track of local user information based on the user who was passed through
   const [localUserInfo, setLocalUserInfo] = useState(userInfo);
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   // variable to check if the user is a friend of the user who is currently logged in
   let isFriend = friendList?.has(localUserInfo.username);
@@ -100,6 +106,8 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
   // block handles sending a friend request
   async function handleAddFriend(username: string | undefined): Promise<void> {
     await sendFriendRequest(username!);
+    setSnackbarMessage(`Friend request sent to ${username}`);
+    setSnackbarOpen(true);
   }
 
   // block handles deleting a friend, updates context friendlist to show removal friend in real time
@@ -111,7 +119,14 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
       `friendList`,
       new Set([...friendList!].filter((friend) => friend !== username))
     );
+    setSnackbarMessage(`Friend removed: ${username}`);
+    setSnackbarOpen(true);
   }
+
+  // handling the closing of the snackbar
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -145,7 +160,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
               isEditing && document.getElementById('imageInput')?.click()
             }
           />
-
           {isEditing && (
             <Box
               sx={{
@@ -170,7 +184,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
               Click to Change
             </Box>
           )}
-
           {isEditing && (
             <input
               type="file"
@@ -226,6 +239,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
                           ? handleRemoveFriend(userInfo.username)
                           : handleAddFriend(userInfo.username)
                       }
+                      startIcon={
+                        isFriend ? <PersonRemoveIcon /> : <PersonAddIcon />
+                      }
                     >
                       {isFriend ? 'Remove Friend' : 'Add Friend'}
                     </Button>
@@ -279,7 +295,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
       <Box sx={{ mt: 2, width: '100%' }}>
         {localUserInfo.bio && (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <InfoIcon sx={{ mr: 1, alignSelf: 'center' }} />{' '}
+            <InfoIcon sx={{ mr: 1, alignSelf: 'center' }} />
             <Typography variant="body1" sx={{ mb: 0 }} color="textSecondary">
               Bio
             </Typography>
@@ -302,6 +318,21 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
           </Typography>
         )}
       </Box>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

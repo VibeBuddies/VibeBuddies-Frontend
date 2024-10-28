@@ -7,6 +7,8 @@ import {
   Avatar,
   IconButton,
   Box,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -38,6 +40,8 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
 
   // getting information from usercontext
   const [profileImage, setProfileImage] = useState<string>();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     const fetchFriends = async () => {
@@ -56,7 +60,7 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
       }
     };
     fetchFriends();
-  }, []);
+  }, [friend.username]);
 
   const {
     username: loggedInUser,
@@ -87,12 +91,21 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
       `friendList`,
       new Set([...friendList!].filter((friend) => friend !== username))
     );
+    setSnackbarMessage(`Friend removed: ${username}`);
+    setSnackbarOpen(true);
   }
 
   // function to send a friend request
   async function handleAddFriend(username: string | undefined): Promise<void> {
     await sendFriendRequest(username!);
+    setSnackbarMessage(`Friend request sent to ${username}`);
+    setSnackbarOpen(true);
   }
+
+  // handling the closing of the snackbar
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   // JSX
   return (
@@ -145,6 +158,21 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
           </IconButton>
         </Box>
       )}
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Card>
   );
 };
