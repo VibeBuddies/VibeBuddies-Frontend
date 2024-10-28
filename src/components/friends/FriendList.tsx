@@ -36,6 +36,8 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
 
   // block to make api call to get friends from backend
   useEffect(() => {
+    setFriends([]);
+
     const fetchFriends = async () => {
       try {
         // api function call
