@@ -1,6 +1,7 @@
 import React from "react"
 import { Box, Typography } from "@mui/material"
 import VibeCheckItem from "./vibeCheckItem"
+import LoadingAnimation from "../animations/LoadingAnimation"
 
 /* arranges the vibeChecks into a scrollable list on the feed*/
 

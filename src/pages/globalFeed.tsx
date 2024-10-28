@@ -52,7 +52,7 @@ const GlobalFeed: React.FC = () => {
     }, 3600000) //adjust interval
 
     return () => clearInterval(intervalId)
-  }, [vibeChecks])
+  }, [])
 
   return (
     <Container maxWidth="sm" sx={{ display: "flex", position: "relative" }}>
