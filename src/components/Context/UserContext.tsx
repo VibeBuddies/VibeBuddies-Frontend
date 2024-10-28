@@ -50,7 +50,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     };
     fetchFriends();
-  }, []);
+  }, [user.username]);
 
   // function to update a property based on the name and value
   function setProperty(name: string, value: any): void {

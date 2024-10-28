@@ -36,17 +36,13 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
 
   // block to make api call to get friends from backend
   useEffect(() => {
-    setFriends([]);
-
+    setFriends([]); // Reset friends on username change
     const fetchFriends = async () => {
+      if (!usernameProp) return; // Ensure username exists
       try {
-        // api function call
         const data = await getFriends(usernameProp);
-        // block checks if data contains friendList, if so then sets the friends in state
         if (data?.data?.data.friendList) {
           setFriends(data.data.data.friendList);
-
-          // block checks if logged in user is accessing their profile to update their friendList
           if (loggedInUser === usernameProp) {
             setProperty(
               'friendList',
@@ -57,13 +53,11 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
           }
         }
       } catch (error) {
-        console.log(
-          `There was an error while retrieving personal info: ${error}`
-        );
+        console.error(`Error retrieving friends: ${error}`);
       }
     };
     fetchFriends();
-  }, [usernameProp]);
+  }, [usernameProp, loggedInUser]);
 
   // JSX
   return (
