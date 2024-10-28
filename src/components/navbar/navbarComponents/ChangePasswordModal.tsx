@@ -6,18 +6,27 @@ import { AuthContext } from '../../Context/AuthContext';
 interface ChangePasswordModalProps {
   open: boolean;
   onClose: () => void;
+  onPasswordChange: (message: string, success: boolean) => void,
 }
 
 const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
   open,
   onClose,
+  onPasswordChange,
 }) => {
   const [currentPassword, setCurrentPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
 
-  
+  const clearStates = () => {
+    // Reset all states and close the modal
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmNewPassword('');
+    setError('');
+    onClose();
+  };
 
   const handleCancel = () => {
     // Reset all states and close the modal
@@ -48,11 +57,15 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
         return;
       }
       const response = await sendChangePassword(token, currentPassword, newPassword);
-      // onSubmit(currentPassword, newPassword);
-      setError(''); // Clear the error message
-      onClose(); // Close the modal after submission
+      if(response.status === 'success'){
+        onPasswordChange('Password changed succesfully!', true)
+      }else{
+        onPasswordChange('Password change unsuccessful!', false)
+      }
+      clearStates();
     }catch(error){
-
+      onPasswordChange('An error occurred when changing password, try again', false)
+      clearStates();
     }
   };
 

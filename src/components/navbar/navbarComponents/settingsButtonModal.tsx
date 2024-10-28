@@ -15,6 +15,7 @@ import ChangePasswordModal from "./ChangePasswordModal"
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle"
 import DeleteIcon from "@mui/icons-material/Delete"
 import LogoutIcon from "@mui/icons-material/Logout"
+import Snackbar from "@mui/joy/Snackbar"
 
 /* settings button modal that will display user settings:
  * Users can log off.
@@ -38,6 +39,16 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
   const [confirmationText, setConfirmationText] = useState<string>("")
   const [showConfirmationInput, setShowConfirmationInput] = useState(false)
   const [openChangePassword, setOpenChangePassword] = useState(false)
+  //snackbar states
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("")
+  const [isSuccess, setIsSuccess] = useState<boolean>(true)
+
+  const handlePasswordChangeResponse = (message: string, success: boolean) => {
+    setSnackbarMessage(message)
+    setIsSuccess(success)
+    setSnackbarOpen(true)
+  }
 
   const handleLogOff = () => {
     logOff()
@@ -116,7 +127,21 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
           <ChangePasswordModal
             open={openChangePassword}
             onClose={handleCloseChangePassword}
+            onPasswordChange={handlePasswordChangeResponse}
           />
+          {/* show snackbar on fail/success */}
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={3000}
+            onClose={() => setSnackbarOpen(false)}
+            color={isSuccess ? "success" : "danger"}
+            size="md"
+            variant="solid"
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            sx={{ zIndex: 1300 }}
+          >
+            {snackbarMessage}
+          </Snackbar>
 
           {/* Delete Account Button */}
           {!showConfirmationInput ? (
