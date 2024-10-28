@@ -32,6 +32,7 @@ interface VibeCheckModalProps {
   dislikes: number
   timestamp: number
   username: string
+  profilePic: string
   likeOrDislikeButtonsElement: JSX.Element
 }
 
@@ -47,6 +48,7 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
   dislikes,
   timestamp,
   username,
+  profilePic,
   likeOrDislikeButtonsElement,
 }) => {
   const [newComment, setNewComment] = useState("")
@@ -114,9 +116,20 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
       >
         <Box display="flex" alignItems="flex-start">
           <Box mr={1}>
-            <Avatar alt={loggedInUser} sx={{ width: 40, height: 40 }}>
-              {loggedInUser.charAt(0).toUpperCase()}
-            </Avatar>
+            <>
+              {/* conditionally renders if profile pic exists */}
+              {profilePic ? (
+                <img
+                  src={profilePic}
+                  alt={username}
+                  style={{ width: 40, height: 40, borderRadius: 20 }}
+                />
+              ) : (
+                <Avatar alt={username} sx={{ width: 40, height: 40 }}>
+                  {username.charAt(0).toUpperCase()}
+                </Avatar>
+              )}
+            </>
           </Box>
           <Typography variant="h5" marginTop={0.5}>
             <Link

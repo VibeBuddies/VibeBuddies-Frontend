@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import {
   Box,
   Typography,
@@ -12,6 +12,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd"
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove"
 import { UserContext } from "../../../Context/UserContext"
 import { Link } from "react-router-dom"
+import getUserByUsername from "../../../../api/getUserbyUsernameApi"
 
 interface NotificationItemProps {
   username: string
@@ -26,6 +27,26 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   onAccept,
   onReject,
 }) => {
+  const [profilePic, setProfileImage] = useState<string>("")
+
+  useEffect(() => {
+    const fetchProfilePic = async () => {
+      try {
+        // api function call
+        const data = await getUserByUsername(username!)
+
+        if (data?.data?.user?.profileImageUrl) {
+          setProfileImage(data.data.user.profileImageUrl)
+        }
+      } catch (error) {
+        console.log(
+          `There was an error while retrieving personal info: ${error}`
+        )
+      }
+    }
+    fetchProfilePic()
+  }, [username])
+
   const handleAccept = async () => {
     try {
       await updateFriendRequest(username, "accepted")
@@ -52,9 +73,21 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center">
             <Box mr={2}>
-              <Avatar alt={username} sx={{ width: 40, height: 40 }}>
-                {username.charAt(0).toUpperCase()}
-              </Avatar>
+              {profilePic ? (
+                <img
+                  src={profilePic}
+                  alt={username}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20,
+                  }}
+                />
+              ) : (
+                <Avatar alt={username} sx={{ width: 40, height: 40 }}>
+                  {username.charAt(0).toUpperCase()}
+                </Avatar>
+              )}
             </Box>
             {/* clickable link username */}
             <Typography variant="subtitle1" fontWeight="bold">

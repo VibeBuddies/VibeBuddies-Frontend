@@ -1,7 +1,8 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Box, Typography, Avatar } from "@mui/material"
 import { formatTimeDifference } from "../../../utils/formatTimeDifference"
 import { Link } from "react-router-dom"
+import getUserByUsername from "../../../api/getUserbyUsernameApi"
 
 interface CommentItemProps {
   username: string
@@ -18,6 +19,26 @@ const CommentItem: React.FC<CommentItemProps> = ({
   comment_body,
   timestamp,
 }) => {
+  const [profilePic, setProfileImage] = useState<string>("")
+
+  useEffect(() => {
+    const fetchProfilePic = async () => {
+      try {
+        // api function call
+        const data = await getUserByUsername(username!)
+
+        if (data?.data?.user?.profileImageUrl) {
+          setProfileImage(data.data.user.profileImageUrl)
+        }
+      } catch (error) {
+        console.log(
+          `There was an error while retrieving personal info: ${error}`
+        )
+      }
+    }
+    fetchProfilePic()
+  }, [username])
+
   return (
     <Box
       display="flex"
@@ -29,9 +50,20 @@ const CommentItem: React.FC<CommentItemProps> = ({
       marginBottom={2}
       boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1)"
     >
-      <Avatar alt={username} sx={{ width: 40, height: 40, marginRight: 2 }}>
-        {username.charAt(0).toUpperCase()}
-      </Avatar>
+      <>
+        {/* conditionally renders if profile pic exists */}
+        {profilePic ? (
+          <img
+            src={profilePic}
+            alt={username}
+            style={{ width: 40, height: 40, borderRadius: 20, marginRight: 20 }}
+          />
+        ) : (
+          <Avatar alt={username} sx={{ width: 40, height: 40, marginRight: 2 }}>
+            {username.charAt(0).toUpperCase()}
+          </Avatar>
+        )}
+      </>
 
       {/* Comment Content */}
       <Box flex={1}>
