@@ -7,7 +7,7 @@ import { UserContext } from '../Context/UserContext';
 // interface for the friends usernames that are returned
 interface FriendsDataReturned {
   username?: string;
-  profileImage?: string;
+  profileImageUrl?: string;
   favoriteSong?: string;
   favoriteArtist?: string;
   favoriteAlbum?: string;

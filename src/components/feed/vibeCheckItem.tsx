@@ -6,11 +6,13 @@ import { relative } from "path"
 import LikeOrDislikeButtons from "./LikeOrDislikeButtons/LikeOrDislikeButtons"
 import sendLike from "../../api/sendLikeApi"
 import sendDislike from "../../api/sendDislikeApi"
+import getUserByUsername from "../../api/getUserbyUsernameApi"
 import { AuthContext } from "../Context/AuthContext"
 import { UserContext } from "../Context/UserContext"
 import { Link } from "react-router-dom"
 import { formatDistanceToNow } from "date-fns"
 import { formatTimeDifference } from "../../utils/formatTimeDifference"
+import Profile from "../../pages/Profile"
 
 interface VibeCheckItemProps {
   vibe_check_id: string
@@ -43,6 +45,9 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
   liked_by,
   disliked_by,
 }) => {
+  //profilePic
+  const [profilePic, setProfileImage] = useState<string>("")
+
   //modal props
   const [openModal, setOpenModal] = useState<boolean>(false)
 
@@ -61,6 +66,24 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
     }
     return text
   }
+
+  useEffect(() => {
+    const fetchProfilePic = async () => {
+      try {
+        // api function call
+        const data = await getUserByUsername(username!)
+
+        if (data?.data?.user?.profileImageUrl) {
+          setProfileImage(data.data.user.profileImageUrl)
+        }
+      } catch (error) {
+        console.log(
+          `There was an error while retrieving personal info: ${error}`
+        )
+      }
+    }
+    fetchProfilePic()
+  }, [])
 
   //likesordislikes button props
   const { token } = useContext(AuthContext)!
@@ -153,11 +176,22 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
           {/* profile pic and username side by side */}
           <Box display="flex" alignItems="flex-start" mr={2} mb={1}>
             <Box mr={1}>
-              <Avatar alt={username} sx={{ width: 30, height: 30 }}>
-                {username.charAt(0).toUpperCase()}
-              </Avatar>
+              <>
+                {/* conditionally renders if profile pic exists */}
+                {profilePic ? (
+                  <img
+                    src={profilePic}
+                    alt={username}
+                    style={{ width: 40, height: 40, borderRadius: 20 }}
+                  />
+                ) : (
+                  <Avatar alt={username} sx={{ width: 40, height: 40 }}>
+                    {username.charAt(0).toUpperCase()}
+                  </Avatar>
+                )}
+              </>
             </Box>
-            <Box>
+            <Box mt={0.5}>
               <Typography variant="subtitle1">{username}</Typography>
             </Box>
             <Box>
@@ -165,7 +199,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
                 variant="body2"
                 color="textSecondary"
                 gutterBottom
-                mt={0.5}
+                mt={1}
                 ml={0.5}
               >
                 {formatTimeDifference(timestamp)}
@@ -228,6 +262,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
         dislikes={dislikes}
         timestamp={timestamp}
         username={username}
+        profilePic={profilePic}
         likeOrDislikeButtonsElement={renderedLikeOrDislikeButtonsElement}
       />
     </>

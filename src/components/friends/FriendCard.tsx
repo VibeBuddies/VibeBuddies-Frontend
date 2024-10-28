@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Typography,
@@ -13,12 +13,13 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { UserContext } from '../Context/UserContext';
 import deleteFriend from '../../api/deleteFriend';
 import sendFriendRequest from '../../api/sendFriendRequest';
+import getUserByUsername from '../../api/getUserbyUsernameApi';
 
 // interface
 interface FriendProps {
   friend: {
     username?: string;
-    profileImage?: string;
+    profileImageUrl?: string;
     favoriteSong?: string;
     favoriteArtist?: string;
     favoriteAlbum?: string;
@@ -36,6 +37,27 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
    */
 
   // getting information from usercontext
+  const [profileImage, setProfileImage] = useState<string>();
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        // api function call
+        const data = await getUserByUsername(friend.username!);
+        // block checks if data contains friendList, if so then sets the friends in state
+
+        if (data?.data?.user?.profileImageUrl) {
+          setProfileImage(data.data.user.profileImageUrl);
+        }
+      } catch (error) {
+        console.log(
+          `There was an error while retrieving personal info: ${error}`
+        );
+      }
+    };
+    fetchFriends();
+  }, []);
+
   const {
     username: loggedInUser,
     setProperty,
@@ -86,8 +108,8 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
       {/* profile image */}
       <Avatar
         src={
-          friend.profileImage
-            ? friend.profileImage
+          profileImage
+            ? profileImage
             : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
         }
         alt={friend.username}
