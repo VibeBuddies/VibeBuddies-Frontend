@@ -17,6 +17,7 @@ interface UserProfileData {
   state?: string;
   country?: string;
   bio?: string;
+  profileImageUrl?: string;
 }
 
 const Profile: React.FC = () => {
@@ -27,7 +28,6 @@ const Profile: React.FC = () => {
   // state to store user info, initially will be empty
   const [userInfo, setUserInfo] = useState<UserProfileData | null>(null);
   // state to keep track of which tab is open
-  const [activeTab, setActiveTab] = useState<string>('vibechecks');
 
   // getting the route params
   const params = useParams();
@@ -49,6 +49,7 @@ const Profile: React.FC = () => {
             state,
             country,
             bio,
+            profileImageUrl,
           } = data.data.data.user;
           setUserInfo({
             username,
@@ -59,6 +60,7 @@ const Profile: React.FC = () => {
             state,
             country,
             bio,
+            profileImageUrl,
           });
         }
       } catch (error) {
@@ -81,11 +83,7 @@ const Profile: React.FC = () => {
           <Box sx={{ marginBottom: 2 }}>
             {/* user info/profile */}
             {userInfo && (
-              <UserProfile
-                userInfo={userInfo}
-                setUserInfo={setUserInfo}
-                profileImage="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s"
-              />
+              <UserProfile userInfo={userInfo} setUserInfo={setUserInfo} />
             )}
           </Box>
 
