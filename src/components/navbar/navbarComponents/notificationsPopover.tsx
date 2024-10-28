@@ -52,7 +52,7 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
 
     const intervalId = setInterval(() => {
       fetchNotifications()
-    }, 15000)
+    }, 2000)
 
     return () => clearInterval(intervalId)
   }, [notifications])
