@@ -16,6 +16,7 @@ import deleteFriend from '../../api/deleteFriend';
 import BoxInformation from './BoxInformation';
 import BoxUpdate from './BoxUpdate';
 import InfoIcon from '@mui/icons-material/Info';
+import updateProfileImage from '../../api/updateProfileImage';
 
 // interface for the component prop params
 interface UserProfileProps {
@@ -51,6 +52,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
 
   // state to keep track of local user information based on the user who was passed through
   const [localUserInfo, setLocalUserInfo] = useState(userInfo);
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
 
   // variable to check if the user is a friend of the user who is currently logged in
   let isFriend = friendList?.has(localUserInfo.username);
@@ -74,8 +76,10 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
 
   // function to handle the saving/updating of user information
   const handleSave = async () => {
-    // api function call to update informaiton, set information to show in real time
     try {
+      if (profileImageFile) {
+        await updateProfileImage(profileImageFile);
+      }
       await updatePersonalProfile(localUserInfo);
       setUserInfo(localUserInfo);
     } catch (error) {
@@ -109,22 +113,75 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
     );
   }
 
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setProfileImageFile(event.target.files[0]);
+      setLocalUserInfo({
+        ...localUserInfo,
+        profileImageUrl: URL.createObjectURL(event.target.files[0]),
+      });
+    }
+  };
+
   // JSX
   return (
     <Box sx={{ mt: 4, marginLeft: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-        <Avatar
-          alt={userInfo.username}
-          src={
-            userInfo.profileImageUrl ||
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
-          }
-          sx={{
-            width: 220,
-            height: 250,
-            marginRight: 2,
-          }}
-        />
+        <Box
+          sx={{ position: 'relative', width: 220, height: 250, marginRight: 2 }}
+        >
+          <Avatar
+            alt={userInfo.username}
+            src={
+              localUserInfo.profileImageUrl ||
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9p_svIjwA810BURgFBTU0V6fNjiU9MRbUXQ&s'
+            }
+            sx={{
+              width: '100%',
+              height: '100%',
+              cursor: isEditing ? 'pointer' : 'default',
+            }}
+            onClick={() =>
+              isEditing && document.getElementById('imageInput')?.click()
+            }
+          />
+
+          {isEditing && (
+            <Box
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: 'white',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                textAlign: 'center',
+                cursor: 'pointer',
+                borderRadius: '50%',
+              }}
+              onClick={() => document.getElementById('imageInput')?.click()}
+            >
+              Click to Change
+            </Box>
+          )}
+
+          {isEditing && (
+            <input
+              type="file"
+              id="imageInput"
+              style={{ display: 'none' }}
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          )}
+        </Box>
+
         <Box sx={{ flexGrow: 1 }}>
           <Box
             sx={{
