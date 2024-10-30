@@ -1,3 +1,13 @@
+/**
+ *
+ * utility function to render how old
+ * a component is in the app based on
+ * its creation timestamp
+ *
+ *
+ *
+ */
+
 export const formatTimeDifference = (timestamp: number): string => {
   const now = Date.now()
   const diffInSeconds = Math.floor((now - timestamp) / 1000)

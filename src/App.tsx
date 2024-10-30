@@ -14,7 +14,7 @@ import Navbar from "./components/navbar/NavBar"
 import { AuthProvider, AuthContext } from "./components/Context/AuthContext"
 import { UserProvider } from "./components/Context/UserContext"
 
-// ProtectedRoute component to protect routes based on authentication
+//protectedRoute component to protect routes based on authentication
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated } = useContext(AuthContext)!
 
@@ -24,12 +24,8 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 const App: React.FC = () => {
   const location = useLocation()
 
-  // Show the navbar on all pages except for the Access page
+  //shows the navbar on all pages except for the Access page
   const showNavbar = location.pathname !== "/"
-
-  /* COMMENT OUT THE PROTECTED ROUTE TAGS IF
-   YOU WANT TO SEE THOSE PAGES WITHOUT LOGGING IN
-   AND BEING AUTHENTICATED*/
 
   return (
     <>
@@ -37,9 +33,9 @@ const App: React.FC = () => {
       {showNavbar && <Navbar />}
 
       <Routes>
-        {/* Public Routes */}
+        {/* public */}
         <Route path="/" element={<Access />} /> {/* Home/Login/Register Page */}
-        {/* Authenticated Routes */}
+        {/* authenticated */}
         <Route
           path="/feed"
           element={
