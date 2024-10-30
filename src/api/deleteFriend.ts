@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_URL } from '../utils/APIURL';
+import axios from "axios"
+import { API_URL } from "../utils/APIURL"
 
 //get all friends request, needs a jwt
 async function deleteFriend(username: string): Promise<void> {
@@ -9,15 +9,15 @@ async function deleteFriend(username: string): Promise<void> {
    */
 
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token")
     await axios.delete(`${API_URL}/friends/${username}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    });
+    })
   } catch (error) {
-    throw new Error(`failed to delete friend ${username}`);
+    throw new Error(`failed to delete friend ${username}`)
   }
 }
 
-export default deleteFriend;
+export default deleteFriend

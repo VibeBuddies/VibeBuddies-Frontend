@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Typography, Box } from "@mui/material"
 import Register from "../components/auth/register"
-import Login from "../components/auth/Login"
+import LoginContainer from "../components/auth/Login/LoginContainer"
 import vibeBuddiesLogo from "../components/auth/vibebuddies.png"
 import { useNavigate } from "react-router-dom" // Import useNavigate from react-router-dom
 
@@ -106,7 +106,7 @@ const Access: React.FC = () => {
         </Box>
 
         {/* conditionally renders Register or Login components based on which button is clicked */}
-        {showLogin ? <Login /> : <Register />}
+        {showLogin ? <LoginContainer /> : <Register />}
       </Box>
     </Box>
   )

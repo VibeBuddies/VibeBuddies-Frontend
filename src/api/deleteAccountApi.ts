@@ -1,6 +1,9 @@
 import axios from "axios"
 import { API_URL } from "../utils/APIURL"
 
+/* axios file to hanlde the api call needed
+ for the user to delete their own account */
+
 const deleteAccount = async () => {
   try {
     const token = localStorage.getItem("token")

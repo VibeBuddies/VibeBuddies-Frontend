@@ -1,7 +1,11 @@
 import axios from "axios"
 import { API_URL } from "../utils/APIURL"
 
-// update the status of a friend request
+/**
+ * api function call to update the status of a friend request
+ *
+ */
+
 const updateFriendRequest = async (username: string, status: string) => {
   try {
     const token = localStorage.getItem("token")
@@ -10,6 +14,7 @@ const updateFriendRequest = async (username: string, status: string) => {
       throw new Error("No token found, please log in.")
     }
 
+    //sending a patch req
     const response = await axios.patch(
       `${API_URL}/friends`,
       {

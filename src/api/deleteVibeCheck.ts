@@ -1,7 +1,6 @@
-import axios from 'axios';
-import { API_URL } from '../utils/APIURL';
+import axios from "axios"
+import { API_URL } from "../utils/APIURL"
 
-//get all friends request, needs a jwt
 async function deleteVibeCheck(vibeCheckId: string): Promise<void> {
   /**
    * api function to handle the deleting of a friend
@@ -9,15 +8,15 @@ async function deleteVibeCheck(vibeCheckId: string): Promise<void> {
    */
 
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token")
     await axios.delete(`${API_URL}/vibe-checks/${vibeCheckId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    });
+    })
   } catch (error) {
-    throw new Error(`failed to delete vibe check ${vibeCheckId}`);
+    throw new Error(`failed to delete vibe check ${vibeCheckId}`)
   }
 }
 
-export default deleteVibeCheck;
+export default deleteVibeCheck

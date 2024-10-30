@@ -1,10 +1,19 @@
-import axios from 'axios';
-import { API_URL } from '../utils/APIURL';
+import axios from "axios"
+import { API_URL } from "../utils/APIURL"
 
-//get all friends request, needs a jwt
+/**
+ * api function call to send a friend request
+ *
+ */
+
 async function sendFriendRequest(username: string): Promise<void> {
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token")
+    if (!token) {
+      throw new Error("No token found, please log in.")
+    }
+
+    //sending post request to /friends
     await axios.post(
       `${API_URL}/friends`,
       { username },
@@ -13,10 +22,10 @@ async function sendFriendRequest(username: string): Promise<void> {
           Authorization: `Bearer ${token}`,
         },
       }
-    );
+    )
   } catch (error) {
-    throw new Error(`failed to send friend request to ${username}, ${error}`);
+    throw new Error(`failed to send friend request to ${username}, ${error}`)
   }
 }
-// minor
-export default sendFriendRequest;
+
+export default sendFriendRequest

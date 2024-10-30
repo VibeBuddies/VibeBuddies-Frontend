@@ -1,7 +1,6 @@
 import axios from "axios"
 import { API_URL } from "../utils/APIURL"
 
-//get all friends request, needs a jwt
 const getAllVibeChecks = async () => {
   /**
    * api function call to handle the retrival of all vibechecks in the database
