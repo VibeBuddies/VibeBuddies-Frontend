@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# VibeBuddies
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+VibeBuddies is a social media platform where users can review and discuss music albums with friends and other users. The platform provides features such as registration, login, posting and commenting on vibechecks, a recommendation feed, and user profile pages.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Table of Contents
 
-### `npm start`
+- [Features](#features)
+- [Setup and Installation](#setup-and-installation)
+- [Usage](#usage)
+- [Technologies Used](#technologies-used)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+1. **User Authentication**: Users can register and log in with secure authentication, utilizing JWT tokens to access protected pages.
+2. **User Profile and Feed**: Each user has a profile displaying their posted reviews, and a main feed shows activity from friends and the user’s own posts.
+3. **vibeChecks**: Users can create vibeChecks which are album reviews that include: rating, text body, and five star rating. Upon creation vibechecks will populate in the global feed and their friends' feeds
+4. **Interactive Feed**: Users can interact with posts through likes, dislikes, and comments
+5. **Settings and Account Management**: Users can log off, change their password, or delete their account.
+6. **Profile**: Users can customize their profiles by adding a profile image, favorite album, favorite artist, favorite song, and bio.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Setup and Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Steps
 
-### `npm run eject`
+**Clone the repository:**
+https://github.com/kofflernick/vibebuddies-client
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**install dependencies:**
+npm install
+Run the application:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**run app:**
+npm start
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**Usage:**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Access Page:
 
-## Learn More
+Toggle between Login and Register options using the navigation at the top of the form.
+Register a new account or log in with an existing account.
+Upon successful login, you’ll be redirected to the feed.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Feed:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+See a list of reviews from friends and your own posts, with options to like, dislike, or comment on each review.
+Click on any review to open a detailed modal with the full review text, additional comments, and interaction options.
 
-### Code Splitting
+Profile Page:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Access your profile to view your posted reviews, friends, and update profile information.
 
-### Analyzing the Bundle Size
+Settings:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Change password, delete account, or log off from the settings modal.
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Tech Stack:**
+Authentication: JWT
+API: Axios for making HTTP requests
+State Management: React Context API
