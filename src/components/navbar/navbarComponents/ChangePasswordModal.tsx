@@ -9,6 +9,7 @@ interface ChangePasswordModalProps {
   onPasswordChange: (message: string, success: boolean) => void,
 }
 
+//component for modal to update user password
 const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
   open,
   onClose,
@@ -27,15 +28,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
     setError('');
     onClose();
   };
-
-  const handleCancel = () => {
-    // Reset all states and close the modal
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmNewPassword('');
-    setError('');
-    onClose();
-  };
+//sanitizing characters on passwords
   function containsIllegalCharacters(str:string) {
     const illegalChars = /[<>\[\]{}()=|:;,+\*\?%&\s]/
     return illegalChars.test(str)
@@ -44,6 +37,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
   const {token} = useContext(AuthContext)!;
   const handleSubmit = async () => {
     try{
+      //checks for password format validity
       if (newPassword.length < 7 || newPassword.length > 20) {
         setError("Passwords must be at least 7 characters long, 20 at most");
         return;
@@ -56,12 +50,14 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
         setError("Passwords do not match");
         return;
       }
+      // sending the request
       const response = await sendChangePassword(token, currentPassword, newPassword);
       if(response.status === 'success'){
         onPasswordChange('Password changed succesfully!', true)
       }else{
         onPasswordChange('Password change unsuccessful!', false)
       }
+      //clear after response
       clearStates();
     }catch(error){
       onPasswordChange('An error occurred when changing password, try again', false)
@@ -96,7 +92,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 required
                 fullWidth
-                type="password" // Correct way to set the password type with Input
+                type="password" 
               />
             </Box>
             <Box>
@@ -107,7 +103,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
                 fullWidth
-                type="password" // Correct way to set the password type with Input
+                type="password" 
               />
             </Box>
             <Box>
@@ -118,7 +114,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                 onChange={(e) => setConfirmNewPassword(e.target.value)}
                 required
                 fullWidth
-                type="password" // Correct way to set the password type with Input
+                type="password" 
                 error={!!error} // Displays error state
               />
               {error && <Typography color="danger">{error}</Typography>}
@@ -126,7 +122,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
           </Stack>
 
           <Stack direction="row" justifyContent="flex-end" mt={4} spacing={2}>
-            <Button variant="plain" color="neutral" onClick={handleCancel}>
+            <Button variant="plain" color="neutral" onClick={clearStates}>
               Cancel
             </Button>
             <Button variant="solid" color="primary" onClick={handleSubmit}>

@@ -13,9 +13,8 @@ const sendChangePassword = async (token: string | null, currentPassword: string,
                     'Content-Type': 'application/json',  // Ensure the correct Content-Type
                 }
             });
-        //console.log(token)
-        console.log("Response:", response.data); // Log the response for debugging
-        // const currentDislikes = response.data.updatedVibeCheck.dislikes;
+
+        // console.log("Response:", response.data); // Log the response for debugging
         return response.data;
     } catch (error) {
         console.error("Error submitting the form:", error); // Log any error that occurs

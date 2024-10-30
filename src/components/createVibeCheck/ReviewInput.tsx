@@ -6,6 +6,7 @@ interface ReviewInputProps {
   handleChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
+//Component with text box for review that increases size vertically when text overflows
 const ReviewInput: React.FC<ReviewInputProps> = ({ value, handleChange }) => {
   return (
     <FormControl>

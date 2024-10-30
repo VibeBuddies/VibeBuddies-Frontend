@@ -1,4 +1,7 @@
-/* Create a LastFM object */
+/* Create a LastFM object 
+Should be obfuscated but not critical for this project 
+since account hold very little personal information
+*/
 const lastfm_api = {
     apiKey: "e956ffce6c831598099fd47d2dc4a275",
     apiSecret: "b560b97ea325c7ff6cec1792c0c30021",
@@ -10,7 +13,7 @@ const lastfm_api = {
     artist: string;
     cover_url: string;
   }
-  
+  //function to retrieve data from api
   async function searchAlbum(query: string): Promise<AlbumInfo[]> {
     try {
       const res = await fetch(

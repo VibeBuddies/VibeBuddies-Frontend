@@ -12,7 +12,7 @@ interface AlbumOrArtistProps {
     newValue: AutocompleteOption | null
   ) => void;
 }
-
+//Component with autocomplete and Cover Image once selected
 const AlbumOrArtist: React.FC<AlbumOrArtistProps> = ({
   options,
   selectedAlbum,

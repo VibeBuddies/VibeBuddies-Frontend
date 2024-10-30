@@ -8,6 +8,7 @@ interface RatingInputProps {
   setRatingValue: (value: number | null) => void;
 }
 
+//Component with 5 star rating toggle
 const RatingInput: React.FC<RatingInputProps> = ({
   ratingValue,
   setRatingValue,

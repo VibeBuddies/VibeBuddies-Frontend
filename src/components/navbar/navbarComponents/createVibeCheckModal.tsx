@@ -32,6 +32,7 @@ interface CreateVibeCheckModalProps {
   onVibeCheckResponse: (message: string, success: boolean) => void,
 }
 
+//Component for modal to create vibeChecks
 const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
   openVibeCheck,
   handleCloseVibeCheck,
@@ -49,10 +50,12 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
     setReviewValue(event.target.value)
   }
 
+  //handling input for autocomplete selection of Album
   const handleInputChange = async (
     event: React.ChangeEvent<{}>,
     value: string
   ) => {
+    //simple debounce
     if (value.length >= 3) {
       const results = await searchAlbum(value) // Call searchAlbum with the input value
       const formattedOptions: AutocompleteOption[] = results.map((album) => ({
@@ -65,6 +68,7 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
     }
   }
 
+  //Setting state of album selection
   const handleAlbumSelect = (
     event: React.SyntheticEvent,
     newValue: AutocompleteOption | null
@@ -95,7 +99,10 @@ const CreateVibeCheckModal: React.FC<CreateVibeCheckModalProps> = ({
     setReviewValue('');       // Clear review text
     setRatingValue(null);    //clear rating
   }
+
+  //get token from context
   const {token} = React.useContext(AuthContext)!;
+  //Send creation request
   const handleSubmitButton = async () => {
     try{
       const response = await sendCreateVibeCheck(
