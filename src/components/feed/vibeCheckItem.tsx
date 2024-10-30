@@ -132,7 +132,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
     }
   }
 
-  //rendered beforehand as to easily pass down JSX.Element to modal as prop
+  //rendered beforehand as to easily pass down JSX.Element into item and to modal as prop
   const renderedLikeOrDislikeButtonsElement = (
     <LikeOrDislikeButtons
       vibe_check_id={vibe_check_id}
@@ -235,15 +235,7 @@ const VibeCheckItem: React.FC<VibeCheckItemProps> = ({
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* <LikeOrDislikeButtons 
-              vibe_check_id={vibe_check_id}
-              likePressed={likePressed}
-              dislikePressed={dislikePressed}
-              onLikePress={handleLikePress}
-              onDislikePress={handleDislikePress}
-              likes={localLikes}
-              dislikes={localDislikes}
-              /> */}
+            {/* JSX element for likes and dislikes */}
             {renderedLikeOrDislikeButtonsElement}
           </Box>
         </Box>

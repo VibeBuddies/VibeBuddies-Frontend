@@ -44,17 +44,12 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
   const [snackbarMessage, setSnackbarMessage] = useState<string>("")
   const [isSuccess, setIsSuccess] = useState<boolean>(true)
 
-  const handlePasswordChangeResponse = (message: string, success: boolean) => {
-    setSnackbarMessage(message)
-    setIsSuccess(success)
-    setSnackbarOpen(true)
-  }
-
+  
   const handleLogOff = () => {
     logOff()
     navigate("/")
   }
-
+  
   const handleDeleteAccount = async () => {
     if (confirmationText === "I am sure") {
       try {
@@ -71,18 +66,24 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
   const handleShowConfirmation = () => {
     setShowConfirmationInput(true)
   }
-
+  
   const handleCancelConfirmation = () => {
     setShowConfirmationInput(false)
     setConfirmationText("")
   }
-
+  //simple functions to clode or open the changePasswordModal
   const handleChangePassword = () => setOpenChangePassword(true)
   const handleCloseChangePassword = () => setOpenChangePassword(false)
-
+  //handling the response and props to be passed down to changePasswordModal
+  const handlePasswordChangeResponse = (message: string, success: boolean) => {
+    setSnackbarMessage(message)
+    setIsSuccess(success)
+    setSnackbarOpen(true)
+  }
+  
   return (
     <Dialog
-      open={openSettings}
+    open={openSettings}
       onClose={handleCloseSettings}
       BackdropProps={{
         sx: {
