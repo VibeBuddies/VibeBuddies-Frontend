@@ -1,10 +1,15 @@
 import axios from "axios"
 import { API_URL } from "../utils/APIURL"
 
+/**
+ *
+ * get all vibe checks for a given user by username
+ */
+
 //get all vibe checks for a given user by username
 const getAllVibeChecksByUsername = async (username: string) => {
   try {
-    // fetch token
+    //fetching the token
     const token = localStorage.getItem("token")
 
     if (!token) {

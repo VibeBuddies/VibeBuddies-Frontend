@@ -4,7 +4,7 @@ import getAllVibeChecksByUsername from "../../api/getAllVibeChecksForSelfApi"
 
 const organizeData = async (username: string) => {
   try {
-    // Fetch the user's own vibe checks by their username
+    //initialize an array and then fetch the user's own vibe checks by their username
     let userVibeChecks = []
     try {
       const userVibeChecksResponse = await getAllVibeChecksByUsername(username)
@@ -14,15 +14,13 @@ const organizeData = async (username: string) => {
     }
 
     try {
-      // friends vibeChecks
+      //fetch the users' friends' vibeChecks
       const friends = await getAllFriends()
-
-      // getting userId from each friend
       const friendsIdList = friends.data.friendList.map(
         (friend: any) => friend.userId
       )
 
-      // getting all vibeChecks for each friend
+      //getting all vibeChecks for each friend
       const allVibeChecksPromises = friendsIdList.map(
         async (userId: string) => {
           try {
@@ -36,10 +34,10 @@ const organizeData = async (username: string) => {
       )
       const allVibeChecksResponses = await Promise.all(allVibeChecksPromises)
 
-      // combine lists of vibeChecks
+      //combine lists of vibeChecks
       let vibeCheckList = [...userVibeChecks, ...allVibeChecksResponses.flat()]
 
-      // sort list by timestamp
+      //sort list by timestamp
       vibeCheckList = vibeCheckList.sort((a, b) => b.timestamp - a.timestamp)
       return vibeCheckList
     } catch (err) {

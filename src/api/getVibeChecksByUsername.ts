@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_URL } from '../utils/APIURL';
+import axios from "axios"
+import { API_URL } from "../utils/APIURL"
 
 const getVibeChecksByUsername = async (username: string) => {
   /**
@@ -7,9 +7,10 @@ const getVibeChecksByUsername = async (username: string) => {
    */
 
   try {
-    // getting token
-    const token = localStorage.getItem('token');
-    // making call to backend api route
+    const token = localStorage.getItem("token")
+    if (!token) {
+      throw new Error("No token found, please log in.")
+    }
     const response = await axios.get(
       `${API_URL}/vibe-checks/username/${username}`,
       {
@@ -17,11 +18,11 @@ const getVibeChecksByUsername = async (username: string) => {
           Authorization: `Bearer ${token}`,
         },
       }
-    );
-    return response;
+    )
+    return response
   } catch (error) {
-    throw new Error('failed to retrieve vibeChecks by username');
+    throw new Error("failed to retrieve vibeChecks by username")
   }
-};
+}
 
-export default getVibeChecksByUsername;
+export default getVibeChecksByUsername

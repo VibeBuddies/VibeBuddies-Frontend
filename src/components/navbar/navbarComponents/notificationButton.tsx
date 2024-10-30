@@ -6,12 +6,10 @@ import PeopleIcon from "@mui/icons-material/People"
 
 interface NotificationsButtonProps {
   handleOpenNotifications: (event: React.MouseEvent<HTMLElement>) => void
-  notificationCount: number
 }
 
 const NotificationsButton: React.FC<NotificationsButtonProps> = ({
   handleOpenNotifications,
-  notificationCount,
 }) => {
   return (
     <Tooltip title="Friend Requests" arrow placement="top">
@@ -23,9 +21,6 @@ const NotificationsButton: React.FC<NotificationsButtonProps> = ({
           height: "100px",
         }}
       >
-        {/* <Badge badgeContent={notificationCount} color="error">
-          <NotificationsIcon sx={{ fontSize: 60 }} />
-        </Badge> */}
         <PeopleIcon sx={{ fontSize: 60 }} />
       </IconButton>
     </Tooltip>

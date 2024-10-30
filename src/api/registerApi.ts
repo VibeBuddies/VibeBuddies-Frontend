@@ -1,7 +1,11 @@
 import axios from "axios"
 import { API_URL } from "../utils/APIURL"
 
-// Register user API call
+/**
+ * api function call to register a user
+ *
+ */
+
 export const register = async (data: {
   username: string
   password: string

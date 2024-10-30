@@ -10,12 +10,6 @@ import FeedButton from "./navbarComponents/feedButton"
 import GlobalFeedButton from "./navbarComponents/globalFeedButton"
 import NotificationsButton from "./navbarComponents/notificationButton"
 import NotificationsPopover from "./navbarComponents/notificationsPopover"
-import {
-  logoffUser,
-  deleteUserAccount,
-  changeUserPassword,
-} from "../../api/settingsApi"
-
 import Snackbar from "@mui/joy/Snackbar"
 
 const Navbar: React.FC = () => {
@@ -24,53 +18,34 @@ const Navbar: React.FC = () => {
   const [openSettingsModal, setOpenSettingsModal] = useState<boolean>(false)
   const [notificationAnchorEl, setNotificationAnchorEl] =
     useState<HTMLElement | null>(null)
+
   //snackbar states
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
   const [snackbarMessage, setSnackbarMessage] = useState<string>("")
   const [isSuccess, setIsSuccess] = useState<boolean>(true)
 
+  //snackbar for when a vibecheck gets made
   const handleVibeCheckResponse = (message: string, success: boolean) => {
     setSnackbarMessage(message)
     setIsSuccess(success)
     setSnackbarOpen(true)
   }
 
-  const mockNotifications = [
-    "You have a new friend request.",
-    "Someone liked your VibeCheck!",
-    "Your password has been updated.",
-  ] // Mock notifications
-
-  // Handle the search input change
+  //input for the search bar
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
   }
 
+  //navbar button handling
   const handleOpenVibeCheck = () => setOpenVibeCheckModal(true)
   const handleCloseVibeCheck = () => setOpenVibeCheckModal(false)
   const handleOpenSettings = () => setOpenSettingsModal(true)
   const handleCloseSettings = () => setOpenSettingsModal(false)
-
-  // Notification handling (open and close)
   const handleOpenNotifications = (event: React.MouseEvent<HTMLElement>) => {
     setNotificationAnchorEl(event.currentTarget)
   }
-
   const handleCloseNotifications = () => {
     setNotificationAnchorEl(null)
-  }
-
-  // Dummy functions for user settings
-  const handleLogOff = () => {
-    console.log("User Logged Off")
-  }
-
-  const handleDeleteAccount = () => {
-    console.log("User Requested to Delete Account")
-  }
-
-  const handleChangePassword = () => {
-    console.log("User Requested to Change Password")
   }
 
   return (
@@ -82,19 +57,25 @@ const Navbar: React.FC = () => {
         padding: "10px",
       }}
     >
+      {/* items to the lefts of the searchbar*/}
       <Box sx={{ alignItems: "right" }}>
+        {/* Button to go the friend feed */}
         <FeedButton />
       </Box>
       <Box sx={{ alignItems: "right" }}>
+        {/* Button to go the global feed */}
         <GlobalFeedButton />
       </Box>
       <Box>
+        {/* searchbar */}
         <SearchBar
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
         />
       </Box>
+      {/* Items to the right of the search bar*/}
       <Box>
+        {/* Button and modal to create a vibecheck*/}
         <CreateVibeCheckButton handleOpenVibeCheck={handleOpenVibeCheck} />
         <CreateVibeCheckModal
           openVibeCheck={openVibeCheckModal}
@@ -105,22 +86,22 @@ const Navbar: React.FC = () => {
         {/* Notifications Button and Popover */}
         <NotificationsButton
           handleOpenNotifications={handleOpenNotifications}
-          notificationCount={mockNotifications.length}
         />
         <NotificationsPopover
           // mui property that dertemines the position of the popover
           anchorEl={notificationAnchorEl}
           handleCloseNotifications={handleCloseNotifications}
         />
-
+        {/* Button and modal to create a vibecheck*/}
         <SettingsButton handleOpenSettings={handleOpenSettings} />
         <SettingsButtonModal
           openSettings={openSettingsModal}
           handleCloseSettings={handleCloseSettings}
-          handleChangePassword={handleChangePassword}
         />
+        {/* profile button*/}
         <ProfileButton />
       </Box>
+      {/* snackbar triggers by creating a vibecheck*/}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}

@@ -1,9 +1,10 @@
 import axios from "axios"
 import { API_URL } from "../utils/APIURL"
 
-/* preliminary work to get the api
-connectivity */
-
+/**
+ * api function call to log in a user
+ *
+ */
 
 // Login request
 export const login = async (username: string, password: string) => {

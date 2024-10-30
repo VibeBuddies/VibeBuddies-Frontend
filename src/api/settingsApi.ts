@@ -1,8 +1,10 @@
 import axios from "axios"
 import { API_URL } from "../utils/APIURL"
 
-/*preliminary work to get API
-connectivity with axios */
+/**
+ *
+ * Uneeded file from early development
+ */
 
 // Create an axios instance with default options (like base URL)
 const apiClient = axios.create({

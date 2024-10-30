@@ -1,5 +1,10 @@
 import getAllVibeChecks from "../../../api/getAllVibeChecksApi"
 
+/**
+ *
+ * function to organize the data for the global feed
+ */
+
 const organizeData = async () => {
   try {
     let allVibeChecks = []

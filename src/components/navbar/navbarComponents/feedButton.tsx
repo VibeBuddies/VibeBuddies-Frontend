@@ -9,13 +9,13 @@ the user to their feed */
 const FeedButton: React.FC = () => {
   const navigate = useNavigate()
 
-  // navigate to the feed page on button click
+  //navigate to the feed page on button click
   const handleFeedClick = () => {
     navigate("/feed")
   }
 
   return (
-    <Tooltip title="Go to Global Feed" arrow placement="bottom">
+    <Tooltip title="Go to Feed" arrow placement="bottom">
       <IconButton
         onClick={handleFeedClick}
         sx={{

@@ -1,14 +1,15 @@
 import getPendingFriends from "../../../../api/getPendingFriendsApi"
 
+/**
+ *
+ * organizes the data for the notification list
+ * sends a request to gePendingFriends and then returns
+ * the pending friends for the user
+ */
+
 const organizData = async () => {
   try {
     const friendRequests = await getPendingFriends()
-
-    // Log the entire response to check its structure
-    //console.log("Friend requests response: ", friendRequests)
-
-    // Safely access data and map through friendList if it exists
-
     const simplifiedFriendRequests = friendRequests?.data?.friendList?.map(
       (friend: any) => ({
         username: friend.username,

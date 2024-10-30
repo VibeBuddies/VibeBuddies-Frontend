@@ -32,7 +32,6 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   useEffect(() => {
     const fetchProfilePic = async () => {
       try {
-        // api function call
         const data = await getUserByUsername(username!)
 
         if (data?.data?.user?.profileImageUrl) {

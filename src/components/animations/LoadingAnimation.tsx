@@ -1,5 +1,11 @@
 import React from "react"
-import vibebuddies from "./vibebuddies.png" // Replace with your actual file path
+import vibebuddies from "./vibebuddies.png"
+
+/**
+ * basic animation that will just move the vibebuddies logo
+ * up and down
+ *
+ */
 
 const LoadingAnimation = () => {
   const shakeAnimation = {

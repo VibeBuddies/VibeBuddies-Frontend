@@ -27,10 +27,10 @@ const Feed: React.FC = () => {
   const [vibeChecks, setVibeChecks] = useState<VibeCheck[]>([])
   const [loading, setLoading] = useState(true)
 
-  // Get the current user from the context
+  //get the current user from the context
   const userContext = useContext(UserContext)
 
-  // Fetch organized vibechecks
+  //fetch organized vibechecks
   const fetchVibeChecks = async () => {
     if (userContext && userContext.username) {
       const fetchedData = await organizeData(userContext.username)
@@ -43,31 +43,21 @@ const Feed: React.FC = () => {
       if (isDataDifferent) {
         setVibeChecks(fetchedData)
       }
-      // Set loading to false once data is fetched
       setLoading(false)
     }
   }
 
-  // periodically fetch the data
+  //periodically fetch the data
   useEffect(() => {
     fetchVibeChecks()
 
-    // interval to fetch data periodically
+    //interval to fetch data periodically
     const intervalId = setInterval(() => {
       fetchVibeChecks()
-    }, 3600000) // adjust interval
+    }, 3600000)
 
     return () => clearInterval(intervalId)
   }, [vibeChecks])
-
-  //loading animation if data is loading or vibeChecks is empty
-  // if (loading || vibeChecks.length === 0) {
-  //   return (
-  //     <Box height="50%" width="50%" alignItems="center">
-  //       <LoadingAnimation />
-  //     </Box>
-  //   )
-  // }
 
   return (
     <Container maxWidth="sm" sx={{ display: "flex", position: "relative" }}>

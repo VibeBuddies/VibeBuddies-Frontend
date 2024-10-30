@@ -1,6 +1,4 @@
 /*code for defining none code imports for typscript  */
-
-// src/declarations.d.ts
 declare module "*.png" {
   const value: string
   export default value

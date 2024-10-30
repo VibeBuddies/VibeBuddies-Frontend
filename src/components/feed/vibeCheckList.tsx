@@ -52,7 +52,7 @@ const VibeCheckList: React.FC<VibeCheckListProps> = ({ vibeChecks }) => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          height="100vh" // Full viewport height to vertically center
+          height="100vh"
         >
           <Typography variant="h6" align="center">
             No VibeChecks
