@@ -1,6 +1,12 @@
 import React, { ChangeEvent, FormEvent } from "react"
 import { TextField, Button, Container, Alert } from "@mui/material"
 
+/**
+ *
+ * Login TSX component for the LoginContainer
+ *
+ *  */
+
 interface LoginProps {
   formData: {
     username: string

@@ -5,6 +5,12 @@ import { UserContext } from "../../Context/UserContext"
 import { useNavigate } from "react-router-dom"
 import Login from "./Login"
 
+/**
+ *
+ * LogingContainer for login functionality which holds the Login tsx element
+ *
+ */
+
 const LoginContainer: React.FC = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -12,7 +18,7 @@ const LoginContainer: React.FC = () => {
   })
   const [error, setError] = useState<string>("")
 
-  // Get the login function from context
+  //get the login function from context
   const { login } = useContext(AuthContext)!
   const { setProperty } = useContext(UserContext)!
   const navigate = useNavigate()
@@ -28,9 +34,11 @@ const LoginContainer: React.FC = () => {
     try {
       const response = await loginApi(formData.username, formData.password)
       const token = response.data.token
-      login(token) // Save the token using the context login function
+      //save the token using the context login function
+      login(token)
       setProperty("username", formData.username)
-      navigate("/feed") // Redirect to the feed page after login
+      //redirect to the feed page after login
+      navigate("/feed")
     } catch (err) {
       setError("Unable to log in. Please try again.")
     }
