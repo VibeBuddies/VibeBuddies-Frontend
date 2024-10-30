@@ -15,7 +15,7 @@ const GlobalFeedButton: React.FC = () => {
   }
 
   return (
-    <Tooltip title="Go to Feed" arrow placement="bottom">
+    <Tooltip title="Go to Global Feed" arrow placement="bottom">
       <IconButton
         onClick={handleFeedClick}
         sx={{
