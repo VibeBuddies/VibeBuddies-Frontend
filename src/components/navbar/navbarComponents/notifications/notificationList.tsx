@@ -1,7 +1,6 @@
 import React from "react"
 import NotificationItem from "./notificationItem"
 import { Box, Typography } from "@mui/material"
-import NoNotifications from "./No-Notifcations.png"
 import LoadingAnimation from "../../../animations/LoadingAnimation"
 
 interface Notification {
@@ -39,14 +38,8 @@ const NotificationList: React.FC<NotificationListProps> = ({
           justifyContent="center"
           alignItems="center"
           height="100%"
-          //marginRight="5px"
           minHeight="250px"
         >
-          {/* <img
-            src={NoNotifications}
-            alt={"err"}
-            style={{ width: "150px", height: "150px" }}
-          /> */}
           <LoadingAnimation />
         </Box>
       )}

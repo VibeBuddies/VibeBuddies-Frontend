@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import { IconButton, Tooltip } from "@mui/material"
 import PersonIcon from "@mui/icons-material/Person"
-import { useNavigate } from "react-router-dom" // Import useNavigate
+import { useNavigate } from "react-router-dom"
 import { UserContext } from "../../Context/UserContext"
 import getUserByUsername from "../../../api/getUserbyUsernameApi"
 
@@ -11,9 +11,8 @@ the user to their profile */
 const ProfileButton: React.FC = () => {
   const { username } = useContext(UserContext)!
   const navigate = useNavigate()
-  // const username = 'luistest';
 
-  // Navigate to the profile page on button click
+  //navigate to the user profile
   const handleProfileClick = () => {
     navigate(`/profile/${username}`)
   }
@@ -23,7 +22,7 @@ const ProfileButton: React.FC = () => {
   useEffect(() => {
     const fetchProfilePic = async () => {
       try {
-        // api function call
+        //api function call
         const data = await getUserByUsername(username!)
 
         if (data?.data?.user?.profileImageUrl) {
@@ -48,7 +47,9 @@ const ProfileButton: React.FC = () => {
           height: "100px",
         }}
       >
-        {/* <PersonIcon sx={{ fontSize: 60 }} /> */}
+        {/* conditionally render a profile image
+            or the personicon based on in the user
+            has set a proPic or not */}
         {profilePic ? (
           <img
             src={profilePic}

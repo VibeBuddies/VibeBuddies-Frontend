@@ -9,7 +9,7 @@ the user to their feed */
 const FeedButton: React.FC = () => {
   const navigate = useNavigate()
 
-  // navigate to the feed page on button click
+  //navigate to the feed page on button click
   const handleFeedClick = () => {
     navigate("/feed")
   }

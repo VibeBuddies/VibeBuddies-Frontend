@@ -1,32 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { Popover, Typography, Box, Snackbar, Alert } from '@mui/material';
-import NotificationList from './notifications/notificationList';
-import organizData from './notifications/notificationsDataOrganizer';
+import React, { useState, useEffect } from "react"
+import { Popover, Typography, Box, Snackbar, Alert } from "@mui/material"
+import NotificationList from "./notifications/notificationList"
+import organizData from "./notifications/notificationsDataOrganizer"
 
-// define the notification type
 interface Notification {
-  username: string;
-  userId: string;
+  username: string
+  userId: string
 }
 
-// define the type for the props
 interface NotificationsProps {
-  anchorEl: HTMLElement | null;
-  handleCloseNotifications: () => void;
+  anchorEl: HTMLElement | null
+  handleCloseNotifications: () => void
 }
 
 const NotificationsPopover: React.FC<NotificationsProps> = ({
   anchorEl,
   handleCloseNotifications,
 }) => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>(
-    'success'
-  );
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState("")
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  )
 
-  const open = Boolean(anchorEl);
+  const open = Boolean(anchorEl)
 
   /* THIS BLOCK WILL REFRESH ON AN INTERVAL WORKS
   BUT MAY BE DANGEROUS IN TERMS OF AWS COSTS POSSIBLY
@@ -60,32 +58,32 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
   // fetch notifications
   useEffect(() => {
     const fetchNotifications = async () => {
-      const fetchedData = await organizData();
-      setNotifications(fetchedData);
-    };
+      const fetchedData = await organizData()
+      setNotifications(fetchedData)
+    }
 
-    fetchNotifications();
-  }, []);
+    fetchNotifications()
+  }, [])
 
   const handleAccept = (username: string) => {
-    setSnackbarMessage(`You are now friends with ${username}!`);
-    setSnackbarSeverity('success');
-    setSnackbarOpen(true);
-    // update notifications to remove the accepted friend request
-    setNotifications((prev) => prev.filter((n) => n.username !== username));
-  };
+    setSnackbarMessage(`You are now friends with ${username}!`)
+    setSnackbarSeverity("success")
+    setSnackbarOpen(true)
+    //update notifications to remove the accepted friend request
+    setNotifications((prev) => prev.filter((n) => n.username !== username))
+  }
 
   const handleReject = (username: string) => {
-    setSnackbarMessage(`Friend request from ${username} denied`);
-    setSnackbarSeverity('success');
-    setSnackbarOpen(true);
-    // update notifications to remove the rejected friend request
-    setNotifications((prev) => prev.filter((n) => n.username !== username));
-  };
+    setSnackbarMessage(`Friend request from ${username} denied`)
+    setSnackbarSeverity("success")
+    setSnackbarOpen(true)
+    //update notifications to remove the rejected friend request
+    setNotifications((prev) => prev.filter((n) => n.username !== username))
+  }
 
   const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
+    setSnackbarOpen(false)
+  }
 
   return (
     <>
@@ -94,31 +92,31 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
         anchorEl={anchorEl}
         onClose={handleCloseNotifications}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
+          vertical: "bottom",
+          horizontal: "center",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
+          vertical: "top",
+          horizontal: "center",
         }}
       >
         <Box
           sx={{
             width: 500,
             height: 400,
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <Box
             p={2}
             sx={{
-              position: 'sticky',
+              position: "sticky",
               top: 0,
-              backgroundColor: 'white',
+              backgroundColor: "white",
               zIndex: 1,
-              borderBottom: '0px solid #ccc',
-              textAlign: 'center',
+              borderBottom: "0px solid #ccc",
+              textAlign: "center",
             }}
           >
             <Typography variant="h6">Friend Requests</Typography>
@@ -127,7 +125,7 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
           <Box
             p={2}
             sx={{
-              overflowY: 'auto',
+              overflowY: "auto",
               maxHeight: 350,
             }}
           >
@@ -140,16 +138,16 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
         </Box>
       </Popover>
 
-      {/* Snackbar for success or error messages */}
+      {/* snackbar for success or error messages */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={2000}
         onClose={handleCloseSnackbar}
         message={snackbarMessage}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       />
     </>
-  );
-};
+  )
+}
 
-export default NotificationsPopover;
+export default NotificationsPopover

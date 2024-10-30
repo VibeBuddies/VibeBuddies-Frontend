@@ -9,7 +9,7 @@ the user to the global feed */
 const GlobalFeedButton: React.FC = () => {
   const navigate = useNavigate()
 
-  // Navigate to the global feed page on button click
+  //navigate to the global feed page on button click
   const handleFeedClick = () => {
     navigate("/global-feed")
   }
