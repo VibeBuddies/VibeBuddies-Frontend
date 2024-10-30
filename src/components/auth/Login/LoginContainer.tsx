@@ -38,7 +38,7 @@ const LoginContainer: React.FC = () => {
       login(token)
       setProperty("username", formData.username)
       //redirect to the feed page after login
-      navigate("/feed")
+      navigate("/global-feed")
     } catch (err) {
       setError("Unable to log in. Please try again.")
     }
