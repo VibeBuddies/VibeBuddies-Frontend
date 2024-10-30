@@ -26,7 +26,6 @@ import Snackbar from "@mui/joy/Snackbar"
 interface SettingsButtonModalProps {
   openSettings: boolean
   handleCloseSettings: () => void
-  handleChangePassword: () => void
 }
 
 const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
@@ -44,12 +43,11 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
   const [snackbarMessage, setSnackbarMessage] = useState<string>("")
   const [isSuccess, setIsSuccess] = useState<boolean>(true)
 
-  
   const handleLogOff = () => {
     logOff()
     navigate("/")
   }
-  
+
   const handleDeleteAccount = async () => {
     if (confirmationText === "I am sure") {
       try {
@@ -66,7 +64,7 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
   const handleShowConfirmation = () => {
     setShowConfirmationInput(true)
   }
-  
+
   const handleCancelConfirmation = () => {
     setShowConfirmationInput(false)
     setConfirmationText("")
@@ -80,10 +78,10 @@ const SettingsButtonModal: React.FC<SettingsButtonModalProps> = ({
     setIsSuccess(success)
     setSnackbarOpen(true)
   }
-  
+
   return (
     <Dialog
-    open={openSettings}
+      open={openSettings}
       onClose={handleCloseSettings}
       BackdropProps={{
         sx: {
