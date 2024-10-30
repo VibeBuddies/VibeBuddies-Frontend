@@ -5,7 +5,6 @@ const sendLike = async (token: string | null, vibe_check_id: string) => {
 
     if (vibe_check_id) {
       const data = {}; 
-      //const token = localStorage.getItem("token");
       try {
         // Send POST request
         //patch needs a data in the body regardless of if the service method actually needs it
