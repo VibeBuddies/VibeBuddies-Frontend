@@ -61,7 +61,7 @@ const VibeCheckModal: React.FC<VibeCheckModalProps> = ({
     setSnackbarOpen(false)
   }
 
-  // handle adding a new comment
+  //handle adding a new comment to the vibecheck
   const handleAddComment = () => {
     if (newComment.trim()) {
       createComment(vibe_check_id, newComment)
