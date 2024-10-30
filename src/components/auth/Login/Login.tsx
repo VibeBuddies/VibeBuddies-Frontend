@@ -26,6 +26,7 @@ const Login: React.FC<LoginProps> = ({
   <Container maxWidth="sm">
     {error && <Alert severity="error">{error}</Alert>}
     <form onSubmit={onSubmit}>
+      {/* username input box */}
       <TextField
         fullWidth
         label="Username"
@@ -35,6 +36,7 @@ const Login: React.FC<LoginProps> = ({
         onChange={onInputChange}
         required
       />
+      {/* password input box */}
       <TextField
         fullWidth
         label="Password"
@@ -45,6 +47,7 @@ const Login: React.FC<LoginProps> = ({
         onChange={onInputChange}
         required
       />
+      {/* submit button */}
       <Button variant="contained" color="primary" fullWidth type="submit">
         Login
       </Button>
