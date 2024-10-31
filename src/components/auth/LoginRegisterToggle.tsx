@@ -1,9 +1,14 @@
 import React from "react"
 import { Box, Typography } from "@mui/material"
 
+/**
+ *
+ * component on the access page that toggles between log in and registration
+ */
+
 interface LoginRegisterToggleProps {
   showLogin: boolean
-  setShowLogin: (show: boolean) => void // Updated prop type
+  setShowLogin: (show: boolean) => void
 }
 
 const LoginRegisterToggle: React.FC<LoginRegisterToggleProps> = ({
