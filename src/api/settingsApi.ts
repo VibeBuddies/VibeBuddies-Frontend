@@ -1,10 +1,11 @@
 import axios from "axios"
-import { API_URL } from "../utils/APIURL"
 
 /**
  *
  * Uneeded file from early development
  */
+
+const API_URL = ""
 
 // Create an axios instance with default options (like base URL)
 const apiClient = axios.create({

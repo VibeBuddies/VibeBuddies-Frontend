@@ -6,7 +6,6 @@ import { API_URL } from "../utils/APIURL"
  * a vibecheck
  *
  */
-
 const sendDislike = async (token: string | null, vibe_check_id: string) => {
   if (vibe_check_id) {
     const data = {}

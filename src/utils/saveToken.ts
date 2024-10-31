@@ -1,12 +1,13 @@
-let token = '';
-const setLocalToken = (newToken:string) =>{
-    token = newToken;
+let token = ""
+const setLocalToken = (newToken: string) => {
+  token = newToken
 }
 
 const getToken = () => {
-    return token;
-};
+  return token
+}
 
-module.exports= { 
-    getToken, setLocalToken
+module.exports = {
+  getToken,
+  setLocalToken,
 }
