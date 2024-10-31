@@ -17,7 +17,7 @@ interface LikeOrDislikeButtonsProps {
   likes: number;
   dislikes: number;
 }
-
+//Component for like or dislike toggle buttons and its logic
 export default function LikeOrDislikeButtons({
   vibe_check_id,
   likePressed,
@@ -27,34 +27,10 @@ export default function LikeOrDislikeButtons({
   likes,
   dislikes,
 }: LikeOrDislikeButtonsProps) {
-  // const [alignment, setAlignment] = useState<string | null>(null);
-  // const [likePressed, setLikePressed] = useState<boolean>(false);
-  // const [dislikePressed, setDislikePressed] = useState<boolean>(false);
-  // const [likesCount, setLikesCount] = useState<number>(initialLikes);
-  // const [dislikesCount, setDislikesCount] = useState<number>(initialDislikes);
-
-  // const handleLikePress = () =>{
-  //   setLikePressed(prevState => !prevState);
-  //   setDislikePressed(false);
-  //   sendLike(vibe_check_id);
-  // }
-  // const handleDislikePress = () => {
-  //   setDislikePressed(prevState => !prevState);
-  //   setLikePressed(false);
-  //   sendDislike(vibe_check_id);
-  // }
-  // const handleAlignment = (
-  //   event: React.MouseEvent<HTMLElement>,
-  //   newAlignment: string | null,
-  // ) => {
-  //   setAlignment(newAlignment);
-  // };
 
   return (
     <ToggleButtonGroup
-      // value={alignment}
       exclusive
-      // onChange={handleAlignment}
       aria-label="like or dislike"
     >
       <ToggleButton value="like" aria-label="like button"

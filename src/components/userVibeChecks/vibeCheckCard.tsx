@@ -40,7 +40,7 @@ const VibeCheckCard: React.FC<VibeCheckProps> = ({
   const handleOpenModal = () => setOpenModal(true)
   const handleCloseModal = () => setOpenModal(false)
 
-  // truncates review
+  //truncates review
   const truncateReview = (text: string, limit: number) => {
     return text.length > limit ? `${text.slice(0, limit)}[...]` : text
   }
@@ -48,7 +48,6 @@ const VibeCheckCard: React.FC<VibeCheckProps> = ({
   useEffect(() => {
     const fetchProfilePic = async () => {
       try {
-        // api function call
         const data = await getUserByUsername(vibeCheckInfo.username!)
 
         if (data?.data?.user?.profileImageUrl) {

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react"
-import { Container, Box } from "@mui/material"
+import { Container, Box, Typography } from "@mui/material"
 import VibeCheckList from "../components/feed/vibeCheckList"
 import organizeData from "../components/feed/feedDataOrganizer"
 import { UserContext } from "../components/Context/UserContext"
+import LoadingAnimation from "../components/animations/LoadingAnimation"
 
 interface VibeCheck {
   vibe_check_id: string
@@ -24,11 +25,12 @@ interface VibeCheck {
 
 const Feed: React.FC = () => {
   const [vibeChecks, setVibeChecks] = useState<VibeCheck[]>([])
+  const [loading, setLoading] = useState(true)
 
-  // Get the current user from the context
+  //get the current user from the context
   const userContext = useContext(UserContext)
 
-  // Fetch organized vibechecks
+  //fetch organized vibechecks
   const fetchVibeChecks = async () => {
     if (userContext && userContext.username) {
       const fetchedData = await organizeData(userContext.username)
@@ -37,21 +39,22 @@ const Feed: React.FC = () => {
       const isDataDifferent =
         JSON.stringify(fetchedData) !== JSON.stringify(vibeChecks)
 
-      // update the state only if the data has discrepencies
+      // update the state only if the data has discrepancies
       if (isDataDifferent) {
         setVibeChecks(fetchedData)
       }
+      setLoading(false)
     }
   }
 
-  // periodically fetch the data
+  //periodically fetch the data
   useEffect(() => {
     fetchVibeChecks()
 
-    // interval to fetch data periodically
+    //interval to fetch data periodically
     const intervalId = setInterval(() => {
       fetchVibeChecks()
-    }, 3600000) //adjust interval
+    }, 3600000)
 
     return () => clearInterval(intervalId)
   }, [vibeChecks])

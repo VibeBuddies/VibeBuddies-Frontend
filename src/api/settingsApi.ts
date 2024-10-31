@@ -1,7 +1,9 @@
 import axios from "axios"
 
-/*preliminary work to get API
-connectivity with axios */
+/**
+ *
+ * Uneeded file from early development
+ */
 
 const API_URL = ""
 

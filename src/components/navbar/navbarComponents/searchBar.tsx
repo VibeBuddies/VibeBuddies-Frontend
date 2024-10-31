@@ -17,12 +17,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const navigate = useNavigate()
 
-  // State for controlling the snackbar visibility and message
+  //snack bar states
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState("")
 
   const handleKeyPress = async (e: KeyboardEvent<HTMLInputElement>) => {
     // if "Enter" key is pressed navigate to the user's profile
+    // if the user exists
     if (e.key === "Enter" && searchTerm.trim()) {
       try {
         const getUser = await getUserByUsername(searchTerm.trim())
@@ -38,13 +39,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }
   }
 
-  // Function to handle snackbar close
+  //close snackbar
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false)
   }
 
   return (
     <Box mt={5} mb={3}>
+      {/* searchbar */}
       <TextField
         fullWidth
         label="Search"

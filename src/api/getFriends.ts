@@ -7,7 +7,9 @@ const getFriends = async (username: string) => {
    */
 
   try {
+    // getting token
     const token = localStorage.getItem('token');
+
     if (!token) {
       throw new Error('No token found, please log in.');
     }
@@ -21,7 +23,7 @@ const getFriends = async (username: string) => {
 
     return response;
   } catch (error) {
-    console.error('Error getting personal information:', error); // Log any error that occurs
+    console.error('Error getting friends:', error); // Log any error that occurs
   }
 };
 

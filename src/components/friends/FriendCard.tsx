@@ -7,6 +7,8 @@ import {
   Avatar,
   IconButton,
   Box,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -36,16 +38,19 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
    *
    */
 
-  // getting information from usercontext
+  // state for the profileImage
   const [profileImage, setProfileImage] = useState<string>();
+  // states for the snackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     const fetchFriends = async () => {
       try {
-        // api function call
+        // api function call to get the friends of the user's profile we are visiting
         const data = await getUserByUsername(friend.username!);
-        // block checks if data contains friendList, if so then sets the friends in state
 
+        // block checks if data contains friendList, if so then sets the friends in state
         if (data?.data?.user?.profileImageUrl) {
           setProfileImage(data.data.user.profileImageUrl);
         }
@@ -56,8 +61,9 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
       }
     };
     fetchFriends();
-  }, []);
+  }, [friend.username]);
 
+  // getting required props from usercontext
   const {
     username: loggedInUser,
     setProperty,
@@ -87,12 +93,21 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
       `friendList`,
       new Set([...friendList!].filter((friend) => friend !== username))
     );
+    setSnackbarMessage(`Friend removed: ${username}`);
+    setSnackbarOpen(true);
   }
 
   // function to send a friend request
   async function handleAddFriend(username: string | undefined): Promise<void> {
     await sendFriendRequest(username!);
+    setSnackbarMessage(`Friend request sent to ${username}`);
+    setSnackbarOpen(true);
   }
+
+  // handling the closing of the snackbar
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   // JSX
   return (
@@ -145,6 +160,22 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
           </IconButton>
         </Box>
       )}
+
+      {/* snackbar */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Card>
   );
 };

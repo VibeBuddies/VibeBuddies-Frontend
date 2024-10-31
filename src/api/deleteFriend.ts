@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../utils/APIURL';
 
-//get all friends request, needs a jwt
 async function deleteFriend(username: string): Promise<void> {
   /**
    * api function to handle the deleting of a friend
@@ -9,7 +8,14 @@ async function deleteFriend(username: string): Promise<void> {
    */
 
   try {
+    // getting toke
     const token = localStorage.getItem('token');
+
+    if (!token) {
+      throw new Error('No token found, please log in.');
+    }
+
+    // making axios call to api endpoint and passing username in the uri route
     await axios.delete(`${API_URL}/friends/${username}`, {
       headers: {
         Authorization: `Bearer ${token}`,

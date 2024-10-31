@@ -36,15 +36,17 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
 
   // block to make api call to get friends from backend
   useEffect(() => {
+    // reset the list of friends before getting to another user's page
+    setFriends([]);
     const fetchFriends = async () => {
       try {
-        // api function call
+        // getting the current user's profile friends
         const data = await getFriends(usernameProp);
-        // block checks if data contains friendList, if so then sets the friends in state
+        // block checks if friendlist is present
         if (data?.data?.data.friendList) {
+          // sets the friends state
           setFriends(data.data.data.friendList);
-
-          // block checks if logged in user is accessing their profile to update their friendList
+          // block updates the friendList in the context if the profile is the same as the logged in user
           if (loggedInUser === usernameProp) {
             setProperty(
               'friendList',
@@ -55,9 +57,7 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
           }
         }
       } catch (error) {
-        console.log(
-          `There was an error while retrieving personal info: ${error}`
-        );
+        console.error(`Error retrieving friends: ${error}`);
       }
     };
     fetchFriends();
@@ -74,9 +74,12 @@ const FriendList: React.FC<FriendListProps> = ({ usernameProp }) => {
             marginLeft: -2,
           }}
         >
+          {/* mapping through the list of friends */}
           {friends.map((friend, index) => (
             <React.Fragment key={index}>
+              {/* list item to hold the friendcard */}
               <ListItem>
+                {/* friend card component */}
                 <FriendCard friend={friend} />
               </ListItem>
             </React.Fragment>

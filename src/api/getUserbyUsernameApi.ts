@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { API_URL } from '../utils/APIURL';
-
-//get all vibe checks for a given user
 const getUserByUsername = async (username: string) => {
+  /**
+   * api function call to get a user's info by their username
+   *
+   */
   try {
     const token = localStorage.getItem('token');
 
@@ -15,10 +17,9 @@ const getUserByUsername = async (username: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    // console.log("here is your DATA!: ", response.data)
     return response.data;
   } catch (error) {
-    throw new Error('failed to retrieve vibeChecks by id');
+    throw new Error(`failed to get users info for ${username}`);
   }
 };
 

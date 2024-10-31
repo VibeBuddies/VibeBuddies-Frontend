@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { API_URL } from '../utils/APIURL';
 
-//get all friends request, needs a jwt
 const getAllFriends = async () => {
   /**
    * api function call to handle the retrival of all friends of logged in user
    *
    */
   try {
+    // getting token
     const token = localStorage.getItem('token');
 
     if (!token) {

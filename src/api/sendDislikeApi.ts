@@ -1,28 +1,32 @@
-import axios from "axios";
+import axios from "axios"
+import { API_URL } from "../utils/APIURL"
 
+/**
+ * api function call to send a dislike on
+ * a vibecheck
+ *
+ */
 const sendDislike = async (token: string | null, vibe_check_id: string) => {
-
-    if (vibe_check_id) {
-      const data = {}; //patch needs a data in the body regardless of if the service method actually needs it
-      // const token = localStorage.getItem("token");
-      try {
-        // Send POST request
-        const response = await axios.patch(`http://35.172.116.68:3000/vibe-checks/${vibe_check_id}/dislike`, data,
-           {  
-            headers: {
-            Authorization: `Bearer ${token}`,  // Adding the token to the headers
-            'Content-Type': 'application/json',  // Ensure the correct Content-Type
-          }
-      });
-        //console.log(token)
-        console.log("Response:", response.data); // Log the response for debugging
-        // const currentDislikes = response.data.updatedVibeCheck.dislikes;
-        return response.data;
-      } catch (error) {
-        console.error("Error submitting the form:", error); // Log any error that occurs
-      }
+  if (vibe_check_id) {
+    const data = {}
+    try {
+      // Send PATCH request
+      //patch needs a data in the body regardless of if the service method actually needs it
+      const response = await axios.patch(
+        `${API_URL}/vibe-checks/${vibe_check_id}/dislike`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, //adding the token to the headers
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      return response.data
+    } catch (error) {
+      console.error("Error submitting the form:", error)
     }
-  };
+  }
+}
 
-export default sendDislike;
-  
+export default sendDislike

@@ -1,6 +1,7 @@
 import React from "react"
 import { Box, Typography } from "@mui/material"
 import VibeCheckItem from "./vibeCheckItem"
+import LoadingAnimation from "../animations/LoadingAnimation"
 
 /* arranges the vibeChecks into a scrollable list on the feed*/
 
@@ -51,7 +52,7 @@ const VibeCheckList: React.FC<VibeCheckListProps> = ({ vibeChecks }) => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          height="100vh" // Full viewport height to vertically center
+          height="100vh"
         >
           <Typography variant="h6" align="center">
             No VibeChecks

@@ -2,14 +2,17 @@ import axios from 'axios';
 import { API_URL } from '../utils/APIURL';
 
 const updatePersonalProfile = async (profileData: any) => {
-  // function to get the user's personal informaiton from the backend
+  /**
+   * api function to update profile
+   */
+
   try {
     const token = localStorage.getItem('token');
 
     if (!token) {
       throw new Error('No token found, please log in.');
     }
-    // Send GET request
+    // send GET request
     const response = await axios.patch(`${API_URL}/users`, profileData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -18,7 +21,7 @@ const updatePersonalProfile = async (profileData: any) => {
 
     return response;
   } catch (error) {
-    console.error('Error getting personal information:', error);
+    console.error('Error updating profile:', error);
   }
 };
 

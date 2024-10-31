@@ -1,5 +1,14 @@
 import React, { createContext, useState, useEffect } from "react"
 
+/*
+* the main goal of tge auth context is to provide a way to protect the inner meat
+  of the app, any page or component past the Acces page
+  requires a token to be set to get to them.
+  for api calls that required a token we gave two options for token 
+  retrieval: from the context itself OR from localstorage
+  in our api calls we played around with using either option
+*/
+
 interface AuthContextType {
   token: string | null
   login: (token: string) => void
@@ -14,7 +23,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [token, setToken] = useState<string | null>(null)
 
-  // Check if token exists in local storage on app load
+  //checks if token exists in local storage on app load
+  //and places in context
   useEffect(() => {
     const storedToken = localStorage.getItem("token")
     if (storedToken) {
@@ -22,11 +32,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [])
 
+  //setting the token
   const login = (newToken: string) => {
     setToken(newToken)
     localStorage.setItem("token", newToken)
   }
 
+  //removing the token
   const logOff = () => {
     setToken(null)
     localStorage.removeItem("token")

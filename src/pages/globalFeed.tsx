@@ -25,18 +25,18 @@ interface VibeCheck {
 const GlobalFeed: React.FC = () => {
   const [vibeChecks, setVibeChecks] = useState<VibeCheck[]>([])
 
-  // Get the current user from the context
+  //get the current user from the context
   const userContext = useContext(UserContext)
 
-  // Fetch organized vibechecks
+  //fetch organized vibechecks
   const fetchVibeChecks = async () => {
     const fetchedData = await organizeData()
 
-    // compare the new data with the current data state
+    //compare the new data with the current data state
     const isDataDifferent =
       JSON.stringify(fetchedData) !== JSON.stringify(vibeChecks)
 
-    // update the state only if the data has discrepencies
+    //update the state only if the data has discrepencies
     if (isDataDifferent) {
       setVibeChecks(fetchedData)
     }
@@ -46,13 +46,12 @@ const GlobalFeed: React.FC = () => {
   useEffect(() => {
     fetchVibeChecks()
 
-    // interval to fetch data periodically
     const intervalId = setInterval(() => {
       fetchVibeChecks()
-    }, 3600000) //adjust interval
+    }, 3600000)
 
     return () => clearInterval(intervalId)
-  }, [vibeChecks])
+  }, [])
 
   return (
     <Container maxWidth="sm" sx={{ display: "flex", position: "relative" }}>

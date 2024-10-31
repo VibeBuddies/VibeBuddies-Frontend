@@ -3,13 +3,11 @@ import { Popover, Typography, Box, Snackbar, Alert } from "@mui/material"
 import NotificationList from "./notifications/notificationList"
 import organizData from "./notifications/notificationsDataOrganizer"
 
-// define the notification type
 interface Notification {
   username: string
   userId: string
 }
 
-// define the type for the props
 interface NotificationsProps {
   anchorEl: HTMLElement | null
   handleCloseNotifications: () => void
@@ -32,46 +30,46 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
   BUT MAY BE DANGEROUS IN TERMS OF AWS COSTS POSSIBLY
   MUST RESERVE TILL PRESENTATION */
 
-  // function to fetch and update notifications
-  const fetchNotifications = async () => {
-    const fetchedData = await organizData()
+  // // function to fetch and update notifications
+  // const fetchNotifications = async () => {
+  //   const fetchedData = await organizData();
 
-    // compare incoming and current data
-    const isDataDifferent =
-      JSON.stringify(fetchedData) !== JSON.stringify(notifications)
+  //   // compare incoming and current data
+  //   const isDataDifferent =
+  //     JSON.stringify(fetchedData) !== JSON.stringify(notifications);
 
-    // update if incoming data is different
-    if (isDataDifferent) {
-      setNotifications(fetchedData)
-    }
-  }
+  //   // update if incoming data is different
+  //   if (isDataDifferent) {
+  //     setNotifications(fetchedData);
+  //   }
+  // };
 
-  // periodically fetch data
-  useEffect(() => {
-    fetchNotifications()
+  // // periodically fetch data
+  // useEffect(() => {
+  //   fetchNotifications();
 
-    const intervalId = setInterval(() => {
-      fetchNotifications()
-    }, 3600000)
+  //   const intervalId = setInterval(() => {
+  //     fetchNotifications();
+  //   }, 25000);
 
-    return () => clearInterval(intervalId)
-  }, [notifications])
+  //   return () => clearInterval(intervalId);
+  // }, [notifications]);
 
   // fetch notifications
-  // useEffect(() => {
-  //   const fetchNotifications = async () => {
-  //     const fetchedData = await organizData()
-  //     setNotifications(fetchedData)
-  //   }
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const fetchedData = await organizData()
+      setNotifications(fetchedData)
+    }
 
-  //   fetchNotifications()
-  // }, [])
+    fetchNotifications()
+  }, [])
 
   const handleAccept = (username: string) => {
     setSnackbarMessage(`You are now friends with ${username}!`)
     setSnackbarSeverity("success")
     setSnackbarOpen(true)
-    // update notifications to remove the accepted friend request
+    //update notifications to remove the accepted friend request
     setNotifications((prev) => prev.filter((n) => n.username !== username))
   }
 
@@ -79,7 +77,7 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
     setSnackbarMessage(`Friend request from ${username} denied`)
     setSnackbarSeverity("success")
     setSnackbarOpen(true)
-    // update notifications to remove the rejected friend request
+    //update notifications to remove the rejected friend request
     setNotifications((prev) => prev.filter((n) => n.username !== username))
   }
 
@@ -140,7 +138,7 @@ const NotificationsPopover: React.FC<NotificationsProps> = ({
         </Box>
       </Popover>
 
-      {/* Snackbar for success or error messages */}
+      {/* snackbar for success or error messages */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={2000}

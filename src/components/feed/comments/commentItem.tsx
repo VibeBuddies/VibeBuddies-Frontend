@@ -4,6 +4,12 @@ import { formatTimeDifference } from "../../../utils/formatTimeDifference"
 import { Link } from "react-router-dom"
 import getUserByUsername from "../../../api/getUserbyUsernameApi"
 
+/**
+ *
+ *
+ * renders a single comments item to be added to the comment list
+ */
+
 interface CommentItemProps {
   username: string
   user_id: string
@@ -24,7 +30,6 @@ const CommentItem: React.FC<CommentItemProps> = ({
   useEffect(() => {
     const fetchProfilePic = async () => {
       try {
-        // api function call
         const data = await getUserByUsername(username!)
 
         if (data?.data?.user?.profileImageUrl) {
