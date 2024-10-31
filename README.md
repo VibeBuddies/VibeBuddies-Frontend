@@ -2,6 +2,10 @@
 
 VibeBuddies is a social media platform where users can review and discuss music albums with friends and other users. The platform provides features such as registration, login, posting and commenting on vibechecks, a recommendation feed, and user profile pages.
 
+**Link to try out the app:**:
+
+http://vibebuddies-client.s3-website-us-east-1.amazonaws.com/
+
 ---
 
 ## Table of Contents
