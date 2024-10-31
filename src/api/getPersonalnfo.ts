@@ -6,14 +6,19 @@ const getPersonalInformation = async (username: string) => {
    * api function to handle retrieving data of logged in user
    */
 
+  // getting token
   const token = localStorage.getItem('token');
 
   if (!token) {
     throw new Error('No token found, please log in.');
   }
 
+  if (!token) {
+    throw new Error('No token found, please log in.');
+  }
+
   try {
-    // Send GET request
+    // api endpoint request of user info based on the username
     const response = await axios.get(`${API_URL}/users/${username}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -22,7 +27,7 @@ const getPersonalInformation = async (username: string) => {
 
     return response;
   } catch (error) {
-    console.error('Error getting personal information:', error); // Log any error that occurs
+    console.error('Error getting personal information:', error);
   }
 };
 

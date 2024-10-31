@@ -38,18 +38,19 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
    *
    */
 
-  // getting information from usercontext
+  // state for the profileImage
   const [profileImage, setProfileImage] = useState<string>();
+  // states for the snackbar
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     const fetchFriends = async () => {
       try {
-        // api function call
+        // api function call to get the friends of the user's profile we are visiting
         const data = await getUserByUsername(friend.username!);
-        // block checks if data contains friendList, if so then sets the friends in state
 
+        // block checks if data contains friendList, if so then sets the friends in state
         if (data?.data?.user?.profileImageUrl) {
           setProfileImage(data.data.user.profileImageUrl);
         }
@@ -62,6 +63,7 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
     fetchFriends();
   }, [friend.username]);
 
+  // getting required props from usercontext
   const {
     username: loggedInUser,
     setProperty,
@@ -159,6 +161,7 @@ const FriendCard: React.FC<FriendProps> = ({ friend }) => {
         </Box>
       )}
 
+      {/* snackbar */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}

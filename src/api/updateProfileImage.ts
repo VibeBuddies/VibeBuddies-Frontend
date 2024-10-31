@@ -1,22 +1,23 @@
 // updateProfileImage.ts
-import axios from "axios"
-import { API_URL } from "../utils/APIURL"
-
-/**
- * api function call to update a users profile image
- *
- */
+import axios from 'axios';
+import { API_URL } from '../utils/APIURL';
 
 const updateProfileImage = async (profileImageFile: File) => {
+  /**
+   * api function call to update profile image
+   */
+
   try {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem('token');
     if (!token) {
-      throw new Error("No token found, please log in.")
+      throw new Error('No token found, please log in.');
     }
 
-    const formData = new FormData()
-    formData.append("profileImage", profileImageFile)
+    // using FormData so multer can handle the image
+    const formData = new FormData();
+    formData.append('profileImage', profileImageFile);
 
+    // sending the form to the backend server
     const response = await axios.patch(
       `${API_URL}/users/uploadImage`,
       formData,
@@ -25,12 +26,12 @@ const updateProfileImage = async (profileImageFile: File) => {
           Authorization: `Bearer ${token}`,
         },
       }
-    )
+    );
 
-    return response
+    return response;
   } catch (error) {
-    console.error("Error uploading new profile image:", error)
+    console.error('Error uploading new profile image:', error);
   }
-}
+};
 
-export default updateProfileImage
+export default updateProfileImage;
