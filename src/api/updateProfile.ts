@@ -1,25 +1,28 @@
-import axios from "axios"
-import { API_URL } from "../utils/APIURL"
+import axios from 'axios';
+import { API_URL } from '../utils/APIURL';
 
 const updatePersonalProfile = async (profileData: any) => {
-  // function to get the user's personal informaiton from the backend
+  /**
+   * api function to update profile
+   */
+
   try {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem('token');
 
     if (!token) {
-      throw new Error("No token found, please log in.")
+      throw new Error('No token found, please log in.');
     }
     // send GET request
     const response = await axios.patch(`${API_URL}/users`, profileData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    })
+    });
 
-    return response
+    return response;
   } catch (error) {
-    console.error("Error getting personal information:", error)
+    console.error('Error updating profile:', error);
   }
-}
+};
 
-export default updatePersonalProfile
+export default updatePersonalProfile;

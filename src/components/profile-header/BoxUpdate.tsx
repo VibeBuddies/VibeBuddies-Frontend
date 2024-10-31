@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, TextField } from '@mui/material';
 
+// interface props for BoxUpdate
 interface BoxUpdateProp {
   name?: string;
   property?: string;
@@ -21,6 +22,7 @@ const BoxUpdate: React.FC<BoxUpdateProp> = ({
    */
 
   return (
+    // grid for textfield
     <Grid item xs={3} sx={sx}>
       <TextField
         label={name}

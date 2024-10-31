@@ -52,11 +52,11 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
     friendList,
   } = useContext(UserContext)!;
 
-  // console.log(userInfo);
-
   // state to keep track of local user information based on the user who was passed through
   const [localUserInfo, setLocalUserInfo] = useState(userInfo);
+  // state for the profileImage of the user
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+  // state for snack bar from mui
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
@@ -128,9 +128,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
     setSnackbarOpen(false);
   };
 
+  // function to hamdle the changing of image
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
+      // set the state
       setProfileImageFile(event.target.files[0]);
+      // setting the image for the local profile
       setLocalUserInfo({
         ...localUserInfo,
         profileImageUrl: URL.createObjectURL(event.target.files[0]),
@@ -140,11 +143,15 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
 
   // JSX
   return (
+    // overall container
     <Box sx={{ mt: 4, marginLeft: 2 }}>
+      {/* container to hold the user's profile image, attributes (not bio) and edit/friend button */}
       <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+        {/* container for the profile image */}
         <Box
           sx={{ position: 'relative', width: 220, height: 250, marginRight: 2 }}
         >
+          {/* mui container for the profile immage */}
           <Avatar
             alt={userInfo.username}
             src={
@@ -160,6 +167,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
               isEditing && document.getElementById('imageInput')?.click()
             }
           />
+          {/* if editing, add overlay on pfp to be able to change */}
           {isEditing && (
             <Box
               sx={{
@@ -184,6 +192,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
               Click to Change
             </Box>
           )}
+          {/* if editting, handdle the input of the image */}
           {isEditing && (
             <input
               type="file"
@@ -195,6 +204,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
           )}
         </Box>
 
+        {/* container to handle attributes (not bio) and buttons */}
         <Box sx={{ flexGrow: 1 }}>
           <Box
             sx={{
@@ -203,10 +213,15 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
               alignItems: 'center',
             }}
           >
+            {/* mui component for username */}
             <Typography variant="h4">{userInfo.username}</Typography>
+
+            {/* mui component to conditionally render edit (save,cancel)/add/remove friend buttons */}
             <Box>
+              {/* if editing display save/cancel button */}
               {isEditing ? (
                 <>
+                  {/* save button */}
                   <Button
                     variant="contained"
                     color="primary"
@@ -214,6 +229,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
                   >
                     Save
                   </Button>
+                  {/* cancel button */}
                   <Button
                     sx={{ ml: 2 }}
                     variant="contained"
@@ -224,25 +240,32 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
                   </Button>
                 </>
               ) : (
+                // if not edditing and current profile is the profile page of the logged in user display an editting icon
                 <>
                   {loggedInUser === userInfo.username && (
                     <IconButton onClick={handleEdit} aria-label="settings">
                       <SettingsIcon />
                     </IconButton>
                   )}
+
+                  {/* if not editting, but the profile is not the profile of the logged in user, display add/remove friend */}
                   {loggedInUser !== userInfo.username && (
                     <Button
                       variant="contained"
+                      // if friend primary, if not then error
                       color={isFriend ? 'error' : 'primary'}
+                      // if friend, remove friend text, if not then add friend text
                       onClick={() =>
                         isFriend
                           ? handleRemoveFriend(userInfo.username)
                           : handleAddFriend(userInfo.username)
                       }
+                      // icon displayed based on if friend or not
                       startIcon={
                         isFriend ? <PersonRemoveIcon /> : <PersonAddIcon />
                       }
                     >
+                      {/* text depending of is user if a friend or not */}
                       {isFriend ? 'Remove Friend' : 'Add Friend'}
                     </Button>
                   )}
@@ -251,7 +274,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
             </Box>
           </Box>
 
+          {/* container to display information of user and show editting inputs */}
           <Box sx={{ mt: 2 }}>
+            {/* if editting show updatable inputs */}
             {isEditing ? (
               <>
                 <BoxUpdate
@@ -273,6 +298,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
                 />
               </>
             ) : (
+              // if not editing, then show information
               <>
                 <BoxInformation
                   property={localUserInfo.favoriteArtist}
@@ -292,8 +318,11 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
         </Box>
       </Box>
 
+      {/* container for user bio */}
       <Box sx={{ mt: 2, width: '100%' }}>
+        {/* conditionally render if bio is not empty */}
         {localUserInfo.bio && (
+          // container for icon and bio title
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <InfoIcon sx={{ mr: 1, alignSelf: 'center' }} />
             <Typography variant="body1" sx={{ mb: 0 }} color="textSecondary">
@@ -302,6 +331,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
           </Box>
         )}
 
+        {/* if editting show updatable input */}
         {isEditing ? (
           <TextField
             label="Bio"
@@ -313,12 +343,14 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, setUserInfo }) => {
             fullWidth
           />
         ) : (
+          // if not editing show user bio
           <Typography variant="body1" sx={{ maxWidth: '100%' }}>
             {localUserInfo.bio}
           </Typography>
         )}
       </Box>
 
+      {/* snackbar for when user is added/removed */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}

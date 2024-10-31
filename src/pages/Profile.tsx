@@ -22,23 +22,22 @@ interface UserProfileData {
 
 const Profile: React.FC = () => {
   /**
-   * functional component to display the profile of the user
+   * functional component to display the profile of the user, displayed profileHeader, FriendList and vibeCheckList
    */
 
   // state to store user info, initially will be empty
   const [userInfo, setUserInfo] = useState<UserProfileData | null>(null);
-  // state to keep track of which tab is open
 
-  // getting the route params
+  // getting the route params, should get the username passed through
   const params = useParams();
   const usernameSearch = params.username || '';
 
-  // block fetches the user information and stores it in the state
+  // block fetches the user information and stores it in the state, based on the username in the route param
   useEffect(() => {
     const fetchPersonalInformation = async () => {
       try {
         const data = await getPersonalInformation(usernameSearch);
-        // block checks if data contains information about the user
+        // block checks if data contains information about the user sets the state
         if (data?.data?.data?.user) {
           const {
             username,
@@ -80,23 +79,24 @@ const Profile: React.FC = () => {
       <Grid container spacing={2} sx={{ marginTop: 2 }}>
         {/* grid for userprofile and the vibechecks */}
         <Grid item xs={12} md={8}>
+          {/* grid for userprofile */}
           <Box sx={{ marginBottom: 2 }}>
-            {/* user info/profile */}
+            {/* user info/profile rendered conditionally*/}
             {userInfo && (
               <UserProfile userInfo={userInfo} setUserInfo={setUserInfo} />
             )}
           </Box>
 
-          {/* vibechecks */}
+          {/* vibechecks component  */}
           <Box sx={{ marginLeft: 2 }}>
             <h2>VibeChecks</h2>
             <VibeCheckList usernameProp={usernameSearch} />
           </Box>
         </Grid>
 
-        {/* grid for friends */}
+        {/* grid for FriendList */}
         <Grid item xs={12} md={4}>
-          {/* box for friends */}
+          {/* box for FriendList component*/}
           <Box
             sx={{
               height: '100%',
